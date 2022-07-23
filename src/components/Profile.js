@@ -1,31 +1,30 @@
-import { Button, Typography, Box, Avatar, autocompleteClasses } from '@mui/material';
-import { ButtonProps } from '@mui/material/Button';
+import { autocompleteClasses, Avatar, Box, Button, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import React from "react";
-import './Profile.css';
-import telegram from '../img/telegram.png';
 import avatar from '../img/avatar.png';
 import close from '../img/close.png';
-import { styled } from '@mui/material/styles';
 import edit from '../img/edit.png';
+import telegram from '../img/telegram.png';
+import './Profile.css';
 
 function Profile({
-    handleCloseProfile, name = "Михаил Чистяков", tags = ["#programmer", "#run", "#artist", "#extravert"],
+    handleCloseProfile, width, name = "Михаил Чистяков", tags = ["#programmer", "#run", "#artist", "#extravert"],
     tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
 }) {
 
     const profileBoxStyle = {
         position: 'absolute',
-        top: '10%',
-        right: '5%',
-        width: 489,
-        height: 632,
+        marginLeft: 2,
+        marginRight: 2,
+        marginBottom: 2,
+        bottom: 0,
         backgroundColor: "#FFFFFF",
-        p: 4,
-        borderRadius: 10,
+        p: 2,
+        borderRadius: 5,
         display: "flex",
         flexDirection: "column",
         gap: 5
-      };
+    };  
 
     const ConnectButton = styled(Button)({
         color: "#FFFFFF",
@@ -34,41 +33,43 @@ function Profile({
             backgroundColor: "#3050C1",
         },
         borderRadius: 20,
-        fontSize: 15,
-        fontWeight: 200
+        fontSize: 10,
+        fontWeight: 200,
+        width: 80
     });
 
     return (
         <>
             <Box sx={profileBoxStyle}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }} >
-                        <Box sx={{ display: 'flex', gap: 3 }}>
-                            <Avatar src={avatar} sx={{ width: 85, height: 85 }} />
-                            <Box sx={{ display: 'flex', gap: 0.5, flexDirection: 'column', justifyContent: 'flex-start' }}>
-                                <Typography sx={{ fontSize: 20, fontWeight: 600 }}>{name}</Typography>
-                                <Box sx={{ display: "flex", gap: 1, alignItems: 'center' }}>
-                                    <img src={telegram} width={20} height={20} />
-                                    <Typography>{tgId}</Typography>
-                                </Box>
-                                <ConnectButton variant="contained" onClick={handleCloseProfile}>Connect</ConnectButton>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }} >
+                    <Box sx={{ display: 'flex', gap: 3 }}>
+                        <Avatar src={avatar} sx={{ width: 63, height: 63 }} />
+                        <Box sx={{ display: 'flex', gap: 0.3, flexDirection: 'column', justifyContent: 'flex-start' }}>
+                            <Typography sx={{ fontSize: 15, fontWeight: 600 }}>{name}</Typography>
+                            <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
+                                <img src={telegram} width={15} height={15} />
+                                <Typography sx={{ fontSize: 12, fontWeight: 200 }}>{tgId}</Typography>
                             </Box>
+                            <ConnectButton variant="contained" >Connect</ConnectButton>
                         </Box>
-                        <Button onClick={handleCloseProfile} variant="text">
-                            <img src={close} width={25} height={25} />
-                        </Button>
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        {tags.map(tag =>
-                            <Typography sx={{ fontSize: 15, fontWeight: 15 }}>{tag}</Typography>)}
-                        <img src={edit} width={20} height={20} />
-                    </Box>
-                    <Box className='about'>
-                        <Typography sx={{ fontSize: 20, fontWeight: 600 }}>О себе</Typography>
-                        <Typography sx={{ fontSize: 15, fontWeight: 400 }}>{about}</Typography>
-                    </Box>
-                    <Box className='location'>
-                        <Typography sx={{ fontSize: 20, fontWeight: 600 }}>Расположение</Typography>
-                    </Box>
+                    <Button onClick={handleCloseProfile} variant="text">
+                        <img src={close} width={20} height={20} />
+                    </Button>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {tags.map(tag =>
+                        <Typography sx={{ fontSize: 12, fontWeight: 200 }}>{tag}</Typography>)}
+                    <img src={edit} width={20} height={20} />
+                </Box>
+                <Box className='about'>
+                    <Typography sx={{ fontSize: 15, fontWeight: 600 }}>О себе</Typography>
+                    <Typography sx={{ fontSize: 12, fontWeight: 400 }}>{about}</Typography>
+                </Box>
+                <Box className='notes'>
+                    <Typography sx={{ fontSize: 15, fontWeight: 600 }}>Мои заметки</Typography>
+                    <Typography sx={{ fontSize: 12, fontWeight: 400 }}>{about}</Typography>
+                </Box>
             </Box>
         </>
     );

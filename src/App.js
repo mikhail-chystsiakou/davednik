@@ -31,10 +31,6 @@ function genRandomTree(N = 300, reverse = false) {
   };
 }
 
-//inner page size
-const pageWidth = document.documentElement.clientWidth
-const pageHeight = document.documentElement.clientHeight
-
 const theme = createTheme({
   typography: {
     fontFamily: [
@@ -69,7 +65,7 @@ export default function App() {
   const handleNodeClick = (node) => {
     console.log("Hello from console");
     console.log(node);
-    // setProfileIsOpen(true);
+    setProfileIsOpen(true);
   };
 
   const handleCloseProfile = () => setProfileIsOpen(false);
@@ -98,9 +94,9 @@ export default function App() {
             ctx.fillText(label, node.x, node.y + 8);
           }}
         /> 
-        <Search />
+        {/* <Search /> */}
         {profileIsOpen &&
-          <Profile handleCloseProfile={handleCloseProfile} />
+          <Profile handleCloseProfile={handleCloseProfile} width={windowDimensions.widt}/>
         }
       </>
     </ThemeProvider>
