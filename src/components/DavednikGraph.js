@@ -12,10 +12,11 @@ function getWindowDimensions() {
   };
 }
 
-function DavednikGraph({graphData, profileIsOpen}) {
+function DavednikGraph({graphData}) {
   const fgRef = useRef();
   const dispatch = useDispatch();
   const currentNode = useSelector(state => state.graph.currentNode);
+  const profileIsOpen  = useSelector(state => state.window.windowId) === 1;
   
   const handleNodeClick = (node) => {
     // dispatch(setProfileOpen(true));
@@ -39,6 +40,7 @@ function DavednikGraph({graphData, profileIsOpen}) {
     }, []);
 
     useEffect(() => {
+      console.log("Profile is open: " + profileIsOpen)
       if (currentNode != null) {
         let currentNodeObj = graphData.nodes.filter(n => n.id === currentNode);
         if (currentNodeObj.length === 1) {
@@ -46,7 +48,7 @@ function DavednikGraph({graphData, profileIsOpen}) {
           let newX = currentNodeObj[0].x;
           let newY = currentNodeObj[0].y;
           if (profileIsOpen) {
-            newY += height/4;
+            newY += height/7;
           }
           fgRef.current.centerAt(newX, newY);
         }
