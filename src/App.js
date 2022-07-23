@@ -43,12 +43,28 @@ const theme = createTheme({
   },
 });
 
-function App() {
-  const [profileIsOpen, setProfileIsOpen] = useState(false);
-  const forceRef = useRef(null);
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
+}
+
+export default function App() {
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+  const [profileIsOpen, setProfileIsOpen] = useState(true);
+
   useEffect(() => {
-    //forceRef.current.d3Force("charge").strength(-400);
-  });
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleNodeClick = (node) => {
     console.log("Hello from console");
@@ -63,14 +79,15 @@ function App() {
     <ThemeProvider theme={theme}>
       <>
       <ForceGraph2D
-          width={pageWidth}
-          height={pageHeight}
+          width={windowDimensions.width}
+          height={windowDimensions.height}
           graphData={data}
           nodeLabel="id"
           backgroundColor="#E7E7E7"
           linkCurvature="curvature"
           enablePointerInteraction={true}
           onNodeClick={handleNodeClick}
+<<<<<<< HEAD
           ref={forceRef}
           // d3AlphaMin={0.0228}
           // d3AlphaDecay={0.0228}
@@ -86,6 +103,8 @@ function App() {
             ctx.fillStyle = "black"; //node.color;
             ctx.fillText(label, node.x, node.y + 8);
           }}
+=======
+>>>>>>> add10c45b60c5c87edefaaa3738d3dc79676122e
         /> 
         <Search />
         {profileIsOpen &&
@@ -95,5 +114,3 @@ function App() {
     </ThemeProvider>
   );
 }
-
-export default App;
