@@ -27,12 +27,28 @@ const theme = createTheme({
   },
 });
 
-function App() {
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
+}
+
+export default function App() {
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
   const [profileIsOpen, setProfileIsOpen] = useState(true);
-  const forceRef = useRef(null);
+
   useEffect(() => {
-    //forceRef.current.d3Force("charge").strength(-400);
-  });
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleNodeClick = (node) => {
     console.log("Hello from console");
@@ -47,15 +63,14 @@ function App() {
     <ThemeProvider theme={theme}>
       <>
       <ForceGraph2D
-          width={pageWidth}
-          height={pageHeight}
+          width={windowDimensions.width}
+          height={windowDimensions.height}
           graphData={data}
           nodeLabel="id"
           backgroundColor="#E7E7E7"
           linkCurvature="curvature"
           enablePointerInteraction={true}
           onNodeClick={handleNodeClick}
-          ref={forceRef}
         /> 
         <Search />
         {profileIsOpen &&
@@ -65,5 +80,3 @@ function App() {
     </ThemeProvider>
   );
 }
-
-export default App;
