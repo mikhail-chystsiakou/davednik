@@ -80,8 +80,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <>
-      <DavednikGraph graphData={data}/>
-        <Search />
+        <DavednikGraph graphData={data} />
         <Main />
         {profileIsOpen &&
           <Profile handleCloseProfile={handleCloseProfile} />

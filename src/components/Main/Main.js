@@ -20,8 +20,8 @@ export default function Main() {
         }}> Text </Paper>
         <Paper elevation={3} className={styles.big_rounded_button}> Text </Paper>
         <Button variant='contained' onClick={() => {
-          dispatch(setCurrentNode({ id: Math.random() }))
-        }}> {(+(currentNode.id * 100))} </Button>
+          dispatch(setCurrentNode({ id: Math.random(), x: Math.random() * 100, y: Math.random() * 10 }))
+        }}> {(currentNode.id === 0) ? 0 : (+(currentNode.id * 100))} </Button>
       </div>
     </div>
   )
