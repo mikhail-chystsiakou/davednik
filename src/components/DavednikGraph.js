@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentNode, setProfileOpen } from "../features/graph/graphSlice"
+import { setWindowId } from '../features/window/windowSlice';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -17,7 +18,8 @@ function DavednikGraph({graphData, profileIsOpen}) {
   const currentNode = useSelector(state => state.graph.currentNode);
   
   const handleNodeClick = (node) => {
-    dispatch(setProfileOpen(true));
+    // dispatch(setProfileOpen(true));
+    dispatch(setWindowId(1));
     dispatch(setCurrentNode(node.id));
   };
   

@@ -1,29 +1,29 @@
 import * as React from 'react';
 import styles from './Main.module.css';
-import {
-  Button, Box, IconButton
-} from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentNode } from '../../features/graph/graphSlice';
-import SearchIcon from '@mui/icons-material/Search';
-import PersonIcon from '@mui/icons-material/Person';
+import FirstScreen from './FirstScreen';
+import Profile from '../Profile/Profile';
 
 export default function Main() {
-  const currentNode = useSelector(state => state.graph.currentNode);
+  const screenId = useSelector(state => state.window.windowId);
 
   const dispatch = useDispatch();
 
-  console.log(currentNode)
+  console.log(screenId)
+
+  let mainWidget;
+  switch (screenId) {
+    case 0:
+      mainWidget = <FirstScreen />;
+      break;
+    case 1:
+      mainWidget = <Profile />;
+      break;
+  }
+
   return (
     <div className={styles.Main}>
-      <Box className={styles.buttons}>
-        <IconButton sx={{ backgroundColor: 'white' }} className={styles.big_rounded_button} >
-          <PersonIcon className={styles.button_icon} />
-        </IconButton>
-        <IconButton sx={{ backgroundColor: "white" }} className={styles.big_rounded_button} >
-          <SearchIcon className={styles.button_icon} />
-        </IconButton>
-      </Box>
+      {mainWidget}
     </div>
   )
 }

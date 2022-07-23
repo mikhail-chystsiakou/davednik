@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
+
 import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
-import Profile from './components/Profile';
 import Search from './components/Search/Search';
 import { setProfileOpen } from './features/graph/graphSlice'
 
@@ -51,16 +51,8 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <>
-      <DavednikGraph graphData={data} />
-        <DavednikGraph graphData={data} profileIsOpen={profileIsOpen}/>
-        <Search />
-        {/* <Main /> */}
-        {profileIsOpen &&
-          <Profile handleCloseProfile={handleCloseProfile}
-          />
-        }
-      </>
+        <DavednikGraph graphData={data}/>
+        <Main />
     </ThemeProvider>
   );
 }
