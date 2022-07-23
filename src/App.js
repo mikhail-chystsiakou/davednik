@@ -1,8 +1,9 @@
-import React, { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useEffect, useRef, useState } from "react";
-import { ForceGraph2D } from 'react-force-graph';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React, { useEffect, useRef, useState } from "react";
 import './App.css';
 import Profile from './components/Profile';
+import Search from './components/Search/Search.js';
+
 
 var data = {
   nodes: [{ id: "Volha Lytkina", color: "#3050C1" }, { id: "B", color: "#ADA8A8" }, { id: "C", color: "#ADA8A8" }, { id: "D", color: "#ADA8A8" }],
@@ -29,7 +30,7 @@ function App() {
   const [profileIsOpen, setProfileIsOpen] = useState(true);
   const forceRef = useRef(null);
   useEffect(() => {
-    forceRef.current.d3Force("charge").strength(-400);
+    //forceRef.current.d3Force("charge").strength(-400);
   });
 
   const handleNodeClick = (node) => {
@@ -39,11 +40,7 @@ function App() {
   };
 
   const handleCloseProfile = () => setProfileIsOpen(false);
-
-  return (
-    <ThemeProvider theme={theme}>
-      <>
-        <ForceGraph2D
+  /*<ForceGraph2D
           width={pageWidth}
           height={pageHeight}
           graphData={data}
@@ -51,10 +48,14 @@ function App() {
           backgroundColor="#E7E7E7"
           linkCurvature="curvature"
           enablePointerInteraction={true}
-          linkDirectionalParticleWidth={1}
           onNodeClick={handleNodeClick}
           ref={forceRef}
-        />
+        /> */
+
+  return (
+    <ThemeProvider theme={theme}>
+      <>
+        <Search />
         {profileIsOpen &&
           <Profile handleCloseProfile={handleCloseProfile} />
         }
