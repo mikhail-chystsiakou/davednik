@@ -21,7 +21,11 @@ export default function FirstScreen() {
       >
         <PersonIcon className={styles.button_icon} />
       </IconButton>
-      <IconButton sx={{ backgroundColor: "white" }} className={styles.big_rounded_button} >
+      <IconButton
+        sx={{ backgroundColor: "white" }}
+        className={styles.big_rounded_button}
+        onClick={() => dispatch(setWindowId(2))}
+      >
         <SearchIcon className={styles.button_icon} />
       </IconButton>
     </Box>
