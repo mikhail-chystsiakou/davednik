@@ -1,9 +1,10 @@
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React, { useEffect, useRef, useState } from "react";
+import React, { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useEffect, useRef, useState } from "react";
+import ForceGraph2D  from 'react-force-graph-2d';
 import './App.css';
 import Profile from './components/Profile';
 import Search from './components/Search/Search.js';
-import ForceGraph2D from "react-force-graph-2d"
+import DavednikGraph from './components/DavednikGraph';
 
 
 var data = {
@@ -78,7 +79,8 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <>
-      <ForceGraph2D
+      <DavednikGraph graphData={data}/>
+      {/* <ForceGraph2D
           width={windowDimensions.width}
           height={windowDimensions.height}
           graphData={data}
@@ -97,7 +99,7 @@ export default function App() {
             ctx.fillStyle = "black"; //node.color;
             ctx.fillText(label, node.x, node.y + 8);
           }}
-        /> 
+        />  */}
         <Search />
         {profileIsOpen &&
           <Profile handleCloseProfile={handleCloseProfile} />
