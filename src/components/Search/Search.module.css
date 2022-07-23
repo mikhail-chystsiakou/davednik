@@ -1,3 +1,17 @@
 .Container {
-  border-radius: 5;
+  width: 100%;
+  align-self: center;
+}
+
+.Input {
+  display: flex;
+  justify-content: space-around;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
 }

@@ -40,6 +40,11 @@ const theme = createTheme({
       'Montserrat',
     ].join(','),
   },
+  palette: {
+    secondary: {
+      main: "#000000",
+    }
+  }
 });
 
 export default function App() {
@@ -51,8 +56,8 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-        <DavednikGraph graphData={data}/>
-        <Main />
+      <DavednikGraph graphData={data} />
+      <Main />
     </ThemeProvider>
   );
 }
