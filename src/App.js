@@ -1,13 +1,13 @@
 import React, { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import './App.css';
-import Profile from './components/Profile';
-import Search from './components/Search/Search.js';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
 import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
-
+import Profile from './components/Profile';
+import Search from './components/Search/Search';
+import { setProfileOpen } from './features/graph/graphSlice'
 
 var data = {
   nodes: [
@@ -34,10 +34,6 @@ function genRandomTree(N = 300, reverse = false) {
   };
 }
 
-//inner page size
-const pageWidth = document.documentElement.clientWidth
-const pageHeight = document.documentElement.clientHeight
-
 const theme = createTheme({
   typography: {
     fontFamily: [
@@ -46,48 +42,23 @@ const theme = createTheme({
   },
 });
 
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height
-  };
-}
-
 export default function App() {
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
-  const [profileIsOpen, setProfileIsOpen] = useState(false);
-  const graph = useSelector(state => state.graph.graph);
-  // console.log(graph);
+  const dispatch = useDispatch();
+  const profileIsOpen = useSelector(state => state.profileIsOpen);
+  console.log("profileIsOpen: " + profileIsOpen)
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const handleNodeClick = (node) => {
-    console.log("Hello from console");
-    console.log(node);
-    // setProfileIsOpen(true);
-  };
-
-  const handleCloseProfile = () => setProfileIsOpen(false);
-
+  const handleCloseProfile = () => dispatch(setProfileOpen(false));
 
   return (
     <ThemeProvider theme={theme}>
       <>
-      <DavednikGraph graphData={data} profileIsOpen={profileIsOpen}/>
+      <DavednikGraph graphData={data} />
+        <DavednikGraph graphData={data} profileIsOpen={profileIsOpen}/>
         <Search />
-        <Main />
+        {/* <Main /> */}
         {profileIsOpen &&
-          <Profile handleCloseProfile={handleCloseProfile} />
+          <Profile handleCloseProfile={handleCloseProfile}
+          />
         }
       </>
     </ThemeProvider>

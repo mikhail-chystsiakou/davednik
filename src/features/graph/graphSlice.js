@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initState = {
   currentNode: { id: 0 },
   user: {},
+  profileOpen: false,
   graph: {
     nodes: [
       { id: "Volha Lytkina", color: "#3050C1", name: "Volha" },
@@ -24,16 +25,21 @@ export const graphSlice = createSlice({
     setCurrentNode: (state, action) => {
       state.currentNode = action.payload;
     },
-    setCurrentUser: (state, user) => {
-      state.user = user;
+    setCurrentUser: (state, action) => {
+      state.user = action.payload;
     },
-    setGraph: (state, graph) => {
-      state.graph = graph;
+    setGraph: (state, action) => {
+      state.graph = action.payload;
+    },
+    setProfileOpen: (state, action) => {
+      console.log("set profile open = " + action.payload);
+      console.log(action.payload);
+      state.profileOpen = action.payload;
     }
   }
 })
 
-export const { setCurrentNode } = graphSlice.actions;
+export const { setCurrentNode, setProfileOpen } = graphSlice.actions;
 
 export default graphSlice.reducer
 
