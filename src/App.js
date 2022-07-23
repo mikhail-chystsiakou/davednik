@@ -2,15 +2,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useEffect, useRef, useState } from "react";
 import './App.css';
 import Profile from './components/Profile';
-import Search from './components/Search/Search.js';
+import Main from './components/Main/Main';
 import ForceGraph2D from "react-force-graph-2d"
 
 
 var data = {
   nodes: [
-    { id: "Volha Lytkina", color: "#3050C1", name: "Volha" }, 
-    { id: "B", color: "#ADA8A8" }, 
-    { id: "C", color: "#ADA8A8" }, 
+    { id: "Volha Lytkina", color: "#3050C1", name: "Volha" },
+    { id: "B", color: "#ADA8A8" },
+    { id: "C", color: "#ADA8A8" },
     { id: "D", color: "#ADA8A8" }],
   links: [
     { source: "Volha Lytkina", target: "B", value: 8 },
@@ -22,12 +22,12 @@ var data = {
 function genRandomTree(N = 300, reverse = false) {
   return {
     nodes: [...Array(N).keys()].map(i => ({ id: i })),
-      links: [...Array(N).keys()]
-    .filter(id => id)
-    .map(id => ({
-      [reverse ? 'target' : 'source']: id,
-      [reverse ? 'source' : 'target']: Math.round(Math.random() * (id-1))
-    }))
+    links: [...Array(N).keys()]
+      .filter(id => id)
+      .map(id => ({
+        [reverse ? 'target' : 'source']: id,
+        [reverse ? 'source' : 'target']: Math.round(Math.random() * (id - 1))
+      }))
   };
 }
 
@@ -73,12 +73,12 @@ export default function App() {
   };
 
   const handleCloseProfile = () => setProfileIsOpen(false);
-  
+
 
   return (
     <ThemeProvider theme={theme}>
       <>
-      <ForceGraph2D
+        <ForceGraph2D
           width={windowDimensions.width}
           height={windowDimensions.height}
           graphData={data}
@@ -90,15 +90,15 @@ export default function App() {
           nodeCanvasObjectMode={() => "after"}
           nodeCanvasObject={(node, ctx, globalScale) => {
             const label = node.name;
-            const fontSize = 4 ;// globalScale;
+            const fontSize = 4;// globalScale;
             ctx.font = `${fontSize}px Sans-Serif`;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillStyle = "black"; //node.color;
             ctx.fillText(label, node.x, node.y + 8);
           }}
-        /> 
-        <Search />
+        />
+        <Main />
         {profileIsOpen &&
           <Profile handleCloseProfile={handleCloseProfile} />
         }
