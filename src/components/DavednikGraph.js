@@ -1,5 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react'
 import ForceGraph2D from "react-force-graph-2d"
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentNode } from "../features/graph/graphSlice"
 
 function getWindowDimensions() {
     const { innerWidth: width, innerHeight: height } = window;
@@ -9,27 +11,47 @@ function getWindowDimensions() {
     };
 }
 
-function DavednikGraph({graphData, centerNode}) {
-    const fgRef = useRef();
-    
-    const handleNodeClick = (node) => {
-      console.log("Hello from console");
-      console.log(node);
-      fgRef.current.centerAt(node.x, node.y);
-      // setProfileIsOpen(true);
-    };
-    
-    const [windowDimensions, setWindowDimensions] = useState(
-      getWindowDimensions()
-    );
+function DavednikGraph({graphData, profileIsOpen}) {
+  const fgRef = useRef();
+  const dispatch = useDispatch();
+  const currentNode = useSelector(state => state.graph.currentNode);
+  console.log(currentNode);
+  
+  const handleNodeClick = (node) => {
+    dispatch(setCurrentNode(node.id));
+  };
+  
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+
+  useEffect(() => {
+    console.log("use effect, current node: " + currentNode);
+      function handleResize() {
+        setWindowDimensions(getWindowDimensions());
+      }
+  
+      window.addEventListener("resize", handleResize);
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     useEffect(() => {
-        function handleResize() {
-          setWindowDimensions(getWindowDimensions());
+      if (currentNode != null) {
+        let currentNodeObj = graphData.nodes.filter(n => n.id === currentNode);
+        if (currentNodeObj.length === 1) {
+          let {_, height} = getWindowDimensions();
+          let newX = currentNodeObj[0].x;
+          let newY = currentNodeObj[0].y;
+          if (profileIsOpen) {
+            newY += height/8;
+          }
+          fgRef.current.centerAt(newX, newY);
         }
-    
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-      }, []);
+      }
+    }, [graphData.nodes, currentNode]);
+
+  
 
   return (
     <ForceGraph2D

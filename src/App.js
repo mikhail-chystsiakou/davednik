@@ -6,6 +6,7 @@ import Search from './components/Search/Search.js';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
 import ForceGraph2D from "react-force-graph-2d"
+import { useSelector, useDispatch } from 'react-redux';
 
 
 var data = {
@@ -58,6 +59,8 @@ export default function App() {
     getWindowDimensions()
   );
   const [profileIsOpen, setProfileIsOpen] = useState(false);
+  const graph = useSelector(state => state.graph.graph);
+  // console.log(graph);
 
   useEffect(() => {
     function handleResize() {
@@ -80,7 +83,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <>
-      <DavednikGraph graphData={data}/>
+      <DavednikGraph graphData={data} profileIsOpen={profileIsOpen}/>
         <Search />
         <Main />
         {profileIsOpen &&
