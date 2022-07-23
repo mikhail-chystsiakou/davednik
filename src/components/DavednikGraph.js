@@ -46,7 +46,7 @@ function DavednikGraph({graphData, profileIsOpen}) {
           let newX = currentNodeObj[0].x;
           let newY = currentNodeObj[0].y;
           if (profileIsOpen) {
-            newY += height/8;
+            newY += height/4;
           }
           fgRef.current.centerAt(newX, newY);
         }
