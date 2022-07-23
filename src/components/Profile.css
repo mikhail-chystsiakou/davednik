@@ -1,0 +1,14 @@
+.profileBoxStyle {
+    top: '20%';
+    right: '20%';
+    max-width: 489;
+    max-height: 632;
+    background-color: "#FFFFFF";
+    border-radius: 10;
+}
+
+.tags {
+    display: flex;
+    flex-direction: row;
+    gap: 33px;
+}
