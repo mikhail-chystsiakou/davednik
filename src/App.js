@@ -55,7 +55,7 @@ export default function App() {
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
-  const [profileIsOpen, setProfileIsOpen] = useState(true);
+  const [profileIsOpen, setProfileIsOpen] = useState(false);
 
   useEffect(() => {
     function handleResize() {
@@ -87,12 +87,6 @@ export default function App() {
           linkCurvature="curvature"
           enablePointerInteraction={true}
           onNodeClick={handleNodeClick}
-<<<<<<< HEAD
-          ref={forceRef}
-          // d3AlphaMin={0.0228}
-          // d3AlphaDecay={0.0228}
-          // d3VelocityDecay={0.4}
-          // d3AlphaDecay={0.05}
           nodeCanvasObjectMode={() => "after"}
           nodeCanvasObject={(node, ctx, globalScale) => {
             const label = node.name;
@@ -103,8 +97,6 @@ export default function App() {
             ctx.fillStyle = "black"; //node.color;
             ctx.fillText(label, node.x, node.y + 8);
           }}
-=======
->>>>>>> add10c45b60c5c87edefaaa3738d3dc79676122e
         /> 
         <Search />
         {profileIsOpen &&
