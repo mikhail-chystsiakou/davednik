@@ -1,10 +1,12 @@
 import * as React from 'react';
 import styles from './Main.module.css';
 import {
-  Button, Box, Paper
+  Button, Box, IconButton
 } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentNode } from '../../features/graph/graphSlice';
+import SearchIcon from '@mui/icons-material/Search';
+import PersonIcon from '@mui/icons-material/Person';
 
 export default function Main() {
   const currentNode = useSelector(state => state.graph.currentNode);
@@ -14,15 +16,14 @@ export default function Main() {
   console.log(currentNode)
   return (
     <div className={styles.Main}>
-      <div className={styles.buttons}>
-        <Paper elevation={3} className={styles.big_rounded_button} onClick={() => {
-          dispatch(setCurrentNode({ id: Math.random() }))
-        }}> Text </Paper>
-        <Paper elevation={3} className={styles.big_rounded_button}> Text </Paper>
-        <Button variant='contained' onClick={() => {
-          dispatch(setCurrentNode({ id: Math.random(), x: Math.random() * 100, y: Math.random() * 10 }))
-        }}> {(currentNode.id === 0) ? 0 : (+(currentNode.id * 100))} </Button>
-      </div>
+      <Box className={styles.buttons}>
+        <IconButton sx={{ backgroundColor: 'white' }} className={styles.big_rounded_button} >
+          <PersonIcon className={styles.button_icon} />
+        </IconButton>
+        <IconButton sx={{ backgroundColor: "white" }} className={styles.big_rounded_button} >
+          <SearchIcon className={styles.button_icon} />
+        </IconButton>
+      </Box>
     </div>
   )
 }
