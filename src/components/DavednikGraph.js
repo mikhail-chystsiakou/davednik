@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import ForceGraph2D from "react-force-graph-2d"
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentNode, setProfileOpen } from "../features/graph/graphSlice"
+import { setWindowId } from '../features/window/windowSlice';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -10,28 +12,49 @@ function getWindowDimensions() {
   };
 }
 
-function DavednikGraph({ graphData, centerNode, handleNodeClick }) {
-
-  const currentNode = useSelector(state => state.graph.currentNode);
+function DavednikGraph({graphData}) {
   const fgRef = useRef();
-
+  const dispatch = useDispatch();
+  const currentNode = useSelector(state => state.graph.currentNode);
+  const profileIsOpen  = useSelector(state => state.window.windowId) === 1;
+  
+  const handleNodeClick = (node) => {
+    // dispatch(setProfileOpen(true));
+    dispatch(setWindowId(1));
+    dispatch(setCurrentNode(node.id));
+  };
+  
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
 
   useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
+    console.log("use effect, current node: " + currentNode);
+      function handleResize() {
+        setWindowDimensions(getWindowDimensions());
+      }
+  
+      window.addEventListener("resize", handleResize);
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  console.log(handleNodeClick)
+    useEffect(() => {
+      console.log("Profile is open: " + profileIsOpen)
+      if (currentNode != null) {
+        let currentNodeObj = graphData.nodes.filter(n => n.id === currentNode);
+        if (currentNodeObj.length === 1) {
+          let {_, height} = getWindowDimensions();
+          let newX = currentNodeObj[0].x;
+          let newY = currentNodeObj[0].y;
+          if (profileIsOpen) {
+            newY += height/7;
+          }
+          fgRef.current.centerAt(newX, newY);
+        }
+      }
+    }, [graphData.nodes, currentNode]);
 
-  if (currentNode.x !== undefined) {
-    fgRef.current.centerAt(currentNode.x, currentNode.y)
-  }
   return (
     <ForceGraph2D
       ref={fgRef}

@@ -4,6 +4,10 @@ import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
 
+import ForceGraph2D from "react-force-graph-2d"
+import { useSelector, useDispatch } from 'react-redux';
+import Search from './components/Search/Search';
+import { setProfileOpen } from './features/graph/graphSlice'
 
 var data = {
   nodes: [
@@ -39,18 +43,16 @@ const theme = createTheme({
 });
 
 export default function App() {
+  const dispatch = useDispatch();
+  const profileIsOpen = useSelector(state => state.profileIsOpen);
+  console.log("profileIsOpen: " + profileIsOpen)
 
-  const handleNodeClick = (node) => {
-    console.log("Hello from console");
-    console.log(node);
-  };
+  const handleCloseProfile = () => dispatch(setProfileOpen(false));
 
   return (
     <ThemeProvider theme={theme}>
-      <>
-        <DavednikGraph graphData={data} handleNodeClick={handleNodeClick} />
+        <DavednikGraph graphData={data}/>
         <Main />
-      </>
     </ThemeProvider>
   );
 }
