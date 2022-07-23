@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
-import Profile from './components/Profile';
 
 
 var data = {
@@ -40,26 +39,17 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const [profileIsOpen, setProfileIsOpen] = useState(false);
 
   const handleNodeClick = (node) => {
     console.log("Hello from console");
     console.log(node);
-    setProfileIsOpen(true);
   };
-
-  const handleCloseProfile = () => setProfileIsOpen(false);
-
 
   return (
     <ThemeProvider theme={theme}>
       <>
-        <DavednikGraph graphData={data} handleNodeClick={handleNodeClick}/>
+        <DavednikGraph graphData={data} handleNodeClick={handleNodeClick} />
         <Main />
-        {profileIsOpen &&
-          <Profile handleCloseProfile={handleCloseProfile}
-          />
-        }
       </>
     </ThemeProvider>
   );
