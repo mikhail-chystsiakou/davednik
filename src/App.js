@@ -26,7 +26,7 @@ const theme = createTheme({
 });
 
 function App() {
-  const [profileIsOpen, setProfileIsOpen] = useState(false);
+  const [profileIsOpen, setProfileIsOpen] = useState(true);
   const forceRef = useRef(null);
   useEffect(() => {
     forceRef.current.d3Force("charge").strength(-400);
