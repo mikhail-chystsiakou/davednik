@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import './App.css';
 import Profile from './components/Profile';
 import Search from './components/Search/Search.js';
+import ForceGraph2D from "react-force-graph-2d"
 
 
 var data = {
@@ -40,7 +41,12 @@ function App() {
   };
 
   const handleCloseProfile = () => setProfileIsOpen(false);
-  /*<ForceGraph2D
+  
+
+  return (
+    <ThemeProvider theme={theme}>
+      <>
+      <ForceGraph2D
           width={pageWidth}
           height={pageHeight}
           graphData={data}
@@ -50,11 +56,7 @@ function App() {
           enablePointerInteraction={true}
           onNodeClick={handleNodeClick}
           ref={forceRef}
-        /> */
-
-  return (
-    <ThemeProvider theme={theme}>
-      <>
+        /> 
         <Search />
         {profileIsOpen &&
           <Profile handleCloseProfile={handleCloseProfile} />
