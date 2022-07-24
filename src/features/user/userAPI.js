@@ -7,4 +7,13 @@ export function getUser(userId) {
   }).then(res => res.json()).then((responseData) => responseData.user);
 }
 
+export function editUser(user) {
+  const id = user.id;
+  console.log(id.replace('users/', ''))
+  return fetch(`${API_ADDRESS}users/${id.replace('users/', '')}`, {
+    method: "PUT",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(user) // body data type must match "Content-Type"
+  }).then(res => res.json());
+}
 

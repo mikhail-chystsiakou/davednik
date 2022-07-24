@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Chip, IconButton, Input, Typography } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { setWindowId } from '../../features/window/windowSlice';
 import avatar from '../../img/avatar.png';
@@ -11,6 +11,7 @@ import edit from '../../img/edit.png';
 import telegram from '../../img/telegram.png';
 import './Profile.css';
 import { connectUsers } from '../../features/graph/graphAPI';
+import { editUser } from '../../features/user/userAPI';
 
 
 function Profile({
@@ -21,6 +22,9 @@ function Profile({
   const currentNode = useSelector(state => state.graph.currentNode);
   const user = useSelector(state => state.graph.user);
   const me = useSelector(state => state.user.user);
+  const [userEditedName, setUserEditedName] = useState(user.name);
+  const [userEditedAbout, setUserEditedAbout] = useState(user.about);
+
 
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
@@ -48,7 +52,9 @@ function Profile({
   const isMyProfile = user._id === me._id;
 
   const saveEdit = () => {
-    //toda
+    var editedUser = {...user, name: userEditedName, about: userEditedAbout};
+    editUser(editedUser);
+    console.log(editedUser);
   }
 
   const moveProfile = () => {
@@ -65,6 +71,16 @@ function Profile({
     connectUsers({from: from, to: to});
   }
 
+  const handleNameChange = (event) => {
+    setUserEditedName(event.target.value);
+    console.log(event.target.value);
+  }
+
+  const handleAboutChange = (event) => {
+    setUserEditedAbout(event.target.value);
+    console.log(event.target.value);
+  }
+
   return (
     <Box sx={profileBoxStyle}>
       <Button sx={{ margin: '0 auto', display: "flex", pt: 0 }} onClick={moveProfile}>
@@ -76,8 +92,8 @@ function Profile({
             <Avatar src={avatar} sx={{ width: 63, height: 63 }} />
             <Box sx={{ display: 'flex', gap: 0.3, flexDirection: 'column', justifyContent: 'flex-start' }}>
               {
-                isMyProfile ? <Input sx={{ fontSize: 15, fontWeight: 600 }} defaultValue={name} /> :
-                  <Typography sx={{ fontSize: 15, fontWeight: 600 }}>{name}</Typography>
+                isMyProfile ? <Input sx={{ fontSize: 15, fontWeight: 600 }} defaultValue={user.name} onChange={handleNameChange}/> :
+                  <Typography variant='h6'>{user.name}</Typography>
               }
               <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
                 <img src={telegram} width={15} height={15} />
@@ -122,7 +138,7 @@ function Profile({
         <Box className='about'>
           <Typography variant='h6'>О себе</Typography>
           {
-            isMyProfile ? <Input sx={{ fontSize: 12, fontWeight: 400, minWidth: "100%" }} multiline defaultValue={about} /> :
+            isMyProfile ? <Input sx={{ fontSize: 12, fontWeight: 400, minWidth: "100%" }} multiline defaultValue={user.about} onChange={handleAboutChange}/> :
               <Typography variant="body2">{user.about}</Typography>
           }
         </Box>
