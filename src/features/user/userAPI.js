@@ -9,7 +9,6 @@ export function getUser(userId) {
 
 export function editUser(user) {
   const id = user.id;
-  console.log(id.replace('users/', ''))
   return fetch(`${API_ADDRESS}users/${id.replace('users/', '')}`, {
     method: "PUT",
     headers: { 'Content-Type': 'application/json' },
