@@ -1,22 +1,26 @@
-import {
-  autocompleteClasses, Avatar,
-  Box, Button, Typography, IconButton, Chip
-} from '@mui/material';
+import { Avatar, Box, Button, Chip, IconButton, Input, Typography } from '@mui/material';
+
 import { styled } from '@mui/material/styles';
 import React from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { setWindowId } from '../../features/window/windowSlice';
 import avatar from '../../img/avatar.png';
 import close from '../../img/close.png';
+import save from '../../img/done.png';
 import edit from '../../img/edit.png';
 import telegram from '../../img/telegram.png';
 import './Profile.css';
-import { useDispatch, useSelector } from 'react-redux';
 
-function Profile() {
 
+function Profile({
+  connectNodes, name = "Михаил Чистяков", tags = ["#programmer", "#run", "#artist", "#extravert"],
+  tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
+}) {
+  const dispatch = useDispatch();
+  const currentNode = useSelector(state => state.graph.currentNode);
   const user = useSelector(state => state.graph.user);
   const me = useSelector(state => state.user.user);
-  const dispatch = useDispatch();
+
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
     borderRadius: 5,
@@ -25,7 +29,7 @@ function Profile() {
     paddingLeft: 3,
     gap: 5,
     width: '100%',
-    height: window.innerHeight * 0.4
+    height: window.innerHeight / 2
   };
 
   const ConnectButton = styled(Button)({
@@ -42,25 +46,43 @@ function Profile() {
 
   const isMyProfile = user._id === me._id;
 
+  const saveEdit = () => {
+    //toda
+  }
+
+  const moveProfile = () => {
+    //todo
+  }
+
   return (
     <Box sx={profileBoxStyle}>
-      <Box sx={{
-        overflow: 'auto', paddingRight: 3,
-        display: 'flex', flexDirection: "column",
-        maxHeight: window.innerHeight / 2, gap: 3,
-      }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }} >
-          <Box sx={{ display: 'flex', gap: 3, justifyContent: 'space-between' }}>
-            <Avatar src={avatar} sx={{ width: 100, height: 100 }} />
-            <Box sx={{ display: 'flex', gap: 0.3, flexDirection: 'column', justifyContent: 'space-around' }}>
-              <Typography variant='h6'>{user.name}</Typography>
-              <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center', marginTop: 1 }}>
+      <Button sx={{ margin: '0 auto', display: "flex", pt: 0 }} onClick={moveProfile}>
+        <div className="line"></div>
+      </Button>
+      <Box sx={{ overflow: 'auto', paddingRight: 3, display: 'flex', flexDirection: "column", maxHeight: window.innerHeight / 2, gap: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }} >
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Avatar src={avatar} sx={{ width: 63, height: 63 }} />
+            <Box sx={{ display: 'flex', gap: 0.3, flexDirection: 'column', justifyContent: 'flex-start' }}>
+              {
+                isMyProfile ? <Input sx={{ fontSize: 15, fontWeight: 600 }} defaultValue={name} /> :
+                  <Typography sx={{ fontSize: 15, fontWeight: 600 }}>{name}</Typography>
+              }
+              <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
                 <img src={telegram} width={15} height={15} />
                 <Typography variant='body2'>{user.tgId}</Typography>
               </Box>
-              {(!isMyProfile) && <ConnectButton sx={{ marginTop: 2 }} variant="contained" >Connect</ConnectButton>}
+              { !isMyProfile && 
+                <ConnectButton variant="contained" onClick={() => connectNodes({ from: 'Volha Lytkina', to: currentNode })}>Connect</ConnectButton>
+              }
             </Box>
           </Box>
+          {
+            isMyProfile &&
+            <Button sx={{ p: 0, display: "flex", minWidth: 20 }} onClick={saveEdit} variant="text">
+              <img src={save} width={20} height={20} />
+            </Button>
+          }
           <Button onClick={() => dispatch(setWindowId(0))} sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text">
             <img src={close} width={20} height={20} />
           </Button>
@@ -86,20 +108,22 @@ function Profile() {
             </IconButton>
           }
         </Box>
-        <div style={{
-          overflowY: "scroll", marginTop: '1%', maxHeight: window.innerHeight
-        }}>
-          < Box >
-            <Typography variant='h6'>О себе</Typography>
-            <Typography variant="body2">{user.about}</Typography>
-          </Box>
+        <Box className='about'>
+          <Typography variant='h6'>О себе</Typography>
+          {
+            isMyProfile ? <Input sx={{ fontSize: 12, fontWeight: 400, minWidth: "100%" }} multiline defaultValue={about} /> :
+              <Typography variant="body2">{user.about}</Typography>
+          }
+        </Box>
+        {
+          !isMyProfile &&
           <Box className='notes'>
-            <Typography variant="h6">Мои заметки</Typography>
+            <Typography variant='h6'>Мои заметки</Typography>
             <Typography variant="body2">{user.about}</Typography>
           </Box>
-        </div>
-      </Box >
-    </Box >
+        }
+      </Box>
+    </Box>
   );
 }
 
