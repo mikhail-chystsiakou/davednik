@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentNode, setCurrentUser } from "../features/graph/graphSlice"
 import { setWindowId } from '../features/window/windowSlice';
 import * as graphAPI from '../features/graph/graphAPI';
+import * as userAPI from '../features/user/userAPI';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -24,8 +25,7 @@ function DavednikGraph() {
   const handleNodeClick = (node) => {
     // dispatch(setProfileOpen(true));
     dispatch(setWindowId(1));
-    console.log(node)
-    dispatch(setCurrentUser({ _id: node.id }))
+    dispatch(setCurrentUser({ ...node, _id: node.id }))
     dispatch(setCurrentNode(node.id));
   };
 
@@ -44,7 +44,7 @@ function DavednikGraph() {
       const graph = { nodes: [], links: [] }
       for (const u of users) {
         graph.nodes.push({
-          id: u._id, name: u.name,
+          id: u._id, name: u.name, about: u.about, tags: u.tags, tgId: u.id,
           color: (u._id === me._id) ? "#3050c1" :
             (u._id === user._id) ? "#c13050" : "#AdA8A8"
         })
@@ -72,7 +72,6 @@ function DavednikGraph() {
     }
   }
 
-  console.log(graphData)
   return (
     <ForceGraph2D
       ref={fgRef}
