@@ -5,7 +5,7 @@ import FirstScreen from './FirstScreen';
 import Profile from '../Profile/Profile';
 import Search from '../Search/Search';
 
-export default function Main() {
+export default function Main({connectNodes}) {
   const screenId = useSelector(state => state.window.windowId);
 
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ export default function Main() {
       mainWidget = <FirstScreen />;
       break;
     case 1:
-      mainWidget = <Profile />;
+      mainWidget = <Profile connectNodes={connectNodes}/>;
       break;
     case 2:
       mainWidget = <Search />
