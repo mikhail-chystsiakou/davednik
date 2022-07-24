@@ -1,11 +1,7 @@
-<<<<<<< HEAD
 import {
   autocompleteClasses, Avatar,
   Box, Button, Typography, IconButton, Chip
 } from '@mui/material';
-=======
-import { Avatar, Box, Button, Typography } from '@mui/material';
->>>>>>> c56db5c8c8be48c8c446cbc463e33eb71496d6b7
 import { styled } from '@mui/material/styles';
 import React from "react";
 import { setWindowId } from '../../features/window/windowSlice';
@@ -21,12 +17,6 @@ function Profile({
   tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
 }) {
   const dispatch = useDispatch();
-<<<<<<< HEAD
-=======
-
-  const currentNode = useSelector(state => state.graph.currentNode);
-
->>>>>>> c56db5c8c8be48c8c446cbc463e33eb71496d6b7
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
     borderRadius: 5,
@@ -55,14 +45,7 @@ function Profile({
 
   return (
     <Box sx={profileBoxStyle}>
-<<<<<<< HEAD
       <Box sx={{ overflow: 'auto', paddingRight: 3, display: 'flex', flexDirection: "column", maxHeight: window.innerHeight / 2, gap: 3 }}>
-=======
-      <Button sx={{margin: '0 auto', display: "flex", pt:0}} onClick={moveProfile}>
-        <div className="line"></div>
-      </Button>
-      <Box sx={{overflow: 'auto', paddingRight: 3, display: 'flex', flexDirection: "column", maxHeight: window.innerHeight / 2, gap: 3}}>
->>>>>>> c56db5c8c8be48c8c446cbc463e33eb71496d6b7
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }} >
           <Box sx={{ display: 'flex', gap: 3, justifyContent: 'space-between' }}>
             <Avatar src={avatar} sx={{ width: 100, height: 100 }} />
@@ -72,14 +55,10 @@ function Profile({
                 <img src={telegram} width={15} height={15} />
                 <Typography variant='body2'>{tgId}</Typography>
               </Box>
-<<<<<<< HEAD
               <ConnectButton sx={{ marginTop: 2 }} variant="contained" >Connect</ConnectButton>
-=======
-              <ConnectButton variant="contained" onClick={() => connectNodes({from:'Volha Lytkina', to: currentNode})}>Connect</ConnectButton>
->>>>>>> c56db5c8c8be48c8c446cbc463e33eb71496d6b7
             </Box>
           </Box>
-          <Button onClick={() => dispatch(setWindowId(0))} sx={{ p:0, display:"flex", minWidth: 20 }} variant="text">
+          <Button onClick={() => dispatch(setWindowId(0))} sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text">
             <img src={close} width={20} height={20} />
           </Button>
         </Box>

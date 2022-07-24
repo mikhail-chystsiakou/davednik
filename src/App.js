@@ -44,30 +44,12 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const[graphData, setGraphData] = useState(data);
+  const [graphData, setGraphData] = useState(data);
 
-<<<<<<< HEAD
   return (
     <ThemeProvider theme={theme}>
-      <DavednikGraph graphData={data} />
+      <DavednikGraph />
       <Main />
-=======
-  const connectNodes = useCallback(({from, to}) => {
-      setGraphData(({ nodes, links }) => {
-      return {
-        nodes: [...nodes],
-        links: [...links, { source: from, target: to }]
-      };
-    });
-  }, [graphData, setGraphData]);
-
-  return (
-    <ThemeProvider theme={theme}>
-      <>
-        <DavednikGraph graphData={graphData}/>
-        <Main connectNodes={connectNodes}/>
-      </>
->>>>>>> c56db5c8c8be48c8c446cbc463e33eb71496d6b7
     </ThemeProvider>
   );
 }
