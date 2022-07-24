@@ -5,6 +5,7 @@ import { setCurrentNode, setCurrentUser } from "../features/graph/graphSlice"
 import { setWindowId } from '../features/window/windowSlice';
 import * as graphAPI from '../features/graph/graphAPI';
 import * as userAPI from '../features/user/userAPI';
+import { HeadphonesBatteryOutlined } from '@mui/icons-material';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -14,13 +15,14 @@ function getWindowDimensions() {
   };
 }
 
-function DavednikGraph() {
+
+function DavednikGraph({ graphDataProp }) {
   const fgRef = useRef();
   const dispatch = useDispatch();
   const { currentNode, user } = useSelector(state => state.graph);
   const profileIsOpen = useSelector(state => state.window.windowId) === 1;
   const me = useSelector(state => state.user.user);
-  const [graphData, setGraphData] = useState({ nodes: [], links: [] });
+  const [graphData, setGraphData] = useState(graphDataProp);
 
   const handleNodeClick = (node) => {
     // dispatch(setProfileOpen(true));
@@ -52,14 +54,16 @@ function DavednikGraph() {
       for (const e of edges) {
         graph.links.push({ source: e._from, target: e._to, value: 10 }) // TODO: value
       }
-      setGraphData(graph)
+      if (graph != null) {
+        setGraphData(graph)
+      }
     }
     loadGrpah().catch(console.error)
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (currentNode != null) {
+  if (graphData != null && currentNode != null) {
     let currentNodeObj = graphData.nodes.filter(n => n.id === currentNode);
     if (currentNodeObj.length === 1) {
       let { _, height } = getWindowDimensions();
@@ -68,7 +72,11 @@ function DavednikGraph() {
       if (profileIsOpen) {
         newY += height / 7;
       }
-      fgRef.current.centerAt(newX, newY, 300);
+      currentNodeObj[0].x = 50;
+      currentNodeObj[0].y = 50;
+      fgRef.current.resumeAnimation();
+      fgRef.current.centerAt(currentNodeObj[0].x, currentNodeObj[0].y, 300);
+      // fgRef.current.centerAt(newX, newY, 300);
     }
   }
 
