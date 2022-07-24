@@ -3,7 +3,12 @@ import { useEffect, useState, useCallback } from "react";
 import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
+import TelegramLoginButton from 'react-telegram-login';
 
+// import ForceGraph2D from "react-force-graph-2d"
+import { useSelector, useDispatch } from 'react-redux';
+import Search from './components/Search/Search';
+import { setProfileOpen } from './features/graph/graphSlice'
 
 var data = {
   nodes: [
@@ -12,9 +17,9 @@ var data = {
     { id: "C", color: "#ADA8A8" },
     { id: "D", color: "#ADA8A8" }],
   links: [
-    // { source: "Volha Lytkina", target: "B", value: 8 },
-    // { source: "Volha Lytkina", target: "C", value: 10 },
-    // { source: "Volha Lytkina", target: "D", value: 6 }
+    { source: "Volha Lytkina", target: "B", value: 8 },
+    { source: "Volha Lytkina", target: "C", value: 10 },
+    { source: "Volha Lytkina", target: "D", value: 6 }
   ]
 };
 
@@ -36,26 +41,25 @@ const theme = createTheme({
       'Montserrat',
     ].join(','),
   },
+  palette: {
+    secondary: {
+      main: "#000000",
+    }
+  }
 });
 
 export default function App() {
-  const[graphData, setGraphData] = useState(data);
+  const [graphData, setGraphData] = useState(data);
 
-  const connectNodes = useCallback(({from, to}) => {
-      setGraphData(({ nodes, links }) => {
-      return {
-        nodes: [...nodes],
-        links: [...links, { source: from, target: to }]
-      };
-    });
-  }, [graphData, setGraphData]);
+  const handleTelegramResponse = response => {
+    console.log(response);
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <>
-        <DavednikGraph graphData={graphData}/>
-        <Main connectNodes={connectNodes}/>
-      </>
+      <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
+        <DavednikGraph graphData={graphData} setGraphData={setGraphData}/>
+        <Main />
     </ThemeProvider>
   );
 }

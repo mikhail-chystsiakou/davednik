@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
 import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentNode, setProfileOpen } from "../features/graph/graphSlice"
+import { setCurrentNode, setCurrentUser } from "../features/graph/graphSlice"
 import { setWindowId } from '../features/window/windowSlice';
+import * as graphAPI from '../features/graph/graphAPI';
+import * as userAPI from '../features/user/userAPI';
+import { HeadphonesBatteryOutlined } from '@mui/icons-material';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -12,36 +15,55 @@ function getWindowDimensions() {
   };
 }
 
-function DavednikGraph({graphData}) {
+
+function DavednikGraph({graphData, setGraphData}) {
   const fgRef = useRef();
   const dispatch = useDispatch();
-  const currentNode = useSelector(state => state.graph.currentNode);
-  const profileIsOpen  = useSelector(state => state.window.windowId) === 1;
-  
+  const { currentNode, user } = useSelector(state => state.graph);
+  const profileIsOpen = useSelector(state => state.window.windowId) === 1;
+  const me = useSelector(state => state.user.user);
+
   const handleNodeClick = (node) => {
     // dispatch(setProfileOpen(true));
     dispatch(setWindowId(1));
+    dispatch(setCurrentUser({ ...node, _id: node.id }))
     dispatch(setCurrentNode(node.id));
   };
-  
+
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
 
   useEffect(() => {
-    console.log("use effect, current node: " + currentNode);
-      function handleResize() {
-        setWindowDimensions(getWindowDimensions());
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+    console.warn(me)
+    const loadGrpah = async () => {
+      const users = await graphAPI.loadAllUsers();
+      const edges = await graphAPI.loadAllEdges();
+      const graph = { nodes: [], links: [] }
+      for (const u of users) {
+        graph.nodes.push({
+          id: u._id, name: u.name, about: u.about, tags: u.tags, tgId: u.id,
+          color: (u._id === me._id) ? "#3050c1" :
+            (u._id === user._id) ? "#c13050" : "#AdA8A8"
+        })
       }
-  
-      window.addEventListener("resize", handleResize);
-      
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
+      for (const e of edges) {
+        graph.links.push({ source: e._from, target: e._to, value: 10 }) // TODO: value
+      }
+      if (graph != null) {
+        setGraphData(graph)
+      }
+    }
+    loadGrpah().catch(console.error)
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
     useEffect(() => {
-      console.log("Profile is open: " + profileIsOpen)
-      if (currentNode != null) {
+      if (graphData!= null && currentNode != null) {
         let currentNodeObj = graphData.nodes.filter(n => n.id === currentNode);
         if (currentNodeObj.length === 1) {
           let {_, height} = getWindowDimensions();
@@ -53,7 +75,7 @@ function DavednikGraph({graphData}) {
           fgRef.current.centerAt(newX, newY, 300);
         }
       }
-    }, [graphData.nodes, currentNode]);
+    });
 
   return (
     <ForceGraph2D
