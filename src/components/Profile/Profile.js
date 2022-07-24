@@ -13,7 +13,7 @@ import './Profile.css';
 
 
 function Profile({
-  connectNodes, name = "Михаил Чистяков", tags = ["#programmer", "#run", "#artist", "#extravert"],
+  setGraphData, name = "Михаил Чистяков", tags = ["#programmer", "#run", "#artist", "#extravert"],
   tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
 }) {
   const dispatch = useDispatch();
@@ -54,6 +54,15 @@ function Profile({
     //todo
   }
 
+  const connectNodes = ({from, to}) => {
+    setGraphData(({ nodes, links }) => {
+      return {
+        nodes: [...nodes],
+        links: [...links, { source: from, target: to }]
+      };
+    })
+  }
+
   return (
     <Box sx={profileBoxStyle}>
       <Button sx={{ margin: '0 auto', display: "flex", pt: 0 }} onClick={moveProfile}>
@@ -73,7 +82,7 @@ function Profile({
                 <Typography variant='body2'>{user.tgId}</Typography>
               </Box>
               { !isMyProfile && 
-                <ConnectButton variant="contained" onClick={() => connectNodes({ from: 'Volha Lytkina', to: currentNode })}>Connect</ConnectButton>
+                <ConnectButton variant="contained" onClick={() => connectNodes({ from: me._id, to: currentNode })}>Connect</ConnectButton>
               }
             </Box>
           </Box>

@@ -59,7 +59,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
         <DavednikGraph graphData={graphData} setGraphData={setGraphData}/>
-        <Main />
+        <Main graphData={graphData} setGraphData={setGraphData}/>
     </ThemeProvider>
   );
 }
