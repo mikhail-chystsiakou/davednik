@@ -19,9 +19,8 @@ function getWindowDimensions() {
 function DavednikGraph({graphData, setGraphData}) {
   const fgRef = useRef();
   const dispatch = useDispatch();
-  const { currentNode, user } = useSelector(state => state.graph);
+  const { currentNode, user, loginedUser } = useSelector(state => state.graph);
   const profileIsOpen = useSelector(state => state.window.windowId) === 1;
-  const me = useSelector(state => state.user.user);
 
   const handleNodeClick = (node) => {
     // dispatch(setProfileOpen(true));
@@ -38,7 +37,7 @@ function DavednikGraph({graphData, setGraphData}) {
     function handleResize() {
       setWindowDimensions(getWindowDimensions());
     }
-    console.warn(me)
+    console.warn(loginedUser)
     const loadGrpah = async () => {
       const users = await graphAPI.loadAllUsers();
       const edges = await graphAPI.loadAllEdges();
@@ -46,7 +45,7 @@ function DavednikGraph({graphData, setGraphData}) {
       for (const u of users) {
         graph.nodes.push({
           id: u._id, name: u.name, about: u.about, tags: u.tags, tgId: u.id,
-          color: (u._id === me._id) ? "#3050c1" :
+          color: (u._id === loginedUser._id) ? "#3050c1" :
             (u._id === user._id) ? "#c13050" : "#AdA8A8"
         })
       }
