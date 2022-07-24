@@ -52,7 +52,7 @@ function Profile({
   const isMyProfile = user._id === me._id;
 
   const saveEdit = () => {
-    var editedUser = {...user, name: userEditedName, about: userEditedAbout};
+    var editedUser = { ...user, name: userEditedName, about: userEditedAbout };
     editUser(editedUser);
     console.log(editedUser);
   }
@@ -62,6 +62,7 @@ function Profile({
   }
 
   const connectNodes = ({ from, to }) => {
+    console.log(from, to)
     setGraphData(({ nodes, links }) => {
       return {
         nodes: [...nodes],
@@ -78,8 +79,8 @@ function Profile({
 
   const handleAboutChange = (event) => {
     setUserEditedAbout(event.target.value);
-    console.log(event.target.value);
   }
+  console.log(me)
 
   return (
     <Box sx={profileBoxStyle}>
@@ -92,7 +93,7 @@ function Profile({
             <Avatar src={avatar} sx={{ width: 63, height: 63 }} />
             <Box sx={{ display: 'flex', gap: 0.3, flexDirection: 'column', justifyContent: 'flex-start' }}>
               {
-                isMyProfile ? <Input sx={{ fontSize: 15, fontWeight: 600 }} defaultValue={user.name} onChange={handleNameChange}/> :
+                isMyProfile ? <Input sx={{ fontSize: 15, fontWeight: 600 }} defaultValue={user.name} onChange={handleNameChange} /> :
                   <Typography variant='h6'>{user.name}</Typography>
               }
               <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
@@ -100,7 +101,7 @@ function Profile({
                 <Typography variant='body2'>{user.tgId}</Typography>
               </Box>
               {!isMyProfile &&
-                <ConnectButton variant="contained" onClick={() => connectNodes({ from: me._id, to: currentNode })}>Connect</ConnectButton>
+                <ConnectButton variant="contained" onClick={() => connectNodes({ from: me.id, to: user.id })}>Connect</ConnectButton>
               }
             </Box>
           </Box>
@@ -141,7 +142,7 @@ function Profile({
         <Box className='about'>
           <Typography variant='h6'>О себе</Typography>
           {
-            isMyProfile ? <Input sx={{ fontSize: 12, fontWeight: 400, minWidth: "100%" }} multiline defaultValue={user.about} onChange={handleAboutChange}/> :
+            isMyProfile ? <Input sx={{ fontSize: 12, fontWeight: 400, minWidth: "100%" }} multiline defaultValue={user.about} onChange={handleAboutChange} /> :
               <Typography variant="body2">{user.about}</Typography>
           }
         </Box>
