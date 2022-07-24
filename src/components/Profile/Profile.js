@@ -18,10 +18,11 @@ function Profile({
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
     borderRadius: 5,
-    display: "flex",
-    padding: 3,
-    flexDirection: "column",
-    gap: 5
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 3,
+    gap: 5,
+    height: window.innerHeight / 2
   };
 
   const ConnectButton = styled(Button)({
@@ -38,34 +39,36 @@ function Profile({
 
   return (
     <Box sx={profileBoxStyle}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }} >
-        <Box sx={{ display: 'flex', gap: 3 }}>
-          <Avatar src={avatar} sx={{ width: 63, height: 63 }} />
-          <Box sx={{ display: 'flex', gap: 0.3, flexDirection: 'column', justifyContent: 'flex-start' }}>
-            <Typography sx={{ fontSize: 15, fontWeight: 600 }}>{name}</Typography>
-            <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
-              <img src={telegram} width={15} height={15} />
-              <Typography sx={{ fontSize: 12, fontWeight: 200 }}>{tgId}</Typography>
+      <Box sx={{overflow: 'auto', paddingRight: 3, display: 'flex', flexDirection: "column", maxHeight: window.innerHeight / 2, gap: 3}}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }} >
+          <Box sx={{ display: 'flex', gap: 3 }}>
+            <Avatar src={avatar} sx={{ width: 63, height: 63 }} />
+            <Box sx={{ display: 'flex', gap: 0.3, flexDirection: 'column', justifyContent: 'flex-start' }}>
+              <Typography sx={{ fontSize: 15, fontWeight: 600 }}>{name}</Typography>
+              <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
+                <img src={telegram} width={15} height={15} />
+                <Typography sx={{ fontSize: 12, fontWeight: 200 }}>{tgId}</Typography>
+              </Box>
+              <ConnectButton variant="contained" >Connect</ConnectButton>
             </Box>
-            <ConnectButton variant="contained" >Connect</ConnectButton>
           </Box>
+          <Button onClick={() => dispatch(setWindowId(0))} variant="text">
+            <img src={close} width={20} height={20} />
+          </Button>
         </Box>
-        <Button onClick={() => dispatch(setWindowId(0))} variant="text">
-          <img src={close} width={20} height={20} />
-        </Button>
-      </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        {tags.map(tag =>
-          <Typography sx={{ fontSize: 12, fontWeight: 200 }}>{tag}</Typography>)}
-        <img src={edit} width={20} height={20} />
-      </Box>
-      <Box className='about'>
-        <Typography sx={{ fontSize: 15, fontWeight: 600 }}>О себе</Typography>
-        <Typography sx={{ fontSize: 12, fontWeight: 400 }}>{about}</Typography>
-      </Box>
-      <Box className='notes'>
-        <Typography sx={{ fontSize: 15, fontWeight: 600 }}>Мои заметки</Typography>
-        <Typography sx={{ fontSize: 12, fontWeight: 400 }}>{about}</Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          {tags.map(tag =>
+            <Typography sx={{ fontSize: 12, fontWeight: 200 }}>{tag}</Typography>)}
+          <img src={edit} width={20} height={20} />
+        </Box>
+        <Box className='about'>
+          <Typography sx={{ fontSize: 15, fontWeight: 600 }}>О себе</Typography>
+          <Typography sx={{ fontSize: 12, fontWeight: 400 }}>{about}</Typography>
+        </Box>
+        <Box className='notes'>
+          <Typography sx={{ fontSize: 15, fontWeight: 600 }}>Мои заметки</Typography>
+          <Typography sx={{ fontSize: 12, fontWeight: 400 }}>{about}</Typography>
+        </Box>
       </Box>
     </Box>
   );
