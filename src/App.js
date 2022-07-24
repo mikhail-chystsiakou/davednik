@@ -57,34 +57,32 @@ export default function App() {
   const dispatch = useDispatch();
 
   const handleTelegramResponse = response => {
-    console.log(response);
-
     const user = {
       id: response.id,
       color: "#3050C1",
       name: response.username,
     }
-    console.log (response.id)
+    
     const userPost = {
       id: response.id,
       user: "@" + response.username,
       name: response.first_name + response.last_name ? " " + response.last_name : response.last_name,
     }
-    console.log({user: userPost});
 
-    // setGraphData({
-    //   nodes: [...graphData.nodes, user],
-    //   links: [...graphData.links]
-    // })
+    console.log(user)
+    setGraphData({
+      nodes: [...graphData.nodes, {user}],
+      links: [...graphData.links]
+    })
     pushUser({user: userPost});
     dispatch(setLoginedUser(user));
   };
 
   const fakeUser = {
-    "id": 245924084,
-    "first_name": "mich",
+    "id": 245924085,
+    "first_name": "mich2",
     "username": "mich_life",
-    "auth_date": 1658663401,
+    "auth_date": 1658663402,
     "hash": "d819754366d50443471464184ca64571552bc3b1f022b5641c84b363e8060135"
 };
 
