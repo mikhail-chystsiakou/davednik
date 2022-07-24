@@ -9,8 +9,7 @@ export default function Main({graphData, setGraphData}) {
 
   const dispatch = useDispatch();
 
-  console.log(screenId)
-
+  // console.log(user)
   let mainWidget;
   switch (screenId) {
     case 0:
