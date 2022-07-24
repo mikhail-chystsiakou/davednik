@@ -8,7 +8,7 @@ export function loadAllUsers() {
 }
 
 export function pushUser(user) {
-  return fetch(`${API_ADDRESS}users/${user.id}`, {
+  return fetch(`${API_ADDRESS}users/${user.user.id}`, {
     method: "POST",
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(user) // body data type must match "Content-Type"
