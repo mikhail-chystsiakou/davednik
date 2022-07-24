@@ -52,8 +52,6 @@ export default function App() {
   const profileIsOpen = useSelector(state => state.profileIsOpen);
   console.log("profileIsOpen: " + profileIsOpen)
 
-  const handleCloseProfile = () => dispatch(setProfileOpen(false));
-
   return (
     <ThemeProvider theme={theme}>
       <DavednikGraph graphData={data} />

@@ -31,15 +31,10 @@ export const graphSlice = createSlice({
     setGraph: (state, action) => {
       state.graph = action.payload;
     },
-    setProfileOpen: (state, action) => {
-      console.log("set profile open = " + action.payload);
-      console.log(action.payload);
-      state.profileOpen = action.payload;
-    }
   }
 })
 
-export const { setCurrentNode, setProfileOpen } = graphSlice.actions;
+export const { setCurrentNode, setGraph, } = graphSlice.actions;
 
 export default graphSlice.reducer
 

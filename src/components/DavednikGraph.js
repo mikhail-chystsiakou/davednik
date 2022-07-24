@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentNode, setProfileOpen } from "../features/graph/graphSlice"
+import { setCurrentNode, setGraph } from "../features/graph/graphSlice"
 import { setWindowId } from '../features/window/windowSlice';
+import * as graphAPI from '../features/graph/graphAPI';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -12,49 +13,60 @@ function getWindowDimensions() {
   };
 }
 
-function DavednikGraph({graphData}) {
+function DavednikGraph() {
   const fgRef = useRef();
   const dispatch = useDispatch();
-  const currentNode = useSelector(state => state.graph.currentNode);
-  const profileIsOpen  = useSelector(state => state.window.windowId) === 1;
-  
+  const { currentNode, graph } = useSelector(state => state.graph);
+  const profileIsOpen = useSelector(state => state.window.windowId) === 1;
+  const [graphData, setGraphData] = useState({ nodes: [], links: [] });
+
   const handleNodeClick = (node) => {
     // dispatch(setProfileOpen(true));
     dispatch(setWindowId(1));
     dispatch(setCurrentNode(node.id));
   };
-  
+
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
 
   useEffect(() => {
-    console.log("use effect, current node: " + currentNode);
-      function handleResize() {
-        setWindowDimensions(getWindowDimensions());
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+    const loadGrpah = async () => {
+      const users = await graphAPI.loadAllUsers();
+      const edges = await graphAPI.loadAllEdges();
+      const graph = { nodes: [], links: [] }
+      for (const u of users) {
+        graph.nodes.push({ id: u._id, name: u.name, color: "#000000" }) // TODO: Color
       }
-  
-      window.addEventListener("resize", handleResize);
-      
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
+      for (const e of edges) {
+        graph.links.push({ source: e._from, target: e._to, value: 10 }) // TODO: value
+      }
+      setGraphData(graph)
+    }
+    loadGrpah().catch(console.error)
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-    useEffect(() => {
-      console.log("Profile is open: " + profileIsOpen)
-      if (currentNode != null) {
-        let currentNodeObj = graphData.nodes.filter(n => n.id === currentNode);
-        if (currentNodeObj.length === 1) {
-          let {_, height} = getWindowDimensions();
-          let newX = currentNodeObj[0].x;
-          let newY = currentNodeObj[0].y;
-          if (profileIsOpen) {
-            newY += height/7;
-          }
-          fgRef.current.centerAt(newX, newY, 300);
+  useEffect(() => {
+    if (currentNode != null) {
+      let currentNodeObj = graphData.nodes.filter(n => n.id === currentNode);
+      if (currentNodeObj.length === 1) {
+        let { _, height } = getWindowDimensions();
+        let newX = currentNodeObj[0].x;
+        let newY = currentNodeObj[0].y;
+        if (profileIsOpen) {
+          newY += height / 7;
         }
+        fgRef.current.centerAt(newX, newY, 300);
       }
-    }, [graphData.nodes, currentNode]);
+    }
+  }, [currentNode]);
 
+  console.log(graphData)
   return (
     <ForceGraph2D
       ref={fgRef}
