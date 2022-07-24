@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Search from './components/Search/Search';
 import { setProfileOpen, setLoginedUser } from './features/graph/graphSlice'
 import { pushUser } from './features/graph/graphAPI';
+import { setUser } from './features/user/userSlice';
 
 var data = {
   nodes: [
@@ -57,10 +58,12 @@ export default function App() {
   const dispatch = useDispatch();
 
   const handleTelegramResponse = response => {
+    console.log(graphData);
     const user = {
-      id: response.id,
+      id: response.username,
       color: "#3050C1",
-      name: response.username,
+      name: response.first_name + (response.last_name ? " " + response.last_name : ""),
+      tags: [],
     }
     
     const userPost = {
@@ -71,11 +74,12 @@ export default function App() {
 
     console.log(user)
     setGraphData({
-      nodes: [...graphData.nodes, {user}],
+      nodes: [...graphData.nodes, {...user}],
       links: [...graphData.links]
     })
     pushUser({user: userPost});
-    dispatch(setLoginedUser(user));
+    dispatch(setLoginedUser({...user}));
+    dispatch(setUser({...user}));
   };
 
   const fakeUser = {

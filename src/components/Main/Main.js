@@ -11,7 +11,7 @@ export default function Main({ connectNodes }) {
 
   const dispatch = useDispatch();
 
-  console.log(user)
+  // console.log(user)
   let mainWidget;
   switch (screenId) {
     case 0:
