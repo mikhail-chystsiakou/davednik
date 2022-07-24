@@ -10,10 +10,11 @@ import save from '../../img/done.png';
 import edit from '../../img/edit.png';
 import telegram from '../../img/telegram.png';
 import './Profile.css';
+import { connectUsers } from '../../features/graph/graphAPI';
 
 
 function Profile({
-  connectNodes, name = "Михаил Чистяков", tags = ["#programmer", "#run", "#artist", "#extravert"],
+  setGraphData, name = "Михаил Чистяков", tags = ["#programmer", "#run", "#artist", "#extravert"],
   tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
 }) {
   const dispatch = useDispatch();
@@ -54,6 +55,16 @@ function Profile({
     //todo
   }
 
+  const connectNodes = ({ from, to }) => {
+    setGraphData(({ nodes, links }) => {
+      return {
+        nodes: [...nodes],
+        links: [...links, { source: from, target: to }]
+      };
+    });
+    connectUsers({ from: from, to: to });
+  }
+
   return (
     <Box sx={profileBoxStyle}>
       <Button sx={{ margin: '0 auto', display: "flex", pt: 0 }} onClick={moveProfile}>
@@ -73,7 +84,7 @@ function Profile({
                 <Typography variant='body2'>{user.tgId}</Typography>
               </Box>
               {!isMyProfile &&
-                <ConnectButton variant="contained" onClick={() => connectNodes({ from: 'Volha Lytkina', to: currentNode })}>Connect</ConnectButton>
+                <ConnectButton variant="contained" onClick={() => connectNodes({ from: me._id, to: currentNode })}>Connect</ConnectButton>
               }
             </Box>
           </Box>
@@ -89,25 +100,28 @@ function Profile({
 
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-          {user.tags && user.tags.map(tag => {
-            if (isMyProfile) {
+          {
+            user.tags && user.tags.map(tag => {
+              if (isMyProfile) {
+                return <Chip label={tag} variant="outlined"
+                  onDelete={() => { console.log("todo") }}
+                  sx={{ marginLeft: 1 }}
+                />
+              }
               return <Chip label={tag} variant="outlined"
-                onDelete={() => { console.log("todo") }}
+                onClick={() => { }}
                 sx={{ marginLeft: 1 }}
               />
             }
-            return <Chip label={tag} variant="outlined"
-              onClick={() => { }}
-              sx={{ marginLeft: 1 }}
-            />
+            )
           }
-          )}
-          {(isMyProfile) &&
+          {
+            (isMyProfile) &&
             <IconButton>
               <img src={edit} width={20} height={20} />
             </IconButton>
           }
-        </Box>
+        </Box >
         <Box className='about'>
           <Typography variant='h6'>О себе</Typography>
           {
@@ -122,8 +136,8 @@ function Profile({
             <Typography variant="body2">{user.about}</Typography>
           </Box>
         }
-      </Box>
-    </Box>
+      </Box >
+    </Box >
   );
 }
 

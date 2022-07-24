@@ -4,11 +4,15 @@ import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
 import TelegramLoginButton from 'react-telegram-login';
+import {
+  Button
+} from '@mui/material';
 
 // import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
 import Search from './components/Search/Search';
-import { setProfileOpen } from './features/graph/graphSlice'
+import { setProfileOpen, setLoginedUser } from './features/graph/graphSlice'
+import { pushUser } from './features/graph/graphAPI';
 
 var data = {
   nodes: [
@@ -50,16 +54,44 @@ const theme = createTheme({
 
 export default function App() {
   const [graphData, setGraphData] = useState(data);
+  const dispatch = useDispatch();
 
   const handleTelegramResponse = response => {
-    console.log(response);
+    const user = {
+      id: response.id,
+      color: "#3050C1",
+      name: response.username,
+    }
+    
+    const userPost = {
+      id: response.id,
+      user: "@" + response.username,
+      name: response.first_name + response.last_name ? " " + response.last_name : response.last_name,
+    }
+
+    console.log(user)
+    setGraphData({
+      nodes: [...graphData.nodes, {user}],
+      links: [...graphData.links]
+    })
+    pushUser({user: userPost});
+    dispatch(setLoginedUser(user));
   };
+
+  const fakeUser = {
+    "id": 245924085,
+    "first_name": "mich2",
+    "username": "mich_life",
+    "auth_date": 1658663402,
+    "hash": "d819754366d50443471464184ca64571552bc3b1f022b5641c84b363e8060135"
+};
 
   return (
     <ThemeProvider theme={theme}>
-      <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
+        <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
+        <Button onClick={() => handleTelegramResponse(fakeUser)}>Fake login</Button>
         <DavednikGraph graphData={graphData} setGraphData={setGraphData}/>
-        <Main />
+        <Main graphData={graphData} setGraphData={setGraphData}/>
     </ThemeProvider>
   );
 }
