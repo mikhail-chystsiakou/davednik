@@ -1,13 +1,9 @@
 import React, { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
 
-import ForceGraph2D from "react-force-graph-2d"
-import { useSelector, useDispatch } from 'react-redux';
-import Search from './components/Search/Search';
-import { setProfileOpen } from './features/graph/graphSlice'
 
 var data = {
   nodes: [
@@ -16,9 +12,9 @@ var data = {
     { id: "C", color: "#ADA8A8" },
     { id: "D", color: "#ADA8A8" }],
   links: [
-    { source: "Volha Lytkina", target: "B", value: 8 },
-    { source: "Volha Lytkina", target: "C", value: 10 },
-    { source: "Volha Lytkina", target: "D", value: 6 }
+    // { source: "Volha Lytkina", target: "B", value: 8 },
+    // { source: "Volha Lytkina", target: "C", value: 10 },
+    // { source: "Volha Lytkina", target: "D", value: 6 }
   ]
 };
 
@@ -43,16 +39,23 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const dispatch = useDispatch();
-  const profileIsOpen = useSelector(state => state.profileIsOpen);
-  console.log("profileIsOpen: " + profileIsOpen)
+  const[graphData, setGraphData] = useState(data);
 
-  const handleCloseProfile = () => dispatch(setProfileOpen(false));
+  const connectNodes = useCallback(({from, to}) => {
+      setGraphData(({ nodes, links }) => {
+      return {
+        nodes: [...nodes],
+        links: [...links, { source: from, target: to }]
+      };
+    });
+  }, [graphData, setGraphData]);
 
   return (
     <ThemeProvider theme={theme}>
-        <DavednikGraph graphData={data}/>
-        <Main />
+      <>
+        <DavednikGraph graphData={graphData}/>
+        <Main connectNodes={connectNodes}/>
+      </>
     </ThemeProvider>
   );
 }

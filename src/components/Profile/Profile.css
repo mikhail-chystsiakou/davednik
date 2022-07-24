@@ -12,3 +12,15 @@
     flex-direction: row;
     gap: 33px;
 }
+
+.line {
+    border: none;
+    background-color: #ADA8A8;
+    height: 2px;
+    width: 20px;
+}
+
+.lineButton {
+    margin: 0 auto;
+    padding: 0;
+}

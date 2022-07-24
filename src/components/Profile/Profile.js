@@ -1,4 +1,4 @@
-import { autocompleteClasses, Avatar, Box, Button, Typography } from '@mui/material';
+import { Avatar, Box, Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from "react";
 import { setWindowId } from '../../features/window/windowSlice';
@@ -7,18 +7,20 @@ import close from '../../img/close.png';
 import edit from '../../img/edit.png';
 import telegram from '../../img/telegram.png';
 import './Profile.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Profile({
-  handleCloseProfile, width, name = "Михаил Чистяков", tags = ["#programmer", "#run", "#artist", "#extravert"],
+  connectNodes, selectedNode, name = "Михаил Чистяков", tags = ["#programmer", "#run", "#artist", "#extravert"],
   tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
 }) {
   const dispatch = useDispatch();
 
+  const currentNode = useSelector(state => state.graph.currentNode);
+
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
     borderRadius: 5,
-    paddingTop: 3,
+    paddingTop: 1,
     paddingBottom: 3,
     paddingLeft: 3,
     gap: 5,
@@ -37,8 +39,15 @@ function Profile({
     width: 80
   });
 
+  const moveProfile = () => {
+
+  }
+
   return (
     <Box sx={profileBoxStyle}>
+      <Button sx={{margin: '0 auto', display: "flex", pt:0}} onClick={moveProfile}>
+        <div className="line"></div>
+      </Button>
       <Box sx={{overflow: 'auto', paddingRight: 3, display: 'flex', flexDirection: "column", maxHeight: window.innerHeight / 2, gap: 3}}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }} >
           <Box sx={{ display: 'flex', gap: 3 }}>
@@ -49,10 +58,10 @@ function Profile({
                 <img src={telegram} width={15} height={15} />
                 <Typography sx={{ fontSize: 12, fontWeight: 200 }}>{tgId}</Typography>
               </Box>
-              <ConnectButton variant="contained" >Connect</ConnectButton>
+              <ConnectButton variant="contained" onClick={() => connectNodes({from:'Volha Lytkina', to: currentNode})}>Connect</ConnectButton>
             </Box>
           </Box>
-          <Button onClick={() => dispatch(setWindowId(0))} variant="text">
+          <Button onClick={() => dispatch(setWindowId(0))} sx={{ p:0, display:"flex", minWidth: 20 }} variant="text">
             <img src={close} width={20} height={20} />
           </Button>
         </Box>

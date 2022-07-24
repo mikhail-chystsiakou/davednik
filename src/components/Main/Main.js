@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import FirstScreen from './FirstScreen';
 import Profile from '../Profile/Profile';
 
-export default function Main() {
+export default function Main({connectNodes}) {
   const screenId = useSelector(state => state.window.windowId);
 
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export default function Main() {
       mainWidget = <FirstScreen />;
       break;
     case 1:
-      mainWidget = <Profile />;
+      mainWidget = <Profile connectNodes={connectNodes}/>;
       break;
   }
 
