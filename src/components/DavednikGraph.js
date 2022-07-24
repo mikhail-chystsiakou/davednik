@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
-import ForceGraph2D  from "react-force-graph-2d"
+import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentNode, setCurrentUser } from "../features/graph/graphSlice"
 import { setWindowId } from '../features/window/windowSlice';
 import * as graphAPI from '../features/graph/graphAPI';
+import * as userAPI from '../features/user/userAPI';
 import { HeadphonesBatteryOutlined } from '@mui/icons-material';
 
 function getWindowDimensions() {
@@ -25,8 +26,7 @@ function DavednikGraph({graphData, setGraphData}) {
   const handleNodeClick = (node) => {
     // dispatch(setProfileOpen(true));
     dispatch(setWindowId(1));
-    console.log(node)
-    dispatch(setCurrentUser({ _id: node.id }))
+    dispatch(setCurrentUser({ ...node, _id: node.id }))
     dispatch(setCurrentNode(node.id));
   };
 
@@ -45,7 +45,7 @@ function DavednikGraph({graphData, setGraphData}) {
       const graph = { nodes: [], links: [] }
       for (const u of users) {
         graph.nodes.push({
-          id: u._id, name: u.name,
+          id: u._id, name: u.name, about: u.about, tags: u.tags, tgId: u.id,
           color: (u._id === me._id) ? "#3050c1" :
             (u._id === user._id) ? "#c13050" : "#AdA8A8"
         })
@@ -72,16 +72,11 @@ function DavednikGraph({graphData, setGraphData}) {
           if (profileIsOpen) {
             newY += height/7;
           }
-          // currentNodeObj[0].x = 50;
-          // currentNodeObj[0].y = 50;
-          // fgRef.current.resumeAnimation();
-          fgRef.current.centerAt(currentNodeObj[0].x, newY, 300);
-          // fgRef.current.centerAt(newX, newY, 300);
+          fgRef.current.centerAt(newX, newY, 300);
         }
       }
     });
 
-  console.log(graphData)
   return (
     <ForceGraph2D
       ref={fgRef}
