@@ -10,7 +10,7 @@ export default function SearchInput() {
   const [value, setValue] = React.useState("");
   return (
     <Box
-      sx={{ backgroundColor: "white", borderRadius: 10 }}
+      sx={{ backgroundColor: "white", borderRadius: 5 }}
       padding={1}
     >
       <FormGroup row className={styles.Input}>

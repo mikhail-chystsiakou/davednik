@@ -39,7 +39,7 @@ function Profile({
 
   return (
     <Box sx={profileBoxStyle}>
-      <Box sx={{overflow: 'auto', paddingRight: 3, display: 'flex', flexDirection: "column", maxHeight: window.innerHeight / 2, gap: 3}}>
+      <Box sx={{ overflow: 'auto', paddingRight: 3, display: 'flex', flexDirection: "column", maxHeight: window.innerHeight / 2, gap: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }} >
           <Box sx={{ display: 'flex', gap: 3 }}>
             <Avatar src={avatar} sx={{ width: 63, height: 63 }} />

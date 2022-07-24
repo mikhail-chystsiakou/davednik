@@ -8,13 +8,12 @@ export default function Search() {
   return (
     <div
       style={{
-        width: '100%', height: '50%',
+        width: '100%', minHeight: 300,
         display: 'flex', flexDirection: 'column',
         justifyContent: 'space-between',
       }}
     >
       <Result />
-      <div></div>
       <SearchInput />
     </div>
   )
