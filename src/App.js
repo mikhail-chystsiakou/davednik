@@ -17,9 +17,9 @@ var data = {
     { id: "C", color: "#ADA8A8" },
     { id: "D", color: "#ADA8A8" }],
   links: [
-    // { source: "Volha Lytkina", target: "B", value: 8 },
-    // { source: "Volha Lytkina", target: "C", value: 10 },
-    // { source: "Volha Lytkina", target: "D", value: 6 }
+    { source: "Volha Lytkina", target: "B", value: 8 },
+    { source: "Volha Lytkina", target: "C", value: 10 },
+    { source: "Volha Lytkina", target: "D", value: 6 }
   ]
 };
 
@@ -58,7 +58,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
-        <DavednikGraph graphData={data}/>
+        <DavednikGraph graphData={graphData} setGraphData={setGraphData}/>
         <Main />
     </ThemeProvider>
   );
