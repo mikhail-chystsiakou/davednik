@@ -72,7 +72,7 @@ function Profile({
                 <img src={telegram} width={15} height={15} />
                 <Typography variant='body2'>{user.tgId}</Typography>
               </Box>
-              { !isMyProfile && 
+              {!isMyProfile &&
                 <ConnectButton variant="contained" onClick={() => connectNodes({ from: 'Volha Lytkina', to: currentNode })}>Connect</ConnectButton>
               }
             </Box>
@@ -89,7 +89,7 @@ function Profile({
 
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-          {user.tags.map(tag => {
+          {user.tags && user.tags.map(tag => {
             if (isMyProfile) {
               return <Chip label={tag} variant="outlined"
                 onDelete={() => { console.log("todo") }}
