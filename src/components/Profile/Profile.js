@@ -10,6 +10,7 @@ import save from '../../img/done.png';
 import edit from '../../img/edit.png';
 import telegram from '../../img/telegram.png';
 import './Profile.css';
+import { connectUsers } from '../../features/graph/graphAPI';
 
 
 function Profile({
@@ -54,13 +55,14 @@ function Profile({
     //todo
   }
 
-  const connectNodes = ({from, to}) => {
+  const connectNodes = ({ from, to }) => {
     setGraphData(({ nodes, links }) => {
       return {
         nodes: [...nodes],
         links: [...links, { source: from, target: to }]
       };
-    })
+    });
+    connectUsers({from: from, to: to});
   }
 
   return (
@@ -81,7 +83,7 @@ function Profile({
                 <img src={telegram} width={15} height={15} />
                 <Typography variant='body2'>{user.tgId}</Typography>
               </Box>
-              { !isMyProfile && 
+              {!isMyProfile &&
                 <ConnectButton variant="contained" onClick={() => connectNodes({ from: me._id, to: currentNode })}>Connect</ConnectButton>
               }
             </Box>
@@ -98,7 +100,7 @@ function Profile({
 
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-          {user.tags.map(tag => {
+          {user.tags != null && user.tags.map(tag => {
             if (isMyProfile) {
               return <Chip label={tag} variant="outlined"
                 onDelete={() => { console.log("todo") }}
