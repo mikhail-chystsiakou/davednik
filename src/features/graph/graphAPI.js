@@ -22,3 +22,11 @@ export function loadAllEdges() {
   }).then(res => res.json()).then((responseData) => responseData.edges);
 }
 
+export function connectUsers(link) {
+  return fetch(`${API_ADDRESS}edges/`, {
+    method: "POST",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(link)
+  }).then(res => res.json());
+}
+

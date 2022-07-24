@@ -95,7 +95,7 @@ export default function App() {
         <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
         <Button onClick={() => handleTelegramResponse(fakeUser)}>Fake login</Button>
         <DavednikGraph graphData={graphData} setGraphData={setGraphData}/>
-        <Main />
+        <Main graphData={graphData} setGraphData={setGraphData}/>
     </ThemeProvider>
   );
 }
