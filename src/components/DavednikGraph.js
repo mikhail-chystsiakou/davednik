@@ -50,7 +50,7 @@ function DavednikGraph({graphData}) {
           if (profileIsOpen) {
             newY += height/7;
           }
-          fgRef.current.centerAt(newX, newY);
+          fgRef.current.centerAt(newX, newY, 300);
         }
       }
     }, [graphData.nodes, currentNode]);
