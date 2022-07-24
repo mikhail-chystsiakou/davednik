@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
+import TelegramLoginButton from 'react-telegram-login';
 
-import ForceGraph2D from "react-force-graph-2d"
+// import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
 import Search from './components/Search/Search';
 import { setProfileOpen } from './features/graph/graphSlice'
@@ -49,8 +50,13 @@ export default function App() {
 
   const handleCloseProfile = () => dispatch(setProfileOpen(false));
 
+  const handleTelegramResponse = response => {
+    console.log(response);
+  };
+
   return (
     <ThemeProvider theme={theme}>
+      <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
         <DavednikGraph graphData={data}/>
         <Main />
     </ThemeProvider>

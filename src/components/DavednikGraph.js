@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import ForceGraph2D from "react-force-graph-2d"
+import ForceGraph2D  from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentNode, setProfileOpen } from "../features/graph/graphSlice"
 import { setWindowId } from '../features/window/windowSlice';
@@ -12,6 +12,14 @@ function getWindowDimensions() {
   };
 }
 
+function convertRemToPixels(rem) {    
+  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
+
+function convertPixelsToRem(pixel) {    
+  return pixel / parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
+
 function DavednikGraph({graphData}) {
   const fgRef = useRef();
   const dispatch = useDispatch();
@@ -20,7 +28,7 @@ function DavednikGraph({graphData}) {
   
   const handleNodeClick = (node) => {
     // dispatch(setProfileOpen(true));
-    dispatch(setWindowId(1));
+    // dispatch(setWindowId(1));
     dispatch(setCurrentNode(node.id));
   };
   
@@ -40,7 +48,12 @@ function DavednikGraph({graphData}) {
     }, []);
 
     useEffect(() => {
-      console.log("Profile is open: " + profileIsOpen)
+      console.log("Profile is open: " + profileIsOpen);
+      console.log (convertPixelsToRem());
+
+      // console.log(fgRef.current.screen2GraphCoords(0, window.innerHeight / 2));
+      console.log(graphData);
+      // fgRef.current.centerAt(0, convertPixelsToRem(window.innerHeight / 2), 300);
       if (currentNode != null) {
         let currentNodeObj = graphData.nodes.filter(n => n.id === currentNode);
         if (currentNodeObj.length === 1) {
@@ -50,7 +63,11 @@ function DavednikGraph({graphData}) {
           if (profileIsOpen) {
             newY += height/7;
           }
-          fgRef.current.centerAt(newX, newY, 300);
+          currentNodeObj[0].x = 50;
+          currentNodeObj[0].y = 50;
+          fgRef.current.resumeAnimation();
+          fgRef.current.centerAt(currentNodeObj[0].x, currentNodeObj[0].y, 300);
+          // fgRef.current.centerAt(newX, newY, 300);
         }
       }
     }, [graphData.nodes, currentNode]);

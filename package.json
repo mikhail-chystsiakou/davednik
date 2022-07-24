@@ -17,6 +17,7 @@
     "react-force-graph-2d": "^1.9.1",
     "react-redux": "^8.0.2",
     "react-scripts": "5.0.1",
+    "react-telegram-login": "^1.1.2",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
