@@ -1,5 +1,5 @@
 import React, { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
@@ -17,9 +17,9 @@ var data = {
     { id: "C", color: "#ADA8A8" },
     { id: "D", color: "#ADA8A8" }],
   links: [
-    { source: "Volha Lytkina", target: "B", value: 8 },
-    { source: "Volha Lytkina", target: "C", value: 10 },
-    { source: "Volha Lytkina", target: "D", value: 6 }
+    // { source: "Volha Lytkina", target: "B", value: 8 },
+    // { source: "Volha Lytkina", target: "C", value: 10 },
+    // { source: "Volha Lytkina", target: "D", value: 6 }
   ]
 };
 
@@ -41,14 +41,15 @@ const theme = createTheme({
       'Montserrat',
     ].join(','),
   },
+  palette: {
+    secondary: {
+      main: "#000000",
+    }
+  }
 });
 
 export default function App() {
-  const dispatch = useDispatch();
-  const profileIsOpen = useSelector(state => state.profileIsOpen);
-  console.log("profileIsOpen: " + profileIsOpen)
-
-  const handleCloseProfile = () => dispatch(setProfileOpen(false));
+  const [graphData, setGraphData] = useState(data);
 
   const handleTelegramResponse = response => {
     console.log(response);
