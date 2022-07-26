@@ -1,5 +1,5 @@
 import React, { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
@@ -9,9 +9,8 @@ import {
 } from '@mui/material';
 
 // import ForceGraph2D from "react-force-graph-2d"
-import { useSelector, useDispatch } from 'react-redux';
-import Search from './components/Search/Search';
-import { setProfileOpen, setLoginedUser } from './features/graph/graphSlice'
+import { useDispatch } from 'react-redux';
+import { setLoginedUser } from './features/graph/graphSlice'
 import { pushUser } from './features/graph/graphAPI';
 import { setUser } from './features/user/userSlice';
 
@@ -65,7 +64,7 @@ export default function App() {
       name: response.first_name + (response.last_name ? " " + response.last_name : ""),
       tags: [],
     }
-    
+
     const userPost = {
       id: response.id,
       user: "@" + response.username,
@@ -74,28 +73,28 @@ export default function App() {
 
     console.log(user)
     setGraphData({
-      nodes: [...graphData.nodes, {...user}],
+      nodes: [...graphData.nodes, { ...user }],
       links: [...graphData.links]
     })
-    pushUser({user: userPost});
-    dispatch(setLoginedUser({...user}));
-    dispatch(setUser({...user}));
+    pushUser({ user: userPost });
+    dispatch(setLoginedUser({ ...user }));
+    dispatch(setUser({ ...user }));
   };
 
   const fakeUser = {
-    "id": 245924085,
-    "first_name": "mich2",
+    "id": 245924085 * Math.random(),
+    "first_name": "mich" + Math.random() * 10,
     "username": "mich_life",
     "auth_date": 1658663402,
     "hash": "d819754366d50443471464184ca64571552bc3b1f022b5641c84b363e8060135"
-};
+  };
 
   return (
     <ThemeProvider theme={theme}>
-        <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
-        <Button onClick={() => handleTelegramResponse(fakeUser)}>Fake login</Button>
-        <DavednikGraph graphData={graphData} setGraphData={setGraphData}/>
-        <Main graphData={graphData} setGraphData={setGraphData}/>
+      <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
+      <Button onClick={() => handleTelegramResponse(fakeUser)}>Fake login</Button>
+      <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
+      <Main graphData={graphData} setGraphData={setGraphData} />
     </ThemeProvider>
   );
 }

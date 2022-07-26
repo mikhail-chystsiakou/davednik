@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentNode, setCurrentUser } from "../features/graph/graphSlice"
+import { setCurrentUser } from "../features/graph/graphSlice"
 import { setWindowId } from '../features/window/windowSlice';
 import * as graphAPI from '../features/graph/graphAPI';
-import * as userAPI from '../features/user/userAPI';
-import { HeadphonesBatteryOutlined } from '@mui/icons-material';
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -16,17 +14,17 @@ function getWindowDimensions() {
 }
 
 
-function DavednikGraph({graphData, setGraphData}) {
+function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
   const fgRef = useRef();
   const dispatch = useDispatch();
-  const { currentNode, user, loginedUser } = useSelector(state => state.graph);
-  const profileIsOpen = useSelector(state => state.window.windowId) === 1;
+  const { loginedUser } = useSelector(state => state.graph);
+  const [hoverNode, setHoverNode] = useState(null);
 
   const handleNodeClick = (node) => {
-    // dispatch(setProfileOpen(true));
+    setHoverNode(node)
+    fgRef.current.centerAt(node.x, windowDimensions.height / 7, 300);
     dispatch(setWindowId(1));
     dispatch(setCurrentUser({ ...node, _id: node.id }))
-    dispatch(setCurrentNode(node.id));
   };
 
   const [windowDimensions, setWindowDimensions] = useState(
@@ -37,7 +35,6 @@ function DavednikGraph({graphData, setGraphData}) {
     function handleResize() {
       setWindowDimensions(getWindowDimensions());
     }
-    console.warn(loginedUser)
     const loadGrpah = async () => {
       const users = await graphAPI.loadAllUsers();
       const edges = await graphAPI.loadAllEdges();
@@ -45,8 +42,7 @@ function DavednikGraph({graphData, setGraphData}) {
       for (const u of users) {
         graph.nodes.push({
           id: u._id, name: u.name, about: u.about, tags: u.tags, tgId: u.id,
-          color: (u._id === loginedUser._id) ? "#3050c1" :
-            (u._id === user._id) ? "#c13050" : "#AdA8A8"
+          color: "#AdA8A8"
         })
       }
       for (const e of edges) {
@@ -60,35 +56,32 @@ function DavednikGraph({graphData, setGraphData}) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-    useEffect(() => {
-      if (graphData!= null && currentNode != null) {
-        let currentNodeObj = graphData.nodes.filter(n => n.id === currentNode);
-        if (currentNodeObj.length === 1) {
-          let {_, height} = getWindowDimensions();
-          let newX = currentNodeObj[0].x;
-          let newY = currentNodeObj[0].y;
-          if (profileIsOpen) {
-            newY += height/7;
-          }
-          fgRef.current.centerAt(newX, newY, 300);
-        }
-      }
-    });
+  const paintSelected = useCallback((node, ctx, color = '#c13050') => {
+    // add ring just for highlighted nodes
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
+    ctx.fillStyle = color
+    ctx.fill();
+  }, [hoverNode]);
 
   return (
     <ForceGraph2D
       ref={fgRef}
+      nodeRelSize={nodeSize} // nodes size
+      autoPauseRedraw={false}
+
       width={windowDimensions.width}
       height={windowDimensions.height}
       graphData={graphData}
-      nodeLabel="id"
+      nodeLabel="name"
       backgroundColor="#E7E7E7"
       linkCurvature="curvature"
       enablePointerInteraction={true}
+
       onNodeClick={handleNodeClick}
+
       nodeCanvasObjectMode={() => "after"}
-      nodeCanvasObject={(node, ctx, globalScale) => {
+      nodeCanvasObject={(node, ctx) => {
         const label = node.name;
         const fontSize = 4;// globalScale;
         ctx.font = `${fontSize}px Sans-Serif`;
@@ -96,7 +89,14 @@ function DavednikGraph({graphData, setGraphData}) {
         ctx.textBaseline = "middle";
         ctx.fillStyle = "black"; //node.color;
         ctx.fillText(label, node.x, node.y + 8);
+        if (node === hoverNode || node.id === loginedUser._id) {
+          paintSelected(node, ctx, (node === hoverNode) ? "#c13050" : "#3050c1");
+        }
       }}
+
+      linkDirectionalParticles={3}  // for points at links
+      linkWidth={5}
+
     />
   )
 }
