@@ -1,17 +1,9 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState, useRef, useCallback, useLayoutEffect } from 'react'
 import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentUser } from "../features/graph/graphSlice"
 import { setWindowId } from '../features/window/windowSlice';
 import * as graphAPI from '../features/graph/graphAPI';
-
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height
-  };
-}
 
 
 function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
@@ -20,6 +12,16 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
   const { loginedUser } = useSelector(state => state.graph);
   const [hoverNode, setHoverNode] = useState(null);
 
+  const [windowDimensions, setSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize({ width: window.innerWidth, height: window.innerHeight });
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
   const handleNodeClick = (node) => {
     setHoverNode(node)
     fgRef.current.centerAt(node.x, windowDimensions.height / 7, 300);
@@ -27,14 +29,7 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
     dispatch(setCurrentUser({ ...node, _id: node.id }))
   };
 
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
-
   useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
     const loadGrpah = async () => {
       const users = await graphAPI.loadAllUsers();
       const edges = await graphAPI.loadAllEdges();
@@ -46,16 +41,15 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
         })
       }
       for (const e of edges) {
-        graph.links.push({ source: e._from, target: e._to, value: 10 }) // TODO: value
+        graph.links.push({ source: e._from, target: e._to, value: 0 }) // TODO: value
       }
       if (graph != null) {
         setGraphData(graph)
       }
     }
     loadGrpah().catch(console.error)
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   const paintSelected = useCallback((node, ctx, color = '#c13050') => {
     // add ring just for highlighted nodes
     ctx.beginPath();
