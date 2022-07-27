@@ -1,20 +1,18 @@
 import React from 'react';
 import SearchInput from './SearchInput';
 import Result from './Result';
-import styles from './Search.module.css';
-
+import { Fade } from "react-awesome-reveal";
 
 export default function Search() {
   return (
-    <div
+    <Fade
       style={{
-        width: '100%', minHeight: 300,
+        width: '100%',
         display: 'flex', flexDirection: 'column',
         justifyContent: 'space-between',
       }}
     >
-      <Result />
       <SearchInput />
-    </div>
+    </Fade>
   )
 }

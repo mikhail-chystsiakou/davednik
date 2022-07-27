@@ -12,6 +12,7 @@ import telegram from '../../img/telegram.png';
 import './Profile.css';
 import { connectUsers } from '../../features/graph/graphAPI';
 import { editUser } from '../../features/user/userAPI';
+import { Fade } from "react-awesome-reveal";
 
 
 function Profile({
@@ -28,11 +29,7 @@ function Profile({
 
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
-    borderRadius: 5,
-    paddingTop: 1,
-    paddingBottom: 3,
-    paddingLeft: 3,
-    gap: 5,
+    borderRadius: 10,
     width: '100%',
     height: window.innerHeight / 2
   };
@@ -80,81 +77,82 @@ function Profile({
   const handleAboutChange = (event) => {
     setUserEditedAbout(event.target.value);
   }
-  console.log(me)
 
   return (
-    <Box sx={profileBoxStyle}>
-      <Button sx={{ margin: '0 auto', display: "flex", pt: 0 }} onClick={moveProfile}>
-        <div className="line"></div>
-      </Button>
-      <Box sx={{ overflow: 'auto', paddingRight: 3, display: 'flex', flexDirection: "column", maxHeight: window.innerHeight / 2, gap: 3 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }} >
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Avatar src={avatar} sx={{ width: 63, height: 63 }} />
-            <Box sx={{ display: 'flex', gap: 0.3, flexDirection: 'column', justifyContent: 'flex-start' }}>
-              {
-                isMyProfile ? <Input sx={{ fontSize: 15, fontWeight: 600 }} defaultValue={user.name} onChange={handleNameChange} /> :
-                  <Typography variant='h6'>{user.name}</Typography>
-              }
-              <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
-                <img src={telegram} width={15} height={15} />
-                <Typography variant='body2'>{user.tgId}</Typography>
+    <Fade style={profileBoxStyle}>
+      <Box sx={{ padding: 3, paddingTop: 1, gap: 3 }}>
+        <Button sx={{ margin: '0 auto', display: "flex", pt: 0 }} onClick={moveProfile}>
+          <div className="line"></div>
+        </Button>
+        <Box sx={{ overflow: 'auto', paddingRight: 3, display: 'flex', flexDirection: "column", maxHeight: window.innerHeight / 2, gap: 3 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }} >
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Avatar src={avatar} sx={{ width: 63, height: 63 }} />
+              <Box sx={{ display: 'flex', gap: 0.3, flexDirection: 'column', justifyContent: 'flex-start' }}>
+                {
+                  isMyProfile ? <Input sx={{ fontSize: 15, fontWeight: 600 }} defaultValue={user.name} onChange={handleNameChange} /> :
+                    <Typography variant='h6'>{user.name}</Typography>
+                }
+                <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
+                  <img src={telegram} width={15} height={15} />
+                  <Typography variant='body2'>{user.tgId}</Typography>
+                </Box>
+                {!isMyProfile &&
+                  <ConnectButton variant="contained" onClick={() => connectNodes({ from: me.id, to: user.id })}>Connect</ConnectButton>
+                }
               </Box>
-              {!isMyProfile &&
-                <ConnectButton variant="contained" onClick={() => connectNodes({ from: me.id, to: user.id })}>Connect</ConnectButton>
-              }
             </Box>
-          </Box>
-          {
-            isMyProfile &&
-            <Button sx={{ p: 0, display: "flex", minWidth: 20 }} onClick={saveEdit} variant="text">
-              <img src={save} width={20} height={20} />
+            {
+              isMyProfile &&
+              <Button sx={{ p: 0, display: "flex", minWidth: 20 }} onClick={saveEdit} variant="text">
+                <img src={save} width={20} height={20} />
+              </Button>
+            }
+            <Button onClick={() => dispatch(setWindowId(0))} sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text">
+              <img src={close} width={20} height={20} />
             </Button>
-          }
-          <Button onClick={() => dispatch(setWindowId(0))} sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text">
-            <img src={close} width={20} height={20} />
-          </Button>
 
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-          {
-            user.tags && user.tags.map(tag => {
-              if (isMyProfile) {
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+            {
+              user.tags && user.tags.map(tag => {
+                if (isMyProfile) {
+                  return <Chip label={tag} variant="outlined"
+                    onDelete={() => { console.log("todo") }}
+                    sx={{ marginLeft: 1 }}
+                  />
+                }
                 return <Chip label={tag} variant="outlined"
-                  onDelete={() => { console.log("todo") }}
+                  onClick={() => { }}
                   sx={{ marginLeft: 1 }}
                 />
               }
-              return <Chip label={tag} variant="outlined"
-                onClick={() => { }}
-                sx={{ marginLeft: 1 }}
-              />
+              )
             }
-            )
-          }
+            {
+              (isMyProfile) &&
+              <IconButton>
+                <img src={edit} width={20} height={20} />
+              </IconButton>
+            }
+          </Box >
+          <Box className='about'>
+            <Typography variant='h6'>О себе</Typography>
+            {
+              isMyProfile ? <Input sx={{ fontSize: 12, fontWeight: 400, minWidth: "100%" }} multiline defaultValue={user.about} onChange={handleAboutChange} /> :
+                <Typography variant="body2">{user.about}</Typography>
+            }
+          </Box>
           {
-            (isMyProfile) &&
-            <IconButton>
-              <img src={edit} width={20} height={20} />
-            </IconButton>
+            !isMyProfile &&
+            <Box className='notes'>
+              <Typography variant='h6'>Мои заметки</Typography>
+              <Typography variant="body2">{user.about}</Typography>
+            </Box>
           }
         </Box >
-        <Box className='about'>
-          <Typography variant='h6'>О себе</Typography>
-          {
-            isMyProfile ? <Input sx={{ fontSize: 12, fontWeight: 400, minWidth: "100%" }} multiline defaultValue={user.about} onChange={handleAboutChange} /> :
-              <Typography variant="body2">{user.about}</Typography>
-          }
-        </Box>
-        {
-          !isMyProfile &&
-          <Box className='notes'>
-            <Typography variant='h6'>Мои заметки</Typography>
-            <Typography variant="body2">{user.about}</Typography>
-          </Box>
-        }
       </Box >
-    </Box >
+    </Fade>
   );
 }
 
