@@ -4,10 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import FirstScreen from './FirstScreen';
 import Profile from '../Profile/Profile';
 
-export default function Main({graphData, setGraphData}) {
+export default function Main({ graphData, setGraphData }) {
   const screenId = useSelector(state => state.window.windowId);
-
-  const dispatch = useDispatch();
 
   // console.log(user)
   let mainWidget;
@@ -16,7 +14,7 @@ export default function Main({graphData, setGraphData}) {
       mainWidget = <FirstScreen />;
       break;
     case 1:
-      mainWidget = <Profile setGraphData={setGraphData}/>;
+      mainWidget = <Profile setGraphData={setGraphData} />;
       break;
   }
 

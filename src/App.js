@@ -3,17 +3,12 @@ import { useState } from "react";
 import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
-import TelegramLoginButton from 'react-telegram-login';
+import LoginForm from './components/Login/LoginForm.js';
 import {
   Button
 } from '@mui/material';
 
 // import ForceGraph2D from "react-force-graph-2d"
-import { useDispatch } from 'react-redux';
-import { setLoginedUser } from './features/graph/graphSlice'
-import { pushUser } from './features/graph/graphAPI';
-import { setUser } from './features/user/userSlice';
-
 var data = {
   nodes: [
     { id: "Volha Lytkina", color: "#3050C1", name: "Volha" },
@@ -26,18 +21,6 @@ var data = {
     { source: "Volha Lytkina", target: "D", value: 6 }
   ]
 };
-
-function genRandomTree(N = 300, reverse = false) {
-  return {
-    nodes: [...Array(N).keys()].map(i => ({ id: i })),
-    links: [...Array(N).keys()]
-      .filter(id => id)
-      .map(id => ({
-        [reverse ? 'target' : 'source']: id,
-        [reverse ? 'source' : 'target']: Math.round(Math.random() * (id - 1))
-      }))
-  };
-}
 
 const theme = createTheme({
   typography: {
@@ -54,45 +37,20 @@ const theme = createTheme({
 
 export default function App() {
   const [graphData, setGraphData] = useState(data);
-  const dispatch = useDispatch();
-
-  const handleTelegramResponse = response => {
-    console.log(graphData);
-    const user = {
-      id: response.username,
-      color: "#3050C1",
-      name: response.first_name + (response.last_name ? " " + response.last_name : ""),
-      tags: [],
-    }
-
-    const userPost = {
-      id: response.id,
-      user: "@" + response.username,
-      name: response.first_name + response.last_name ? " " + response.last_name : response.last_name,
-    }
-
-    console.log(user)
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const addUserNode = (user) => {
     setGraphData({
       nodes: [...graphData.nodes, { ...user }],
-      links: [...graphData.links]
+      links: graphData.links
     })
-    pushUser({ user: userPost });
-    dispatch(setLoginedUser({ ...user }));
-    dispatch(setUser({ ...user }));
-  };
-
-  const fakeUser = {
-    "id": 245924085 * Math.random(),
-    "first_name": "mich" + Math.random() * 10,
-    "username": "mich_life",
-    "auth_date": 1658663402,
-    "hash": "d819754366d50443471464184ca64571552bc3b1f022b5641c84b363e8060135"
-  };
-
+  }
   return (
     <ThemeProvider theme={theme}>
-      <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
-      <Button onClick={() => handleTelegramResponse(fakeUser)}>Fake login</Button>
+      <LoginForm
+        isOpen={isDialogOpen}
+        handleClose={() => setIsDialogOpen(!isDialogOpen)}
+        addNode={addUserNode}
+      />
       <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
       <Main graphData={graphData} setGraphData={setGraphData} />
     </ThemeProvider>

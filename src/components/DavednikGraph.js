@@ -88,7 +88,7 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
         }
       }}
 
-      linkDirectionalParticles={3}  // for points at links
+      // linkDirectionalParticles={3}  // for points at links
       linkWidth={5}
 
     />

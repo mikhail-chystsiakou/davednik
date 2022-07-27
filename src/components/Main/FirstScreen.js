@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  Button, Box, IconButton
+  Box, IconButton
 } from '@mui/material';
 import styles from './Main.module.css'
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setWindowId } from '../../features/window/windowSlice';
 
 
