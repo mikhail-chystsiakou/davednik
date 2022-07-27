@@ -3,7 +3,7 @@ import { Avatar, Box, Button, Chip, IconButton, Input, Typography } from '@mui/m
 import { styled } from '@mui/material/styles';
 import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setWindowId } from '../../features/window/windowSlice';
+import { toggleProfileOpen } from '../../features/window/windowSlice';
 import avatar from '../../img/avatar.png';
 import close from '../../img/close.png';
 import save from '../../img/done.png';
@@ -108,7 +108,7 @@ function Profile({
                 <img src={save} width={20} height={20} />
               </Button>
             }
-            <Button onClick={() => dispatch(setWindowId(0))} sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text">
+            <Button onClick={() => dispatch(toggleProfileOpen())} sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text">
               <img src={close} width={20} height={20} />
             </Button>
 

@@ -1,11 +1,9 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React, { useState } from "react";
-import './App.css';
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
 import LoginForm from './components/Login/LoginForm.js';
 
-// import ForceGraph2D from "react-force-graph-2d"
 var data = {
   nodes: [
     { id: "Volha Lytkina", color: "#3050C1", name: "Volha" },
@@ -43,13 +41,13 @@ export default function App() {
   }
   return (
     <ThemeProvider theme={theme}>
+      <Main graphData={graphData} setGraphData={setGraphData} />
+      <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
       <LoginForm
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(!isDialogOpen)}
         addNode={addUserNode}
       />
-      <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
-      <Main graphData={graphData} setGraphData={setGraphData} />
     </ThemeProvider>
   );
 }

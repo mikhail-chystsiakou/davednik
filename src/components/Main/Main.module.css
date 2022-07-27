@@ -1,9 +1,9 @@
-.Main {
+.Search {
   z-index: 10;
   left: 5%;
   right: 5%;
   bottom: 5%;
-  position: absolute;
+  position: absolute !important; 
   display: flex;
   align-items: flex-end;
 }

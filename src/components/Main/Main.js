@@ -1,22 +1,28 @@
 import * as React from 'react';
-import styles from './Main.module.css';
-import { useSelector } from 'react-redux';
-import FirstScreen from './FirstScreen';
+import { useDispatch, useSelector } from 'react-redux';
 import Profile from '../Profile/Profile';
 import Search from '../Search/Search';
+import Person from '@mui/icons-material/Person';
+import { Fab } from '@mui/material';
+import { toggleProfileOpen } from '../../features/window/windowSlice';
+
+const fabStyle = {
+  position: 'absolute',
+  bottom: 16,
+  right: 16,
+};
 
 export default function Main({ graphData, setGraphData }) {
-  const screenId = useSelector(state => state.window.windowId);
-
-  let mainWidget = [
-    <FirstScreen />,
-    <Profile setGraphData={setGraphData} />,
-    <Search />
-  ][screenId];
+  const profileIsOpen = useSelector(state => state.window.profileIsOpen);
+  const dispatch = useDispatch();
 
   return (
-    <div className={styles.Main}>
-      {mainWidget}
-    </div>
+    <>
+      <Search />
+      <Fab sx={fabStyle} color='secondary' onClick={() => dispatch(toggleProfileOpen())}>
+        <Person />
+      </Fab>
+      {(profileIsOpen) && <Profile getGrpahData={setGraphData} />}
+    </>
   )
 }

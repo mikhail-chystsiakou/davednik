@@ -1,18 +1,30 @@
 import React from 'react';
-import SearchInput from './SearchInput';
-import Result from './Result';
-import { Fade } from "react-awesome-reveal";
+import { Box, TextField, InputBase } from "@mui/material";
 
 export default function Search() {
+  const [value, setValue] = React.useState("");
+
   return (
-    <Fade
-      style={{
-        width: '100%',
-        display: 'flex', flexDirection: 'column',
-        justifyContent: 'space-between',
+    <Box
+      sx={{
+        position: 'absolute', zIndex: 10,
+        top: '5%', right: '10%', left: '10%',
+        display: 'flex',
+        justifyContent: 'center',
       }}
     >
-      <SearchInput />
-    </Fade>
+      <Box sx={{
+        backgroundColor: "#FFFFFF", borderRadius: 10,
+        width: '100%'
+      }}>
+        <InputBase
+          placeholder="Поиск"
+          inputProps={{ 'aria-label': 'search google maps' }}
+          value={value}
+          onChangeValue={event => setValue(event.target.value)}
+          sx={{ width: '80%', maxWidth: 1000, backgroundColor: "#FFFFFF", marginLeft: 3 }}
+        />
+      </Box>
+    </Box>
   )
 }

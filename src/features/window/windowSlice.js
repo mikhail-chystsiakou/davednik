@@ -1,20 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initState = {
-  windowId: 0
+  profileIsOpen: false
 }
 
 export const windowSlice = createSlice({
   name: "window",
   initialState: initState,
   reducers: {
-    setWindowId: (state, action) => {
-      state.windowId = action.payload;
+    toggleProfileOpen: (state) => {
+      state.profileIsOpen = !state.profileIsOpen;
     },
   }
 })
 
-export const { setWindowId } = windowSlice.actions;
+export const { toggleProfileOpen } = windowSlice.actions;
 
 export default windowSlice.reducer
 
