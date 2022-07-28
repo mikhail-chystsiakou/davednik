@@ -5,6 +5,7 @@ import Search from '../Search/Search';
 import Person from '@mui/icons-material/Person';
 import { Fab } from '@mui/material';
 import { toggleProfileOpen } from '../../features/window/windowSlice';
+import { getNote } from '../../supabaseClient/api';
 
 const fabStyle = {
   position: 'absolute',
@@ -15,6 +16,11 @@ const fabStyle = {
 export default function Main({ graphData, setGraphData }) {
   const profileIsOpen = useSelector(state => state.window.profileIsOpen);
   const dispatch = useDispatch();
+
+  const fetchRequest = async () => {
+    console.log(await getNote('3', '2'))
+  }
+  fetchRequest()
 
   return (
     <>
