@@ -14,13 +14,15 @@ import { connectUsers } from '../../features/graph/graphAPI';
 import { editUser } from '../../features/user/userAPI';
 import { Fade } from "react-awesome-reveal";
 
+import ProfileHeader from './ProfileHeader';
+import About from './About';
+
 
 function Profile({
-  setGraphData, name = "Михаил Чистяков", tags = ["#programmer", "#run", "#artist", "#extravert"],
+  setGraphData, name = "Михаил Чистяков", tags = "#programmer#run#artist#extravert",
   tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
 }) {
   const dispatch = useDispatch();
-  const currentNode = useSelector(state => state.graph.currentNode);
   const user = useSelector(state => state.graph.user);
   const me = useSelector(state => state.user.user);
   const [userEditedName, setUserEditedName] = useState(user.name);
@@ -30,33 +32,12 @@ function Profile({
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
     borderRadius: 10,
-    width: '100%',
+    overflowY: 'auto',
+    position: 'absolute', left: '2%', right: "2%", bottom: "2%", zIndex: 9,
     height: window.innerHeight / 2
   };
 
-  const ConnectButton = styled(Button)({
-    color: "#FFFFFF",
-    backgroundColor: "#3050C1",
-    '&:hover': {
-      backgroundColor: "#3050C1",
-    },
-    borderRadius: 20,
-    fontSize: 10,
-    fontWeight: 200,
-    width: 80
-  });
-
   const isMyProfile = user._id === me._id;
-
-  const saveEdit = () => {
-    var editedUser = { ...user, name: userEditedName, about: userEditedAbout };
-    editUser(editedUser);
-    console.log(editedUser);
-  }
-
-  const moveProfile = () => {
-    //todo
-  }
 
   const connectNodes = ({ from, to }) => {
     console.log(from, to)
@@ -69,90 +50,29 @@ function Profile({
     connectUsers({ from: from, to: to });
   }
 
-  const handleNameChange = (event) => {
-    setUserEditedName(event.target.value);
-    console.log(event.target.value);
-  }
-
-  const handleAboutChange = (event) => {
-    setUserEditedAbout(event.target.value);
-  }
-
   return (
     <Fade style={profileBoxStyle}>
-      <Box sx={{ padding: 3, paddingTop: 1, gap: 3 }}>
-        <Button sx={{ margin: '0 auto', display: "flex", pt: 0 }} onClick={moveProfile}>
-          <div className="line"></div>
-        </Button>
-        <Box sx={{ overflow: 'auto', paddingRight: 3, display: 'flex', flexDirection: "column", maxHeight: window.innerHeight / 2, gap: 3 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }} >
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <Avatar src={avatar} sx={{ width: 63, height: 63 }} />
-              <Box sx={{ display: 'flex', gap: 0.3, flexDirection: 'column', justifyContent: 'flex-start' }}>
-                {
-                  isMyProfile ? <Input sx={{ fontSize: 15, fontWeight: 600 }} defaultValue={user.name} onChange={handleNameChange} /> :
-                    <Typography variant='h6'>{user.name}</Typography>
-                }
-                <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
-                  <img src={telegram} width={15} height={15} />
-                  <Typography variant='body2'>{user.tgId}</Typography>
-                </Box>
-                {!isMyProfile &&
-                  <ConnectButton variant="contained" onClick={() => connectNodes({ from: me.id, to: user.id })}>Connect</ConnectButton>
-                }
-              </Box>
-            </Box>
-            {
-              isMyProfile &&
-              <Button sx={{ p: 0, display: "flex", minWidth: 20 }} onClick={saveEdit} variant="text">
-                <img src={save} width={20} height={20} />
-              </Button>
+      <Box sx={{ padding: 3 }}>
+        <ProfileHeader name={name} tgId={tgId} avatar={avatar} />
+        {
+          tags.split('#').slice(1).map(tag => {
+            if (isMyProfile) {
+              return <Chip label={"#" + tag} variant="outlined"
+                onDelete={() => { console.log("todo") }}
+                sx={{ margin: 1 }}
+              />
             }
-            <Button onClick={() => dispatch(toggleProfileOpen())} sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text">
-              <img src={close} width={20} height={20} />
-            </Button>
-
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-            {
-              user.tags && user.tags.map(tag => {
-                if (isMyProfile) {
-                  return <Chip label={tag} variant="outlined"
-                    onDelete={() => { console.log("todo") }}
-                    sx={{ marginLeft: 1 }}
-                  />
-                }
-                return <Chip label={tag} variant="outlined"
-                  onClick={() => { }}
-                  sx={{ marginLeft: 1 }}
-                />
-              }
-              )
-            }
-            {
-              (isMyProfile) &&
-              <IconButton>
-                <img src={edit} width={20} height={20} />
-              </IconButton>
-            }
-          </Box >
-          <Box className='about'>
-            <Typography variant='h6'>О себе</Typography>
-            {
-              isMyProfile ? <Input sx={{ fontSize: 12, fontWeight: 400, minWidth: "100%" }} multiline defaultValue={user.about} onChange={handleAboutChange} /> :
-                <Typography variant="body2">{user.about}</Typography>
-            }
-          </Box>
-          {
-            !isMyProfile &&
-            <Box className='notes'>
-              <Typography variant='h6'>Мои заметки</Typography>
-              <Typography variant="body2">{user.about}</Typography>
-            </Box>
-          }
-        </Box >
-      </Box >
-    </Fade>
+            return <Chip label={"#" + tag} variant="outlined"
+              onClick={() => { }}
+              sx={{ margin: 1 }}
+            />
+          })
+        }
+        <About isNotes={false} about={about} />
+        <About isNotes={true} about={about} />
+        <Box sx={{height: 64}}> </Box>
+      </Box>
+    </Fade >
   );
 }
 

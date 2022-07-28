@@ -8,8 +8,8 @@ import { toggleProfileOpen } from '../../features/window/windowSlice';
 
 const fabStyle = {
   position: 'absolute',
-  bottom: 16,
-  right: 16,
+  bottom: 32,
+  right: 32,
 };
 
 export default function Main({ graphData, setGraphData }) {

@@ -8,14 +8,16 @@ export default function Search() {
     <Box
       sx={{
         position: 'absolute', zIndex: 10,
-        top: '5%', right: '10%', left: '10%',
+        top: 32, left: 32, right: 32,
+        height: 40,
         display: 'flex',
         justifyContent: 'center',
       }}
     >
       <Box sx={{
         backgroundColor: "#FFFFFF", borderRadius: 10,
-        width: '100%'
+        width: '100%', display: 'flex', flexDirection: 'column', 
+        justifyContent: 'center',
       }}>
         <InputBase
           placeholder="Поиск"

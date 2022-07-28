@@ -15,8 +15,8 @@ import { setUser } from '../../features/user/userSlice';
 
 const fakeUser = {
   "id": 245924085 * Math.random(),
-  "first_name": "mich" + Math.random() * 10,
-  "username": "mich_life",
+  "name": "mich" + Math.random() * 10,
+  "about": "",
   "auth_date": 1658663402,
   "hash": "d819754366d50443471464184ca64571552bc3b1f022b5641c84b363e8060135"
 };
