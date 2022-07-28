@@ -16,3 +16,18 @@ export function editUser(user) {
   }).then(res => res.json());
 }
 
+export function searchByTag(tag) {
+  const tagTitle = tag //.replace(/[^0-9a-z]/gi, '')
+  return fetch(`${API_ADDRESS}search/tag/${tag}`, {
+    method: "GET",
+    headers: { 'Content-Type': 'application/json' }
+  }).then(res => res.json()).then((responseData) => responseData.users)
+}
+
+export function searchUser(user) {
+  const userName = user.replace(/[^0-9a-z]/gi, '')
+  return fetch(`${API_ADDRESS}search/name/${userName}`, {
+    method: "GET",
+    headers: { 'Content-Type': 'application/json' }
+  }).then(res => res.json()).then((responseData) => responseData.users)
+}

@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initState = {
-  user: {_id: null, name: ""}
+  user: { _id: null, name: "" },
+  searchResult: []
 }
 
 export const userSlice = createSlice({
@@ -11,10 +12,13 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    setSearchResult: (state, action) => {
+      state.searchResult = action.payload;
+    }
   }
 })
 
-export const { setUser } = userSlice.actions;
+export const { setUser, setSearchResult } = userSlice.actions;
 
 export default userSlice.reducer
 
