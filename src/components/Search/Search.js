@@ -10,7 +10,10 @@ export default function Search() {
 
   const fetchRequest = async (value) => {
     setValue(value)
-    if (!value) return;
+    if (!value) {
+      dispatch(setSearchResult([]))
+      return;
+    }
     let searchResult = [];
     if (value[0] === "#") {
       if (value.length > 1) {
