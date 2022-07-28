@@ -35,6 +35,7 @@ function Profile({
     position: 'absolute', 
     zIndex: 10,
     bottom: '5%',
+    right: '5%'
   };
 
   const ConnectButton = styled(Button)({
@@ -101,7 +102,7 @@ function Profile({
                   <Typography variant='body2'>{user.tgId}</Typography>
                 </Box>
                 {!isMyProfile &&
-                  <ConnectButton variant="contained" onClick={() => connectNodes({ from: me.id, to: user.id })}>Connect</ConnectButton>
+                  <ConnectButton variant="contained" onClick={() => {console.log(me); console.log(user); connectNodes({ from: me._id, to: user.id })}}>Connect</ConnectButton>
                 }
               </Box>
             </Box>

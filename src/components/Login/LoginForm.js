@@ -14,34 +14,40 @@ import { setUser } from '../../features/user/userSlice';
 
 
 const fakeUser = {
-  "id": 245924085 * Math.random(),
-  "first_name": "mich" + Math.random() * 10,
+  "id":  Math.floor(245924085 * Math.random()),
+  "first_name": "mich" + Math.floor(Math.random() * 10),
   "username": "mich_life",
   "auth_date": 1658663402,
   "hash": "d819754366d50443471464184ca64571552bc3b1f022b5641c84b363e8060135"
 };
 
 
-export default function LoginForm({ isOpen, handleClose, addNode }) {
+export default function LoginForm({ isOpen, handleLogin, handleClose }) {
   const dispatch = useDispatch();
 
   const handleTelegramResponse = response => {
+
+    const name = response.first_name + (response.last_name ? " " + response.last_name : "");
     const user = {
+      _id: null,
       id: response.username,
       color: "#3050C1",
-      name: response.first_name + (response.last_name ? " " + response.last_name : ""),
+      name: name,
       tags: [],
     }
 
-    const userPost = {
+    const addUserRequest = {
       id: response.id,
       user: "@" + response.username,
-      name: response.first_name + response.last_name ? " " + response.last_name : response.last_name,
+      name: name,
     }
-    addNode(user)
-    pushUser({ user: userPost });
-    dispatch(setLoginedUser({ ...user }));
-    dispatch(setUser({ ...user }));
+
+    pushUser({ user: addUserRequest }).then(res => {
+      handleLogin(user);
+      user._id = res.success;
+      dispatch(setUser({ ...user }));
+      dispatch(setLoginedUser({ ...user }));
+    });
     handleClose();
   };
   return (

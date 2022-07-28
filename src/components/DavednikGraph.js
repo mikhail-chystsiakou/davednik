@@ -12,6 +12,8 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
   const { loginedUser } = useSelector(state => state.graph);
   const [hoverNode, setHoverNode] = useState(null);
 
+  // console.log("Graph rendered")
+
   const [windowDimensions, setSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   useLayoutEffect(() => {
     function updateSize() {

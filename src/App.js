@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
 import LoginForm from './components/Login/LoginForm.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 const theme = createTheme({
   typography: {
@@ -20,7 +21,9 @@ const theme = createTheme({
 export default function App() {
   const [graphData, setGraphData] = useState({nodes:[], links:[]});
   const [isDialogOpen, setIsDialogOpen] = useState(true);
-  const addUserNode = (user) => {
+  const me = useSelector(state => state.user.user);
+
+  const handleLogin = (user) => {
     setGraphData({
       nodes: [...graphData.nodes, { ...user }],
       links: graphData.links
@@ -28,13 +31,19 @@ export default function App() {
   }
   return (
     <ThemeProvider theme={theme}>
-      <Main graphData={graphData} setGraphData={setGraphData} />
-      <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
       <LoginForm
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(!isDialogOpen)}
-        addNode={addUserNode}
+        handleLogin={handleLogin}
       />
+      {
+        (me && me._id) ? 
+        <>
+        <Main graphData={graphData} setGraphData={setGraphData} />
+        <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
+        </>
+        : (!isDialogOpen && "Loading...")
+      }      
     </ThemeProvider>
   );
 }
