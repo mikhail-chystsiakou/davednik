@@ -23,7 +23,7 @@ export default function Search() {
           placeholder="Поиск"
           inputProps={{ 'aria-label': 'search google maps' }}
           value={value}
-          onChangeValue={event => setValue(event.target.value)}
+          onChange={event => setValue(event.target.value)}
           sx={{ width: '80%', maxWidth: 1000, backgroundColor: "#FFFFFF", marginLeft: 3 }}
         />
       </Box>

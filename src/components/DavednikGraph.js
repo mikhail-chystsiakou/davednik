@@ -59,39 +59,43 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
   }, [hoverNode]);
 
   return (
-    <ForceGraph2D
-      ref={fgRef}
-      nodeRelSize={nodeSize} // nodes size
-      autoPauseRedraw={false}
+    <>
+    {graphData.nodes &&
+      <ForceGraph2D
+        ref={fgRef}
+        nodeRelSize={nodeSize} // nodes size
+        autoPauseRedraw={false}
 
-      width={windowDimensions.width}
-      height={windowDimensions.height}
-      graphData={graphData}
-      nodeLabel="name"
-      backgroundColor="#E7E7E7"
-      linkCurvature="curvature"
-      enablePointerInteraction={true}
+        width={windowDimensions.width}
+        height={windowDimensions.height}
+        graphData={graphData}
+        nodeLabel="name"
+        backgroundColor="#E7E7E7"
+        linkCurvature="curvature"
+        enablePointerInteraction={true}
 
-      onNodeClick={handleNodeClick}
+        onNodeClick={handleNodeClick}
 
-      nodeCanvasObjectMode={() => "after"}
-      nodeCanvasObject={(node, ctx) => {
-        const label = node.name;
-        const fontSize = 4;// globalScale;
-        ctx.font = `${fontSize}px Sans-Serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "black"; //node.color;
-        ctx.fillText(label, node.x, node.y + 8);
-        if (node === hoverNode || node.id === loginedUser._id) {
-          paintSelected(node, ctx, (node === hoverNode) ? "#c13050" : "#3050c1");
-        }
-      }}
+        nodeCanvasObjectMode={() => "after"}
+        nodeCanvasObject={(node, ctx) => {
+          const label = node.name;
+          const fontSize = 4;// globalScale;
+          ctx.font = `${fontSize}px Sans-Serif`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "black"; //node.color;
+          ctx.fillText(label, node.x, node.y + 8);
+          if (node === hoverNode || node.id === loginedUser._id) {
+            paintSelected(node, ctx, (node === hoverNode) ? "#c13050" : "#3050c1");
+          }
+        }}
 
-      // linkDirectionalParticles={3}  // for points at links
-      linkWidth={5}
+        // linkDirectionalParticles={3}  // for points at links
+        linkWidth={5}
 
-    />
+      />
+    }
+    </>
   )
 }
 
