@@ -22,7 +22,7 @@ export default function Main({ graphData, setGraphData }) {
       <Fab sx={fabStyle} color='secondary' onClick={() => dispatch(toggleProfileOpen())}>
         <Person />
       </Fab>
-      {(profileIsOpen) && <Profile getGrpahData={setGraphData} />}
+      {(profileIsOpen) && <Profile setGraphData={setGraphData} />}
     </>
   )
 }

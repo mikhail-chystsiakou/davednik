@@ -31,7 +31,10 @@ function Profile({
     backgroundColor: "#FFFFFF",
     borderRadius: 10,
     width: '100%',
-    height: window.innerHeight / 2
+    height: window.innerHeight / 2,
+    position: 'absolute', 
+    zIndex: 10,
+    bottom: '5%',
   };
 
   const ConnectButton = styled(Button)({
