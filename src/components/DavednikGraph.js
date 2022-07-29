@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback, useLayoutEffect } from
 import ForceGraph2D from "react-force-graph-2d"
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentUser } from "../features/graph/graphSlice"
-import { toggleProfileOpen } from '../features/window/windowSlice';
+import { openProfile, closeProfile } from '../features/window/windowSlice';
 import * as graphAPI from '../features/graph/graphAPI';
 
 
@@ -10,7 +10,8 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
   const fgRef = useRef();
   const dispatch = useDispatch();
   const { loginedUser } = useSelector(state => state.graph);
-  const highlightedNodes = useSelector(state => state.user.searchResult)
+  const highlightedNodes = useSelector(state => state.user.searchResult);
+  const profileIsOpen = useSelector(state => state.window.profileIsOpen);
   const [hoverNode, setHoverNode] = useState(null);
 
   // console.log("Graph rendered")
@@ -28,7 +29,7 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
   const handleNodeClick = (node) => {
     setHoverNode(node)
     fgRef.current.centerAt(node.x, windowDimensions.height / 7, 300);
-    dispatch(toggleProfileOpen());
+    dispatch(openProfile());
     dispatch(setCurrentUser({ ...node, _id: node.id }))
   };
 
@@ -88,7 +89,7 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
             ctx.textBaseline = "middle";
             ctx.fillStyle = "black"; //node.color;
             ctx.fillText(label, node.x, node.y + 8);
-            if (node === hoverNode || node.id === loginedUser._id) {
+            if ((node === hoverNode && profileIsOpen) || node.id === loginedUser._id) {
               paintSelected(node, ctx, (node === hoverNode) ? "#c13050" : "#3050c1");
             } else if (highlightedNodes.includes(node.id)) {
               paintSelected(node, ctx, '#50c130')

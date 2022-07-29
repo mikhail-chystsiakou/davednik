@@ -8,13 +8,16 @@ export const windowSlice = createSlice({
   name: "window",
   initialState: initState,
   reducers: {
-    toggleProfileOpen: (state) => {
-      state.profileIsOpen = !state.profileIsOpen;
+    openProfile: (state) => {
+      state.profileIsOpen = true;
     },
+    closeProfile: (state) => {
+      state.profileIsOpen = false;
+    }
   }
 })
 
-export const { toggleProfileOpen } = windowSlice.actions;
+export const { openProfile, closeProfile } = windowSlice.actions;
 
 export default windowSlice.reducer
 
