@@ -3,28 +3,63 @@ import {
   Avatar, Box, Button, Typography
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { closeProfile } from '../../features/window/windowSlice';
 import close from '../../img/close.png';
 import save from '../../img/done.png';
 import telegram from '../../img/telegram.png';
-import { connectUsers } from '../../features/graph/graphAPI';
+import { connectUsers, getNeighbors, disconnectUsers } from '../../features/graph/graphAPI';
+
+const ConnectButton = styled(Button)({
+  color: "#FFFFFF",
+  backgroundColor: "#3050C1",
+  '&:hover': {
+    backgroundColor: "#3050C1",
+  },
+  borderRadius: 20,
+  fontSize: 10,
+  fontWeight: 200,
+  width: 80
+});
+
+const DisconnectButton = styled(Button)({
+  color: "#FFFFFF",
+  backgroundColor: "#c15030",
+  '&:hover': {
+    backgroundColor: "#c15030",
+  },
+  borderRadius: 20,
+  fontSize: 10,
+  fontWeight: 200,
+  width: 80
+});
+
 
 
 export default function Header({ name, tgId, avatar, me, userId, isGuest, connectNodes }) {
   const dispatch = useDispatch();
+  const [buttonVariant, setButtonVariant] = useState(null); // 0 for connect, 1 for disconnect
+  const neighbors = useSelector(state => state.user.neighbors);
 
-  const ConnectButton = styled(Button)({
-    color: "#FFFFFF",
-    backgroundColor: "#3050C1",
-    '&:hover': {
-      backgroundColor: "#3050C1",
-    },
-    borderRadius: 20,
-    fontSize: 10,
-    fontWeight: 200,
-    width: 80
-  });
+  console.log(neighbors)
+  let connectButton;
+  if (!neighbors.includes(userId)) {
+    connectButton = <ConnectButton variant="contained" onClick={() => {
+      const createEdge = async () => {
+        await connectNodes(me, userId)
+        await connectUsers({ from: me, to: userId });
+      }
+      createEdge().catch(console.error);
+    }}>Connect</ConnectButton>
+  } else {
+    connectButton = <DisconnectButton variant="contained" onClick={() => {
+      const deleteEdge = async () => {
+        //await connectNodes(me, userId)
+        await disconnectUsers({ from: me, to: userId });
+      }
+      deleteEdge().catch(console.error);
+    }}>Disconnect</DisconnectButton>
+  }
 
 
   return (
@@ -37,13 +72,7 @@ export default function Header({ name, tgId, avatar, me, userId, isGuest, connec
             <img src={telegram} width={15} height={15} />
             <Typography variant='body2'>{tgId}</Typography>
           </Box>
-          {(me !== userId) && !isGuest && <ConnectButton variant="contained" onClick={() => {
-            const createEdge = async () => {
-              await connectNodes(me, userId)
-              await connectUsers({ from: me, to: userId });
-            }
-            createEdge().catch(console.error);
-          }}>Connect</ConnectButton>}
+          {(me !== userId) && !isGuest && connectButton}
         </Box>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>

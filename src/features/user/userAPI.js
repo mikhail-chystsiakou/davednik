@@ -7,13 +7,6 @@ export async function getUser(userId) {
   }).then(res => res.json()).then((responseData) => responseData.user);
 }
 
-export async function getNeighbors(userId) {
-  return fetch(`${API_ADDRESS}users/neighbors/${userId}`, {
-    method: "GET",
-    headers: { 'Content-Type': 'application/json' }
-  }).then(res => res.json()).then((responseData) => responseData.users.map(user => user._id));
-}
-
 export async function editUser(user) {
   const id = user.id;
   return fetch(`${API_ADDRESS}users/${id.replace('users/', '')}`, {

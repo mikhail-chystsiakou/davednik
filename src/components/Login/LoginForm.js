@@ -7,7 +7,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TelegramLoginButton from 'react-telegram-login';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../features/user/userAPI';
-import { setUser } from '../../features/user/userSlice';
+import { getNeighbors } from '../../features/graph/graphAPI.js';
+import { setUser, setNeighbors } from '../../features/user/userSlice';
 
 
 
@@ -23,7 +24,7 @@ const fakeUser = {
 export default function LoginForm({ isOpen, handleClose }) {
   const dispatch = useDispatch();
 
-  const handleTelegramResponse = response => {
+  const handleTelegramResponse = async response => {
     console.log(response)
 
     const name = response.first_name + (response.last_name ? " " + response.last_name : "");
@@ -33,11 +34,14 @@ export default function LoginForm({ isOpen, handleClose }) {
       user: response.username,
       name: name,
       about: "",
-      tags: "",
+      tags: ""
     }
+
+    const userNeighbors = await getNeighbors(response.id);
 
     loginUser({ user: addUserRequest }).then(res => {
       dispatch(setUser({ ...res.user }));
+      dispatch(setNeighbors(userNeighbors))
     });
     handleClose();
   };
