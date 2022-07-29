@@ -16,6 +16,7 @@ import { Fade } from "react-awesome-reveal";
 
 import ProfileHeader from './ProfileHeader';
 import About from './About';
+import MyNotes from './MyNotes';
 
 
 function Profile({
@@ -70,9 +71,8 @@ function Profile({
           })
         }
         </Box>        
-        <About isNotes={false} about={about} />
-        <About isNotes={true} about={about} userId={user._id} me={me._id} />
-        <Box sx={{height: 64}}> </Box>
+        <About about={about} userId={user._id} me={me._id} isMyProfile={isMyProfile}/>
+        {!isMyProfile && <MyNotes/>}
       </Box>
     </Box >
   );

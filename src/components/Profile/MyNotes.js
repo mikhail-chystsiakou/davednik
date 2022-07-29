@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getNote, updateNote } from '../../supabaseClient/api';
 import CircularProgress from '@mui/material/CircularProgress';
 
-export default function About({ about = 'lorem ipsum', userId = "", me = "", isMyProfile }) {
+export default function MyNotes({ userId = "", me = "", isMyProfile }) {
   const [noteText, setNoteText] = useState(null);
   console.log(me, userId)
 
@@ -25,8 +25,8 @@ export default function About({ about = 'lorem ipsum', userId = "", me = "", isM
 
   return (
     <Box>
-      <Typography sx={{ fontSize: '1rem', fontWeight: 600 }}>О себе</Typography>
-      <Typography sx={{ fontSize: '0.9rem', fontWeight: 400 }}>{about}</Typography>
+      <Typography sx={{ fontSize: '1rem', fontWeight: 600 }}>Мои заметки</Typography>
+      <Typography sx={{ fontSize: '0.9rem', fontWeight: 400 }}>мои заметки</Typography>
       {/* {(isNotes) ? (noteText !== null) ? 
         <TextareaAutosize
           aria-label="empty textarea"
