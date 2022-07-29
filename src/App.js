@@ -4,6 +4,7 @@ import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
 import LoginForm from './components/Login/LoginForm.js';
 import { useDispatch, useSelector } from 'react-redux';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const theme = createTheme({
   typography: {
@@ -19,7 +20,7 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const [graphData, setGraphData] = useState({nodes:[], links:[]});
+  const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const me = useSelector(state => state.user.user);
 
@@ -37,13 +38,15 @@ export default function App() {
         handleLogin={handleLogin}
       />
       {
-        (me && me._id) ? 
-        <>
-        <Main graphData={graphData} setGraphData={setGraphData} />
-        <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
-        </>
-        : (!isDialogOpen && "Loading...")
-      }      
+        (me && me._id) ?
+          <>
+            <Main graphData={graphData} setGraphData={setGraphData} />
+            <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
+          </>
+          : (!isDialogOpen &&
+            <CircularProgress sx={{ position: 'absolute', top: '50%', left: '50%' }} />
+          )
+      }
     </ThemeProvider>
   );
 }
