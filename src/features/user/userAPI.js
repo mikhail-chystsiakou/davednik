@@ -44,8 +44,7 @@ export async function searchByTag(tag) {
 }
 
 export async function searchUser(user) {
-  const userName = user.replace(/[^0-9a-z]/gi, '')
-  return fetch(`${API_ADDRESS}search/name/${userName}`, {
+  return fetch(`${API_ADDRESS}search/name/${user}`, {
     method: "GET",
     headers: { 'Content-Type': 'application/json' }
   }).then(res => res.json()).then((responseData) => responseData.users)
