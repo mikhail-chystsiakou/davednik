@@ -25,9 +25,9 @@ const ConnectButton = styled(Button)({
 
 const DisconnectButton = styled(Button)({
   color: "#FFFFFF",
-  backgroundColor: "#c15030",
+  backgroundColor: "#c13050",
   '&:hover': {
-    backgroundColor: "#c15030",
+    backgroundColor: "#c13050",
   },
   borderRadius: 20,
   fontSize: 10,
