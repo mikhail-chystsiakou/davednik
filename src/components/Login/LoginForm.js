@@ -7,13 +7,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TelegramLoginButton from 'react-telegram-login';
 import { useDispatch } from 'react-redux';
 import { setLoginedUser } from '../../features/graph/graphSlice'
-import { pushUser } from '../../features/graph/graphAPI';
+import { loginUser } from '../../features/user/userAPI';
 import { setUser } from '../../features/user/userSlice';
 
 
 
 const fakeUser = {
-  "id":  Math.floor(245924085 * Math.random()),
+  "id": 100,
   "first_name": "mich" + Math.floor(Math.random() * 10),
   "username": "mich_life",
   "auth_date": 1658663402,
@@ -32,20 +32,22 @@ export default function LoginForm({ isOpen, handleLogin, handleClose }) {
       id: response.username,
       color: "#3050C1",
       name: name,
-      tags: [],
+      tags: "",
     }
 
     const addUserRequest = {
       id: response.id,
-      user: "@" + response.username,
+      user: response.username,
       name: name,
+      about: "",
+      tags: "",
     }
 
-    pushUser({ user: addUserRequest }).then(res => {
+    loginUser({ user: addUserRequest }).then(res => {
+      console.log("res = ", res)
       handleLogin(user);
-      user._id = res.success;
-      dispatch(setUser({ ...user }));
-      dispatch(setLoginedUser({ ...user }));
+      dispatch(setUser({ ...res.user }));
+      dispatch(setLoginedUser({ ...res.user }));
     });
     handleClose();
   };
