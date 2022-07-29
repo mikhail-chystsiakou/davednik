@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../../features/user/userSlice';
 import { graphSlice } from '../../features/graph/graphSlice';
 
-export default function ProfileTags({tags, isMyProfile, graphData, setGraphData}) {
+export default function ProfileTags({tags, isMyProfile, graphData, setGraphData, updateTags}) {
     const user = useSelector(state => state.graph.user);
     tags = user.tags;
     const chipInputRef = useRef(null);
@@ -15,7 +15,9 @@ export default function ProfileTags({tags, isMyProfile, graphData, setGraphData}
 
     const addTag = (tag) => {
       console.log("adding tag " + tag)
-      // const newTags = tags + "#" + tag;
+      
+      const newTags = tags + "#" + tag;
+      updateTags(user._id, newTags)
       // const currentNode = graphData.nodes.filter(n => n.id == user._id)[0];
       // const otherNodes = graphData.nodes.filter(n => n.id != user._id);
       // const updatedNode = {...currentNode, tags: newTags}

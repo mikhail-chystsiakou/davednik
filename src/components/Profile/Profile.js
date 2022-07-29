@@ -15,7 +15,7 @@ import ProfileHeader from './ProfileHeader';
 
 
 function Profile({
-  graphData, setGraphData,
+  graphData, setGraphData, updateTags,
   connectNodes, name = "Михаил Чистяков",
   tags = "#programmer#run#artist#extravert",
   tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
@@ -48,7 +48,7 @@ function Profile({
     <Box sx={profileBoxStyle}>
       <Box sx={{ padding: 3, display: 'flex', flexDirection: "column", gap: 3 }}>
         <ProfileHeader name={user.name} tgId={user.user} avatar={avatar} userId={user._id} me={me._id} isGuest={isGuest} connectNodes={connectNodes} isMyProfile={isMyProfile} setUserEditedName={setUserEditedName} saveEdit={saveEdit}/>
-        <ProfileTags isMyProfile={isMyProfile} graphData={graphData} setGraphData={setGraphData}/>
+        <ProfileTags updateTags={updateTags} isMyProfile={isMyProfile} graphData={graphData} setGraphData={setGraphData}/>
         <About about={about} isMyProfile={isMyProfile} setUserEditedAbout={setUserEditedAbout}/>
         {!isMyProfile && <MyNotes />}
       </Box>

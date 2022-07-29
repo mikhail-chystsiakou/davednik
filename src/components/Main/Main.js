@@ -12,7 +12,7 @@ const fabStyle = {
   right: 32,
 };
 
-export default function Main({ graphData, setGraphData, connectNodes }) {
+export default function Main({ graphData, setGraphData, connectNodes, updateTags }) {
   const profileIsOpen = useSelector(state => state.window.profileIsOpen);
   const dispatch = useDispatch();
 
@@ -22,7 +22,7 @@ export default function Main({ graphData, setGraphData, connectNodes }) {
       <Fab sx={fabStyle} color='secondary' onClick={() => dispatch((profileIsOpen) ? closeProfile() : openProfile())}>
         <Person />
       </Fab>
-      {(profileIsOpen) && <Profile graphData={graphData} setGraphData={setGraphData} connectNodes={connectNodes} />}
+      {(profileIsOpen) && <Profile updateTags = {updateTags} graphData={graphData} setGraphData={setGraphData} connectNodes={connectNodes} />}
     </>
   )
 }
