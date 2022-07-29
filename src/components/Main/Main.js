@@ -12,7 +12,7 @@ const fabStyle = {
   right: 32,
 };
 
-export default function Main({ graphData, setGraphData, connectNodes, disconnectNodes }) {
+export default function Main({ graphData, setGraphData, connectNodes, disconnectNodes, updateTags }) {
   const profileIsOpen = useSelector(state => state.window.profileIsOpen);
   const dispatch = useDispatch();
 
@@ -27,6 +27,7 @@ export default function Main({ graphData, setGraphData, connectNodes, disconnect
           setGraphData={setGraphData}
           connectNodes={connectNodes}
           disconnectNodes={disconnectNodes}
+          updateTags = {updateTags}
         />
       }
     </>
