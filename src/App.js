@@ -1,21 +1,9 @@
-import React, { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useEffect, useRef, useState } from "react";
-import { ForceGraph2D } from 'react-force-graph';
-import './App.css';
-import Profile from './components/Profile';
-
-var data = {
-  nodes: [{ id: "Volha Lytkina", color: "#3050C1" }, { id: "B", color: "#ADA8A8" }, { id: "C", color: "#ADA8A8" }, { id: "D", color: "#ADA8A8" }],
-  links: [
-    { source: "Volha Lytkina", target: "B", value: 8 },
-    { source: "Volha Lytkina", target: "C", value: 10 },
-    { source: "Volha Lytkina", target: "D", value: 6 }
-  ]
-};
-
-//inner page size
-const pageWidth = document.documentElement.clientWidth
-const pageHeight = document.documentElement.clientHeight
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React, { useState } from "react";
+import DavednikGraph from './components/DavednikGraph';
+import Main from './components/Main/Main';
+import LoginForm from './components/Login/LoginForm.js';
+import { useDispatch, useSelector } from 'react-redux';
 
 const theme = createTheme({
   typography: {
@@ -23,44 +11,39 @@ const theme = createTheme({
       'Montserrat',
     ].join(','),
   },
+  palette: {
+    secondary: {
+      main: "#000000",
+    }
+  }
 });
 
-function App() {
-  const [profileIsOpen, setProfileIsOpen] = useState(false);
-  const forceRef = useRef(null);
-  useEffect(() => {
-    forceRef.current.d3Force("charge").strength(-400);
-  });
+export default function App() {
+  const [graphData, setGraphData] = useState({nodes:[], links:[]});
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const me = useSelector(state => state.user.user);
 
-  const handleNodeClick = (node) => {
-    console.log("Hello from console");
-    console.log(node);
-    setProfileIsOpen(true);
-  };
-
-  const handleCloseProfile = () => setProfileIsOpen(false);
-
+  const handleLogin = (user) => {
+    setGraphData({
+      nodes: [...graphData.nodes, { ...user }],
+      links: graphData.links
+    })
+  }
   return (
     <ThemeProvider theme={theme}>
-      <>
-        <ForceGraph2D
-          width={pageWidth}
-          height={pageHeight}
-          graphData={data}
-          nodeLabel="id"
-          backgroundColor="#E7E7E7"
-          linkCurvature="curvature"
-          enablePointerInteraction={true}
-          linkDirectionalParticleWidth={1}
-          onNodeClick={handleNodeClick}
-          ref={forceRef}
-        />
-        {profileIsOpen &&
-          <Profile handleCloseProfile={handleCloseProfile} />
-        }
-      </>
+      <LoginForm
+        isOpen={isDialogOpen}
+        handleClose={() => setIsDialogOpen(!isDialogOpen)}
+        handleLogin={handleLogin}
+      />
+      {
+        (me && me._id) ? 
+        <>
+        <Main graphData={graphData} setGraphData={setGraphData} />
+        <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
+        </>
+        : (!isDialogOpen && "Loading...")
+      }      
     </ThemeProvider>
   );
 }
-
-export default App;

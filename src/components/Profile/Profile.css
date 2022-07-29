@@ -1,0 +1,26 @@
+.profileBoxStyle {
+    top: '20%';
+    right: '20%';
+    max-width: 489;
+    max-height: 632;
+    background-color: "#FFFFFF";
+    border-radius: 10;
+}
+
+.tags {
+    display: flex;
+    flex-direction: row;
+    gap: 33px;
+}
+
+.line {
+    border: none;
+    background-color: #ADA8A8;
+    height: 2px;
+    width: 20px;
+}
+
+.lineButton {
+    margin: 0 auto;
+    padding: 0;
+}
