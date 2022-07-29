@@ -7,14 +7,6 @@ export function loadAllUsers() {
   }).then(res => res.json()).then((responseData) => responseData.users);
 }
 
-export function pushUser(user) {
-  return fetch(`${API_ADDRESS}users/${user.user.id}`, {
-    method: "POST",
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(user) // body data type must match "Content-Type"
-  }).then(res => res.json());
-}
-
 export function loadAllEdges() {
   return fetch(`${API_ADDRESS}edges/`, {
     method: "GET",
