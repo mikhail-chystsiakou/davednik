@@ -28,7 +28,6 @@ function Profile({
   const [userEditedName, setUserEditedName] = useState(user.name);
   const [userEditedAbout, setUserEditedAbout] = useState(user.about);
 
-
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
     borderRadius: 5,
@@ -37,7 +36,8 @@ function Profile({
     height: window.innerHeight / 2
   };
 
-  const isMyProfile = user._id === me._id;
+  const isMyProfile = (user._id === me._id);
+  const isGuest = (me._id == "guest") ;
 
   const connectNodes = ({ from, to }) => {
     console.log(from, to)
@@ -53,10 +53,10 @@ function Profile({
   return (
     <Box sx={profileBoxStyle}>
       <Box sx={{ padding: 3, display: 'flex', flexDirection: "column", gap: 3 }}>
-        <ProfileHeader name={name} tgId={tgId} avatar={avatar} isMyProfile={isMyProfile}/>
+        <ProfileHeader name={user.name} tgId={user.user} avatar={avatar} isMyProfile={isMyProfile} isGuest={isGuest}/>
         <Box>
         {
-          tags.split('#').slice(1).map(tag => {
+          user.tags.split('#').slice(1).map(tag => {
             if (isMyProfile) {
               return <Chip label={"#" + tag} variant="outlined"
                 onDelete={() => { console.log("todo") }}
@@ -70,8 +70,8 @@ function Profile({
           })
         }
         </Box>        
-        <About isNotes={false} about={about} />
-        <About isNotes={true} about={about} userId={user._id} me={me._id} />
+        <About isNotes={false} about={user.about} />
+        <About isNotes={true} about={user.about} userId={user._id} me={me._id} />
         <Box sx={{height: 64}}> </Box>
       </Box>
     </Box >

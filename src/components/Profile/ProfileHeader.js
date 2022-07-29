@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleProfileOpen } from '../../features/window/windowSlice';
 
-export default function Header({ name, tgId, avatar, isMyProfile }) {
+export default function Header({ name, tgId, avatar, isMyProfile, isGuest }) {
 
   const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ export default function Header({ name, tgId, avatar, isMyProfile }) {
             <img src={telegram} width={15} height={15} />
             <Typography variant='body2'>{tgId}</Typography>
           </Box>
-          { !isMyProfile && <ConnectButton variant="contained">Connect</ConnectButton>}
+          { !isMyProfile && !isGuest && <ConnectButton variant="contained">Connect</ConnectButton>}
         </Box>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>

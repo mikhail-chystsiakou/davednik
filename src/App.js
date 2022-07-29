@@ -24,18 +24,11 @@ export default function App() {
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const me = useSelector(state => state.user.user);
 
-  const handleLogin = (user) => {
-    setGraphData({
-      nodes: [...graphData.nodes, { ...user }],
-      links: graphData.links
-    })
-  }
   return (
     <ThemeProvider theme={theme}>
       <LoginForm
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(!isDialogOpen)}
-        handleLogin={handleLogin}
       />
       {
         (me && me._id) ?
