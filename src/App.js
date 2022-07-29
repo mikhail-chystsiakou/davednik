@@ -5,6 +5,7 @@ import Main from './components/Main/Main';
 import LoginForm from './components/Login/LoginForm.js';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
+import graphSlice from './features/graph/graphSlice';
 
 const theme = createTheme({
   typography: {
@@ -39,11 +40,10 @@ export default function App() {
     });
   }
   const disconnectNodes = (from, to) => {
-    console.log(from, to)
     setGraphData(() => {
       return {
         nodes: graphData.nodes,
-        links: graphData.links.filter(link => (link.source !== from && link.target !== to)),
+        links: graphData.links.filter(link => (link.source.id !== from || link.target.id !== to)),
       };
     });
   }
