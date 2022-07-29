@@ -53,7 +53,7 @@ function Profile({
   return (
     <Box sx={profileBoxStyle}>
       <Box sx={{ padding: 3, display: 'flex', flexDirection: "column", gap: 3 }}>
-        <ProfileHeader name={name} tgId={tgId} avatar={avatar} />
+        <ProfileHeader name={name} tgId={tgId} avatar={avatar} isMyProfile={isMyProfile}/>
         <Box>
         {
           tags.split('#').slice(1).map(tag => {
