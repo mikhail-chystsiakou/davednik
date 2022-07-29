@@ -45,7 +45,7 @@ function Profile({
       <Box sx={{ padding: 3, display: 'flex', flexDirection: "column", gap: 3 }}>
         <ProfileHeader name={user.name} tgId={user.user} avatar={avatar} userId={user._id} me={me._id} isGuest={isGuest} connectNodes={connectNodes} isMyProfile={isMyProfile} setUserEditedName={setUserEditedName} saveEdit={saveEdit}/>
         <Box>
-          {
+          {(user.tags) &&
             user.tags.split('#').slice(1).map(tag => {
               if (isMyProfile) {
                 return <Chip label={"#" + tag} variant="outlined"

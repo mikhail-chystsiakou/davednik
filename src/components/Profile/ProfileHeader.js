@@ -1,8 +1,8 @@
+import React, { useEffect, useState } from 'react';
 import {
   Avatar, Box, Button, Typography, Input
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { closeProfile } from '../../features/window/windowSlice';
 import close from '../../img/close.png';
@@ -42,10 +42,9 @@ export default function Header({ name, tgId, avatar, me, userId, isGuest, connec
           </Box>
           {(me !== userId) && !isGuest && <ConnectButton variant="contained" onClick={() => {
             const createEdge = async () => {
-              console.log(me, userId)
               await connectNodes(me, userId)
+              await connectUsers({ from: me, to: userId });
             }
-            connectUsers(me, userId);
             createEdge().catch(console.error);
           }}>Connect</ConnectButton>}
         </Box>
