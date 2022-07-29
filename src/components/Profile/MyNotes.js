@@ -26,16 +26,15 @@ export default function MyNotes({ userId = "", me = "", isMyProfile }) {
   return (
     <Box>
       <Typography sx={{ fontSize: '1rem', fontWeight: 600 }}>Мои заметки</Typography>
-      <Typography sx={{ fontSize: '0.9rem', fontWeight: 400 }}>мои заметки</Typography>
-      {/* {(isNotes) ? (noteText !== null) ? 
+      {(noteText !== null) ?
         <TextareaAutosize
           aria-label="empty textarea"
           placeholder="Здесь вы можете оставить заметки об этом пользователе. Никто кроме вас их не увидит"
           value={noteText}
           onChange={event => handleUpdate(event.target.value)}
           style={{ minWidth: '99%' }}
-        /> : <CircularProgress />  :
-        <Typography sx={{ fontSize: '0.9rem', fontWeight: 400 }}>{about}</Typography> */}
+        /> : <CircularProgress />
+      }
     </Box>
   )
 }
