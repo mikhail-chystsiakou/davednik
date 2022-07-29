@@ -4,7 +4,7 @@ import Profile from '../Profile/Profile';
 import Search from '../Search/Search';
 import Person from '@mui/icons-material/Person';
 import { Fab } from '@mui/material';
-import { toggleProfileOpen } from '../../features/window/windowSlice';
+import { openProfile, closeProfile } from '../../features/window/windowSlice';
 
 const fabStyle = {
   position: 'absolute',
@@ -19,7 +19,7 @@ export default function Main({ graphData, setGraphData }) {
   return (
     <>
       <Search />
-      <Fab sx={fabStyle} color='secondary' onClick={() => dispatch(toggleProfileOpen())}>
+      <Fab sx={fabStyle} color='secondary' onClick={() => dispatch((profileIsOpen) ? closeProfile() : openProfile())}>
         <Person />
       </Fab>
       {(profileIsOpen) && <Profile setGraphData={setGraphData} />}

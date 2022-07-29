@@ -1,13 +1,13 @@
 import { API_ADDRESS } from '../../const';
 
-export function getUser(userId) {
+export async function getUser(userId) {
   return fetch(`${API_ADDRESS}users/${userId}`, {
     method: "GET",
     headers: { 'Content-Type': 'application/json' },
   }).then(res => res.json()).then((responseData) => responseData.user);
 }
 
-export function editUser(user) {
+export async function editUser(user) {
   const id = user.id;
   return fetch(`${API_ADDRESS}users/${id.replace('users/', '')}`, {
     method: "PUT",
@@ -16,7 +16,26 @@ export function editUser(user) {
   }).then(res => res.json());
 }
 
-export function searchByTag(tag) {
+export async function loginUser(user) {
+  const possibleUser = await getUser(user.user.id);
+  if (possibleUser === {} || !possibleUser) {  // If user doesnt exists - create new user
+    const result = await fetch(`${API_ADDRESS}users/${user.user.id}`, {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user) // body data type must match "Content-Type"
+    }).then(res => res.json());
+    console.log(result)
+    if (result.success) {
+      return { user: { ...user, _id: result.success } }
+    }
+    return result;
+  };
+  console.log('possibleUser = ', possibleUser)
+  return {user: possibleUser}; // if user already exists - return user
+}
+
+
+export async function searchByTag(tag) {
   const tagTitle = tag //.replace(/[^0-9a-z]/gi, '')
   return fetch(`${API_ADDRESS}search/tag/${tag}`, {
     method: "GET",
@@ -24,9 +43,8 @@ export function searchByTag(tag) {
   }).then(res => res.json()).then((responseData) => responseData.users)
 }
 
-export function searchUser(user) {
-  const userName = user.replace(/[^0-9a-z]/gi, '')
-  return fetch(`${API_ADDRESS}search/name/${userName}`, {
+export async function searchUser(user) {
+  return fetch(`${API_ADDRESS}search/name/${user}`, {
     method: "GET",
     headers: { 'Content-Type': 'application/json' }
   }).then(res => res.json()).then((responseData) => responseData.users)

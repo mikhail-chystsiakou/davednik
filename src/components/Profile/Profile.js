@@ -71,7 +71,7 @@ function Profile({
         }
         </Box>        
         <About isNotes={false} about={about} />
-        <About isNotes={true} about={about} />
+        <About isNotes={true} about={about} userId={user._id} me={me._id} />
         <Box sx={{height: 64}}> </Box>
       </Box>
     </Box >
