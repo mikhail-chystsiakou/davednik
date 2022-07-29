@@ -43,7 +43,6 @@ export default function App() {
       <LoginForm
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(!isDialogOpen)}
-        handleLogin={handleLogin}
       />
       {
         (me && me._id) ?

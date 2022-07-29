@@ -11,8 +11,7 @@ import { toggleProfileOpen } from '../../features/window/windowSlice';
 import { connectUsers } from '../../features/graph/graphAPI';
 
 
-export default function Header({ name, tgId, avatar, me, userId, connectNodes }) {
-
+export default function Header({ name, tgId, avatar, me, userId, isGuest, connectNodes }) {
   const dispatch = useDispatch();
 
   const ConnectButton = styled(Button)({
@@ -37,7 +36,7 @@ export default function Header({ name, tgId, avatar, me, userId, connectNodes })
             <img src={telegram} width={15} height={15} />
             <Typography variant='body2'>{tgId}</Typography>
           </Box>
-          {(me !== userId) && <ConnectButton variant="contained" onClick={() => {
+          {(me !== userId) && !isGuest && <ConnectButton variant="contained" onClick={() => {
             const createEdge = async () => {
               console.log(me, userId)
               await connectNodes(me, userId)
