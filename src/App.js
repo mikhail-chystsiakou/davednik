@@ -37,11 +37,12 @@ export default function App() {
   const connectNodes = (from, to) => {
     setGraphData(() => {
       return {
-        nodes: [...graphData.nodes],
+        nodes: graphData.nodes,
         links: [...graphData.links, { source: from, target: to }]
       };
     });
   }
+
   const updateTags = (userId, tags) => {
     const otherNodes = graphData.nodes.filter(n=>n.id!=userId);
     const node = graphData.nodes.filter(n=>n.id==userId)[0];
@@ -66,10 +67,20 @@ export default function App() {
     setGraphData(() => {
       return {
         nodes: [...graphData.nodes],
-        links: [...oldLinks, ...updatedLinks]
-      };
+        links: [...oldLinks, ...updatedLinks],
+      }
     });
   }
+
+  const disconnectNodes = (from, to) => {
+    console.log(from, to)
+    setGraphData(() => {
+      return {
+        nodes: graphData.nodes,
+        links: graphData.links.filter(link => (link.source !== from && link.target !== to)),
+      };
+    });
+  };
   return (
     <ThemeProvider theme={theme}>
       <LoginForm
@@ -79,7 +90,12 @@ export default function App() {
       {
         (me && me._id) ?
           <>
-            <Main graphData={graphData} setGraphData={setGraphData} connectNodes={connectNodes} updateTags={updateTags} />
+            <Main
+              graphData={graphData} setGraphData={setGraphData}
+              connectNodes={connectNodes}
+              disconnectNodes={disconnectNodes}
+              updateTags={updateTags}
+            />
             <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
           </>
           : (!isDialogOpen &&
