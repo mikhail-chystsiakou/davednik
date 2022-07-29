@@ -19,7 +19,8 @@ import About from './About';
 
 
 function Profile({
-  setGraphData, name = "Михаил Чистяков", tags = "#programmer#run#artist#extravert",
+  connectNodes, name = "Михаил Чистяков",
+  tags = "#programmer#run#artist#extravert",
   tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
 }) {
   const dispatch = useDispatch();
@@ -39,21 +40,10 @@ function Profile({
 
   const isMyProfile = user._id === me._id;
 
-  const connectNodes = ({ from, to }) => {
-    console.log(from, to)
-    setGraphData(({ nodes, links }) => {
-      return {
-        nodes: [...nodes],
-        links: [...links, { source: from, target: to }]
-      };
-    });
-    connectUsers({ from: from, to: to });
-  }
-
   return (
     <Fade style={profileBoxStyle}>
       <Box sx={{ padding: 3 }}>
-        <ProfileHeader name={name} tgId={tgId} avatar={avatar} />
+        <ProfileHeader name={name} tgId={tgId} avatar={avatar} me={me._id} userId={user._id} connectNodes={connectNodes} />
         {
           tags.split('#').slice(1).map(tag => {
             if (isMyProfile) {
@@ -70,7 +60,7 @@ function Profile({
         }
         <About isNotes={false} about={about} />
         <About isNotes={true} about={about} userId={user._id} me={me._id} />
-        <Box sx={{height: 64}}> </Box>
+        <Box sx={{ height: 64 }}> </Box>
       </Box>
     </Fade >
   );
