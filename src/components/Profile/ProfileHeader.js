@@ -8,9 +8,10 @@ import close from '../../img/close.png';
 import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleProfileOpen } from '../../features/window/windowSlice';
+import { connectUsers } from '../../features/graph/graphAPI';
 
-export default function Header({ name, tgId, avatar, isMyProfile, isGuest }) {
 
+export default function Header({ name, tgId, avatar, me, userId, isGuest, connectNodes }) {
   const dispatch = useDispatch();
 
   const ConnectButton = styled(Button)({
@@ -31,11 +32,18 @@ export default function Header({ name, tgId, avatar, isMyProfile, isGuest }) {
         <Avatar src={avatar} sx={{ maxWidth: 80, maxHeight: 80, minWidth: 80, minHeight: 80 }} />
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: 0.5 }}>
           <Typography sx={{ fontSize: 15, fontWeight: 600 }}>{name}</Typography>
-          <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center'}}>
+          <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
             <img src={telegram} width={15} height={15} />
             <Typography variant='body2'>{tgId}</Typography>
           </Box>
-          { !isMyProfile && !isGuest && <ConnectButton variant="contained">Connect</ConnectButton>}
+          {(me !== userId) && !isGuest && <ConnectButton variant="contained" onClick={() => {
+            const createEdge = async () => {
+              console.log(me, userId)
+              await connectNodes(me, userId)
+            }
+            connectUsers(me, userId);
+            createEdge().catch(console.error);
+          }}>Connect</ConnectButton>}
         </Box>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>

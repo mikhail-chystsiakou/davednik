@@ -14,7 +14,7 @@ export function loadAllEdges() {
   }).then(res => res.json()).then((responseData) => responseData.edges);
 }
 
-export function connectUsers(link) {
+export async function connectUsers(link) {
   return fetch(`${API_ADDRESS}edges/`, {
     method: "POST",
     headers: { 'Content-Type': 'application/json' },

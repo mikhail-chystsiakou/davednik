@@ -20,7 +20,9 @@ import About from './About';
 
 
 function Profile({
-  setGraphData, name = "Михаил Чистяков", tags = "#programmer#run#artist#extravert",
+  graphData, setGraphData,
+  connectNodes, name = "Михаил Чистяков",
+  tags = "#programmer#run#artist#extravert",
   tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
 }) {
   const dispatch = useDispatch();
@@ -28,10 +30,6 @@ function Profile({
   const me = useSelector(state => state.user.user);
   const [userEditedName, setUserEditedName] = useState(user.name);
   const [userEditedAbout, setUserEditedAbout] = useState(user.about);
-
-  const setTags = (tags) => {
-
-  }
 
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
@@ -42,28 +40,16 @@ function Profile({
   };
 
   const isMyProfile = (user._id === me._id);
-  const isGuest = (me._id == "guest") ;
-
-  const connectNodes = ({ from, to }) => {
-    console.log(from, to)
-    setGraphData(({ nodes, links }) => {
-      return {
-        nodes: [...nodes],
-        links: [...links, { source: from, target: to }]
-      };
-    });
-    connectUsers({ from: from, to: to });
-  }
+  const isGuest = (me._id == "guest");
 
   return (
     <Box sx={profileBoxStyle}>
       <Box sx={{ padding: 3, display: 'flex', flexDirection: "column", gap: 3 }}>
         <ProfileHeader name={user.name} tgId={user.user} avatar={avatar} isMyProfile={isMyProfile} isGuest={isGuest}/>
-        <ProfileTags tags={user.tags} isMyProfile={isMyProfile}/>
-        
+        <ProfileTags isMyProfile={isMyProfile} graphData={graphData} setGraphData={setGraphData}/>
         <About isNotes={false} about={user.about} />
         <About isNotes={true} about={user.about} userId={user._id} me={me._id} />
-        <Box sx={{height: 64}}> </Box>
+        <Box sx={{ height: 64 }}> </Box>
       </Box>
     </Box >
   );

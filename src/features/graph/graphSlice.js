@@ -14,7 +14,7 @@ export const graphSlice = createSlice({
     },
     setCurrentUser: (state, action) => {
       state.user = action.payload;
-    }
+    },
   }
 })
 
