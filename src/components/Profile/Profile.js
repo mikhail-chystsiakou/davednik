@@ -6,6 +6,8 @@ import { connectUsers } from '../../features/graph/graphAPI';
 import avatar from '../../img/avatar.png';
 import './Profile.css';
 import { editUser } from '../../features/user/userAPI';
+import { Fade } from "react-awesome-reveal";
+import ProfileTags from './ProfileTags';
 
 import About from './About';
 import MyNotes from './MyNotes';
@@ -13,7 +15,9 @@ import ProfileHeader from './ProfileHeader';
 
 
 function Profile({
-  connectNodes, disconnectNodes, setGraphData, name = "Михаил Чистяков", tags = "#programmer#run#artist#extravert",
+  graphData, setGraphData,
+  connectNodes, disconnectNodes,  name = "Михаил Чистяков",
+  tags = "#programmer#run#artist#extravert",
   tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
 }) {
   const dispatch = useDispatch();
@@ -50,22 +54,7 @@ function Profile({
           isMyProfile={isMyProfile} setUserEditedName={setUserEditedName}
           saveEdit={saveEdit}
         />
-        <Box>
-          {(user.tags) &&
-            user.tags.split('#').slice(1).map(tag => {
-              if (isMyProfile) {
-                return <Chip label={"#" + tag} variant="outlined"
-                  onDelete={() => { console.log("todo") }}
-                  sx={{ margin: 1 }}
-                />
-              }
-              return <Chip label={"#" + tag} variant="outlined"
-                onClick={() => { }}
-                sx={{ margin: 1 }}
-              />
-            })
-          }
-        </Box>
+        <ProfileTags isMyProfile={isMyProfile} graphData={graphData} setGraphData={setGraphData} />
         <About about={about} isMyProfile={isMyProfile} setUserEditedAbout={setUserEditedAbout} />
         {!isMyProfile && <MyNotes />}
       </Box>
