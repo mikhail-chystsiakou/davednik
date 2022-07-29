@@ -9,6 +9,7 @@ import { getNote, updateNote } from '../../supabaseClient/api';
 
 export default function About({ isNotes = false, about = 'lorem ipsum', userId = "", me = "" }) {
   const [noteText, setNoteText] = useState(about);
+  console.log(me, userId)
 
   const handleUpdate = async (value) => {
     setNoteText(value)
@@ -20,7 +21,7 @@ export default function About({ isNotes = false, about = 'lorem ipsum', userId =
       setNoteText(await getNote(author, user));
     }
     getNoteOnServer(me, userId).then(res => res).catch(console.error);
-  }, [])
+  }, [userId, me])
 
   return (
     <Box>
