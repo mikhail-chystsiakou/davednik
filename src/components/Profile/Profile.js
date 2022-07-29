@@ -31,7 +31,7 @@ function Profile({
 
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
-    borderRadius: 10,
+    borderRadius: 5,
     overflowY: 'auto',
     position: 'absolute', left: '2%', right: "2%", bottom: "2%", zIndex: 9,
     height: window.innerHeight / 2
@@ -51,9 +51,10 @@ function Profile({
   }
 
   return (
-    <Fade style={profileBoxStyle}>
-      <Box sx={{ padding: 3 }}>
+    <Box sx={profileBoxStyle}>
+      <Box sx={{ padding: 3, display: 'flex', flexDirection: "column", gap: 3 }}>
         <ProfileHeader name={name} tgId={tgId} avatar={avatar} />
+        <Box>
         {
           tags.split('#').slice(1).map(tag => {
             if (isMyProfile) {
@@ -68,11 +69,12 @@ function Profile({
             />
           })
         }
+        </Box>        
         <About isNotes={false} about={about} />
         <About isNotes={true} about={about} />
         <Box sx={{height: 64}}> </Box>
       </Box>
-    </Fade >
+    </Box >
   );
 }
 
