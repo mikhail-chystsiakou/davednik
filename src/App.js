@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import DavednikGraph from './components/DavednikGraph';
 import Main from './components/Main/Main';
 import LoginForm from './components/Login/LoginForm.js';
@@ -30,17 +30,24 @@ export default function App() {
       links: graphData.links
     })
   }
+  const connectNodes = (from, to) => {
+    setGraphData(() => {
+      return {
+        nodes: [...graphData.nodes],
+        links: [...graphData.links, { source: from, target: to }]
+      };
+    });
+  }
   return (
     <ThemeProvider theme={theme}>
       <LoginForm
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(!isDialogOpen)}
-        handleLogin={handleLogin}
       />
       {
         (me && me._id) ?
           <>
-            <Main graphData={graphData} setGraphData={setGraphData} />
+            <Main graphData={graphData} setGraphData={setGraphData} connectNodes={connectNodes} />
             <DavednikGraph graphData={graphData} setGraphData={setGraphData} />
           </>
           : (!isDialogOpen &&

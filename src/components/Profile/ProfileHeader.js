@@ -3,14 +3,15 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { closeProfile } from '../../features/window/windowSlice';
 import close from '../../img/close.png';
 import save from '../../img/done.png';
 import telegram from '../../img/telegram.png';
+import { connectUsers } from '../../features/graph/graphAPI';
 
-export default function Header({ name, tgId, avatar, isMyProfile }) {
 
+export default function Header({ name, tgId, avatar, me, userId, isGuest, connectNodes }) {
   const dispatch = useDispatch();
 
   const ConnectButton = styled(Button)({
@@ -36,7 +37,14 @@ export default function Header({ name, tgId, avatar, isMyProfile }) {
             <img src={telegram} width={15} height={15} />
             <Typography variant='body2'>{tgId}</Typography>
           </Box>
-          { !isMyProfile && <ConnectButton variant="contained">Connect</ConnectButton>}
+          {(me !== userId) && !isGuest && <ConnectButton variant="contained" onClick={() => {
+            const createEdge = async () => {
+              console.log(me, userId)
+              await connectNodes(me, userId)
+            }
+            connectUsers(me, userId);
+            createEdge().catch(console.error);
+          }}>Connect</ConnectButton>}
         </Box>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>

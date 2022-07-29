@@ -9,7 +9,7 @@ import * as graphAPI from '../features/graph/graphAPI';
 function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
   const fgRef = useRef();
   const dispatch = useDispatch();
-  const { loginedUser } = useSelector(state => state.graph);
+  const loginedUser = useSelector(state => state.user.user);
   const highlightedNodes = useSelector(state => state.user.searchResult);
   const profileIsOpen = useSelector(state => state.window.profileIsOpen);
   const [hoverNode, setHoverNode] = useState(null);
@@ -97,7 +97,7 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
           }}
 
           // linkDirectionalParticles={3}  // for points at links
-          linkWidth={5}
+          linkWidth={2}
 
         />
       }

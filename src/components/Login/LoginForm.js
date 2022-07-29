@@ -6,7 +6,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TelegramLoginButton from 'react-telegram-login';
 import { useDispatch } from 'react-redux';
-import { setLoginedUser } from '../../features/graph/graphSlice'
 import { loginUser } from '../../features/user/userAPI';
 import { setUser } from '../../features/user/userSlice';
 
@@ -21,19 +20,13 @@ const fakeUser = {
 };
 
 
-export default function LoginForm({ isOpen, handleLogin, handleClose }) {
+export default function LoginForm({ isOpen, handleClose }) {
   const dispatch = useDispatch();
 
   const handleTelegramResponse = response => {
+    console.log(response)
 
     const name = response.first_name + (response.last_name ? " " + response.last_name : "");
-    const user = {
-      _id: null,
-      id: response.username,
-      color: "#3050C1",
-      name: name,
-      tags: "",
-    }
 
     const addUserRequest = {
       id: response.id,
@@ -44,13 +37,16 @@ export default function LoginForm({ isOpen, handleLogin, handleClose }) {
     }
 
     loginUser({ user: addUserRequest }).then(res => {
-      console.log("res = ", res)
-      handleLogin(user);
       dispatch(setUser({ ...res.user }));
-      dispatch(setLoginedUser({ ...res.user }));
     });
     handleClose();
   };
+
+  const handleGuestLogin = () => {
+    dispatch(setUser({ id: "guest", _id: "guest" }));
+    handleClose();
+  };
+
   return (
     <Dialog open={isOpen} onClose={handleClose}>
       <DialogTitle>Вход</DialogTitle>
@@ -61,7 +57,7 @@ export default function LoginForm({ isOpen, handleLogin, handleClose }) {
         <TelegramLoginButton dataOnauth={handleTelegramResponse} botName="lipenski_davednik_bot" />
         <Button onClick={() => handleTelegramResponse(fakeUser)}>Fake login</Button> <br />
 
-        <Button onClick={handleClose}>Войти гостем</Button>
+        <Button onClick={() => handleGuestLogin()}>Войти гостем</Button>
       </DialogContent>
     </Dialog>
   )
