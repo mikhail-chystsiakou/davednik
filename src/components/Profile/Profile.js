@@ -13,6 +13,7 @@ import './Profile.css';
 import { connectUsers } from '../../features/graph/graphAPI';
 import { editUser } from '../../features/user/userAPI';
 import { Fade } from "react-awesome-reveal";
+import ProfileTags from './ProfileTags';
 
 import ProfileHeader from './ProfileHeader';
 import About from './About';
@@ -27,6 +28,10 @@ function Profile({
   const me = useSelector(state => state.user.user);
   const [userEditedName, setUserEditedName] = useState(user.name);
   const [userEditedAbout, setUserEditedAbout] = useState(user.about);
+
+  const setTags = (tags) => {
+
+  }
 
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
@@ -54,22 +59,8 @@ function Profile({
     <Box sx={profileBoxStyle}>
       <Box sx={{ padding: 3, display: 'flex', flexDirection: "column", gap: 3 }}>
         <ProfileHeader name={user.name} tgId={user.user} avatar={avatar} isMyProfile={isMyProfile} isGuest={isGuest}/>
-        <Box>
-        {
-          user.tags.split('#').slice(1).map(tag => {
-            if (isMyProfile) {
-              return <Chip label={"#" + tag} variant="outlined"
-                onDelete={() => { console.log("todo") }}
-                sx={{ margin: 1 }}
-              />
-            }
-            return <Chip label={"#" + tag} variant="outlined"
-              onClick={() => { }}
-              sx={{ margin: 1 }}
-            />
-          })
-        }
-        </Box>        
+        <ProfileTags tags={user.tags} isMyProfile={isMyProfile}/>
+        
         <About isNotes={false} about={user.about} />
         <About isNotes={true} about={user.about} userId={user._id} me={me._id} />
         <Box sx={{height: 64}}> </Box>
