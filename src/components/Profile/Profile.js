@@ -1,22 +1,17 @@
-import { Avatar, Box, Button, Chip, IconButton, Input, Typography } from '@mui/material';
+import { Box, Chip } from '@mui/material';
 
-import { styled } from '@mui/material/styles';
 import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleProfileOpen } from '../../features/window/windowSlice';
-import avatar from '../../img/avatar.png';
-import close from '../../img/close.png';
-import save from '../../img/done.png';
-import edit from '../../img/edit.png';
-import telegram from '../../img/telegram.png';
-import './Profile.css';
 import { connectUsers } from '../../features/graph/graphAPI';
+import avatar from '../../img/avatar.png';
+import './Profile.css';
 import { editUser } from '../../features/user/userAPI';
 import { Fade } from "react-awesome-reveal";
 import ProfileTags from './ProfileTags';
 
-import ProfileHeader from './ProfileHeader';
 import About from './About';
+import MyNotes from './MyNotes';
+import ProfileHeader from './ProfileHeader';
 
 
 function Profile({
@@ -31,6 +26,7 @@ function Profile({
   const [userEditedName, setUserEditedName] = useState(user.name);
   const [userEditedAbout, setUserEditedAbout] = useState(user.about);
 
+
   const profileBoxStyle = {
     backgroundColor: "#FFFFFF",
     borderRadius: 5,
@@ -42,14 +38,19 @@ function Profile({
   const isMyProfile = (user._id === me._id);
   const isGuest = (me._id == "guest");
 
+  const saveEdit = () => {
+    var editedUser = {...user, name: userEditedName, about: userEditedAbout};
+    editUser(editedUser);
+    console.log(editedUser)
+  }
+
   return (
     <Box sx={profileBoxStyle}>
       <Box sx={{ padding: 3, display: 'flex', flexDirection: "column", gap: 3 }}>
-        <ProfileHeader name={user.name} tgId={user.user} avatar={avatar} isMyProfile={isMyProfile} isGuest={isGuest}/>
+        <ProfileHeader name={user.name} tgId={user.user} avatar={avatar} userId={user._id} me={me._id} isGuest={isGuest} connectNodes={connectNodes} isMyProfile={isMyProfile} setUserEditedName={setUserEditedName} saveEdit={saveEdit}/>
         <ProfileTags isMyProfile={isMyProfile} graphData={graphData} setGraphData={setGraphData}/>
-        <About isNotes={false} about={user.about} />
-        <About isNotes={true} about={user.about} userId={user._id} me={me._id} />
-        <Box sx={{ height: 64 }}> </Box>
+        <About about={about} isMyProfile={isMyProfile} setUserEditedAbout={setUserEditedAbout}/>
+        {!isMyProfile && <MyNotes />}
       </Box>
     </Box >
   );

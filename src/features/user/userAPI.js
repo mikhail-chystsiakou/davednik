@@ -31,12 +31,11 @@ export async function loginUser(user) {
     return result;
   };
   console.log('possibleUser = ', possibleUser)
-  return {user: possibleUser}; // if user already exists - return user
+  return { user: possibleUser }; // if user already exists - return user
 }
 
 
 export async function searchByTag(tag) {
-  const tagTitle = tag //.replace(/[^0-9a-z]/gi, '')
   return fetch(`${API_ADDRESS}search/tag/${tag}`, {
     method: "GET",
     headers: { 'Content-Type': 'application/json' }
