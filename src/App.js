@@ -73,11 +73,10 @@ export default function App() {
   }
 
   const disconnectNodes = (from, to) => {
-    console.log(from, to)
     setGraphData(() => {
       return {
         nodes: graphData.nodes,
-        links: graphData.links.filter(link => (link.source !== from && link.target !== to)),
+        links: graphData.links.filter(link => (link.source.id !== from || link.target.id !== to)),
       };
     });
   };
