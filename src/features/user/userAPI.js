@@ -7,6 +7,13 @@ export async function getUser(userId) {
   }).then(res => res.json()).then((responseData) => responseData.user);
 }
 
+export async function getNeighbors(userId) {
+  return fetch(`${API_ADDRESS}users/neighbors/${userId}`, {
+    method: "GET",
+    headers: { 'Content-Type': 'application/json' }
+  }).then(res => res.json()).then((responseData) => responseData.users.map(user => user._id));
+}
+
 export async function editUser(user) {
   const id = user.id;
   return fetch(`${API_ADDRESS}users/${id.replace('users/', '')}`, {
@@ -31,12 +38,11 @@ export async function loginUser(user) {
     return result;
   };
   console.log('possibleUser = ', possibleUser)
-  return {user: possibleUser}; // if user already exists - return user
+  return { user: possibleUser }; // if user already exists - return user
 }
 
 
 export async function searchByTag(tag) {
-  const tagTitle = tag //.replace(/[^0-9a-z]/gi, '')
   return fetch(`${API_ADDRESS}search/tag/${tag}`, {
     method: "GET",
     headers: { 'Content-Type': 'application/json' }

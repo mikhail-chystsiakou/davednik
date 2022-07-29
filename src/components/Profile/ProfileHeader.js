@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Avatar, Box, Typography, Button
 } from '@mui/material';
@@ -38,10 +38,9 @@ export default function Header({ name, tgId, avatar, me, userId, isGuest, connec
           </Box>
           {(me !== userId) && !isGuest && <ConnectButton variant="contained" onClick={() => {
             const createEdge = async () => {
-              console.log(me, userId)
               await connectNodes(me, userId)
+              await connectUsers({from: me, to: userId});
             }
-            connectUsers(me, userId);
             createEdge().catch(console.error);
           }}>Connect</ConnectButton>}
         </Box>
