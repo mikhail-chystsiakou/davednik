@@ -44,7 +44,11 @@ export default function LoginForm({ isOpen, handleClose }) {
 
     loginUser({ user: addUserRequest }).then(res => {
       dispatch(setUser({ ...res.user }));
-      loadUserNeighbors().catch(console.error);
+      try {
+        loadUserNeighbors().catch(console.error);
+      } catch (err) {
+        console.error(err)
+      }
     });
     handleClose();
   };
