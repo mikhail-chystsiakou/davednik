@@ -24,7 +24,7 @@ const fakeUser = {
 export default function LoginForm({ isOpen, handleClose }) {
   const dispatch = useDispatch();
 
-  const handleTelegramResponse = async response => {
+  const handleTelegramResponse = response => {
     console.log(response)
 
     const name = response.first_name + (response.last_name ? " " + response.last_name : "");
@@ -37,11 +37,14 @@ export default function LoginForm({ isOpen, handleClose }) {
       tags: ""
     }
 
-    const userNeighbors = await getNeighbors(response.id);
+    const loadUserNeighbors = async () => {
+      const userNeighbors = await getNeighbors(response.id);
+      dispatch(setNeighbors(userNeighbors))
+    }
 
     loginUser({ user: addUserRequest }).then(res => {
       dispatch(setUser({ ...res.user }));
-      dispatch(setNeighbors(userNeighbors))
+      loadUserNeighbors().catch(console.error);
     });
     handleClose();
   };
