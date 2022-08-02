@@ -46,6 +46,7 @@ export default function Search() {
           value={value}
           onChange={event => fetchRequest(event.target.value)}
           sx={{ width: '80%', maxWidth: 1000, backgroundColor: "#FFFFFF", marginLeft: 3 }}
+          id="search"
         />
       </Box>
     </Box>
