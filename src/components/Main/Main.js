@@ -19,15 +19,18 @@ export default function Main({ graphData, setGraphData, connectNodes, disconnect
   return (
     <>
       <Search />
-      <Fab sx={fabStyle} color='secondary' onClick={() => dispatch((profileIsOpen) ? closeProfile() : openProfile())}>
-        <Person />
-      </Fab>
+      {
+        !profileIsOpen &&
+        <Fab sx={fabStyle} color='secondary' onClick={() => dispatch((profileIsOpen) ? closeProfile() : openProfile())}>
+          <Person />
+        </Fab>
+      }
       {(profileIsOpen) &&
         <Profile
           setGraphData={setGraphData}
           connectNodes={connectNodes}
           disconnectNodes={disconnectNodes}
-          updateTags = {updateTags}
+          updateTags={updateTags}
         />
       }
     </>
