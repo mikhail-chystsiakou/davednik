@@ -7,7 +7,6 @@ import { editUser } from "../../features/user/userAPI";
 export default function About({ about, isMyProfile }) {
   const dispatch = useDispatch();
   const me = useSelector(state => state.user.user);
-  const user = useSelector(state => state.graph.user);
 
   const editUserAbout = (newAbout) => {
     editUser({ id: me.id, about: newAbout });

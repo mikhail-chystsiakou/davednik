@@ -40,7 +40,7 @@ function DavednikGraph() {
       let graph = { nodes: [], links: [] }
       for (const u of users) {
         graph.nodes.push({
-          id: u._id, name: u.name,
+          ...u, id: u._id,
           color: "#434343"
         })
       }

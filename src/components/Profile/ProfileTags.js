@@ -1,15 +1,19 @@
 import { Box, Chip, } from '@mui/material';
 import { useRef, useState, useLayoutEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentUser } from '../../features/graph/graphSlice';
 import { editUser } from '../../features/user/userAPI';
 import { setUser } from '../../features/user/userSlice';
 
 export default function ProfileTags({ isMyProfile, }) {
   const me = useSelector(state => state.user.user);
+  const user = useSelector(state => state.graph.user);
   const dispatch = useDispatch();
   const chipInputRef = useRef(null);
   let [tag, setTag] = useState("");
   let [chipActive, setChipActive] = useState(false);
+
+  console.log('user = ', user)
 
   const addTag = (tagElement) => {
     const newTags = me.tags + "#" + tagElement.textContent;
@@ -18,6 +22,7 @@ export default function ProfileTags({ isMyProfile, }) {
     };
     editUser(editedUser);
     dispatch(setUser({ ...me, tags: newTags }));
+    dispatch(setCurrentUser({ ...me, tags: newTags }));
   }
 
   let deleteTag = (tag) => {
@@ -31,18 +36,29 @@ export default function ProfileTags({ isMyProfile, }) {
     }
   }, [chipInputRef, chipActive]);
 
+  let tagsElements;
+  if (isMyProfile) {
+    tagsElements = me.tags.split('#').slice(1).map(tag => {
+      return <Chip
+        label={"#" + tag}
+        variant="outlined"
+        onDelete={(isMyProfile) ? () => deleteTag(tag) : () => { }}
+        sx={{ margin: 1 }}
+      />
+    })
+  } else {
+    tagsElements = user.tags.split('#').slice(1).map(tag => {
+      return <Chip
+        label={"#" + tag}
+        variant="outlined"
+        sx={{ margin: 1 }}
+      />
+    })
+  }
+
   return (
     <Box>
-      {
-        me.tags.split('#').slice(1).map(tag => {
-          return <Chip
-            label={"#" + tag}
-            variant="outlined"
-            onDelete={(isMyProfile) ? () => deleteTag(tag) : () => { }}
-            sx={{ margin: 1 }}
-          />
-        })
-      }
+      {tagsElements}
       {chipActive &&
         <div style={editChipContainer}>
           <span style={editChipSharp}>#</span>
@@ -51,6 +67,7 @@ export default function ProfileTags({ isMyProfile, }) {
             suppressContentEditableWarning={true}
             onChange={(e) => setTag(e.target.value)}
             onBlur={() => {
+              console.log(chipInputRef)
               setChipActive(false);
               addTag(chipInputRef.current);
             }}
@@ -58,7 +75,7 @@ export default function ProfileTags({ isMyProfile, }) {
           >{tag}</span>
         </div>
       }
-      <span onClick={() => setChipActive(true)}>+</span>
+      {(isMyProfile) && <span onClick={() => setChipActive(true)}>+</span>}
     </Box>
   )
 }

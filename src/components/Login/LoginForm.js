@@ -13,7 +13,7 @@ import { setUser, setNeighbors } from '../../features/user/userSlice';
 
 
 const fakeUser = {
-  "id": 100,
+  "id": 2,
   "first_name": "mich" + Math.floor(Math.random() * 10),
   "username": "mich_life",
   "auth_date": 1658663402,
@@ -43,7 +43,7 @@ export default function LoginForm({ isOpen, handleClose }) {
     }
 
     loginUser({ user: addUserRequest }).then(res => {
-      dispatch(setUser({ ...res.user }));
+      dispatch(setUser(Object.assign({}, res.user)));
       try {
         loadUserNeighbors().catch(console.error);
       } catch (err) {
