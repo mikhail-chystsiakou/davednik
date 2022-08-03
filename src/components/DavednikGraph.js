@@ -29,7 +29,7 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
 
   const handleNodeClick = (node) => {
     setHoverNode(node)
-    fgRef.current.centerAt(node.x, windowDimensions.height / 7, 300);
+    //fgRef.current.centerAt(node.x, windowDimensions.height / 7, 300);
     dispatch(openProfile());
     dispatch(setCurrentUser({ ...node, _id: node.id }))
   };

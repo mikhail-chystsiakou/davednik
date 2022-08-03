@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import avatar from '../../img/avatar.png';
 import './Profile.css';
 import { editUser } from '../../features/user/userAPI';
+import { setCurrentUser } from '../../features/graph/graphSlice';
 import ProfileTags from './ProfileTags';
 
 import About from './About';
@@ -42,6 +43,11 @@ function Profile({
     };
     editUser(editedUser);
   }
+  const commitChanges = () => {
+    dispatch(setCurrentUser(
+      { ...user, tags: me.tags, name: me.name, about: me.about }
+    ));
+  }
 
   return (
     <Box sx={profileBoxStyle}>
@@ -51,9 +57,12 @@ function Profile({
           userId={user._id} me={me._id} isGuest={isGuest}
           connectNodes={connectNodes} disconnectNodes={disconnectNodes}
           isMyProfile={isMyProfile} setUserEditedName={setUserEditedName}
-          saveEdit={saveEdit}
+          commitChanges={commitChanges}
         />
-        <ProfileTags updateTags={updateTags} isMyProfile={isMyProfile} graphData={graphData} setGraphData={setGraphData} />
+        <ProfileTags
+          updateTags={updateTags} isMyProfile={isMyProfile}
+          graphData={graphData} setGraphData={setGraphData}
+        />
         <About about={about} isMyProfile={isMyProfile} />
         {!isMyProfile && <MyNotes />}
       </Box>

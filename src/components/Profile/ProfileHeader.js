@@ -42,7 +42,7 @@ const DisconnectButton = styled(Button)({
 
 export default function Header({
   name, tgId, avatar, userId, isGuest,
-  connectNodes, disconnectNodes, isMyProfile }) {
+  connectNodes, disconnectNodes, isMyProfile, commitChanges }) {
   const dispatch = useDispatch();
   const { neighbors } = useSelector(state => state.user);
   const me = useSelector(state => state.user.user);
@@ -54,7 +54,7 @@ export default function Header({
       const createEdge = async () => {
         dispatch(addNeighbor(userId));
         await connectNodes(me, userId);
-        await connectUsers({ from: me, to: userId });
+        await connectUsers({ from: me._id, to: userId });
       }
       createEdge().catch(console.error);
     }}>Connect</ConnectButton>
@@ -63,7 +63,7 @@ export default function Header({
       const deleteEdge = async () => {
         dispatch(removeNeighbor(userId));
         await disconnectNodes(me, userId);
-        await disconnectUsers({ from: me, to: userId });
+        await disconnectUsers({ from: me._id, to: userId });
       }
       deleteEdge().catch(console.error);
     }}>Disconnect</DisconnectButton>
@@ -96,7 +96,10 @@ export default function Header({
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
         <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text"
-          onClick={() => dispatch(closeProfile())} >
+          onClick={() => {
+            commitChanges();
+            dispatch(closeProfile());
+          }} >
           <img src={save} width={20} height={20} />
         </Button>
         <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text"
