@@ -57,7 +57,7 @@ function Profile({
           userId={user._id} me={me._id} isGuest={isGuest}
           connectNodes={connectNodes} disconnectNodes={disconnectNodes}
           isMyProfile={isMyProfile} setUserEditedName={setUserEditedName}
-          commitChanges={commitChanges}
+          commitChanges={commitChanges} setGraphData={setGraphData}
         />
         <ProfileTags
           updateTags={updateTags} isMyProfile={isMyProfile}

@@ -42,7 +42,7 @@ const DisconnectButton = styled(Button)({
 
 export default function Header({
   name, tgId, avatar, userId, isGuest,
-  connectNodes, disconnectNodes, isMyProfile, commitChanges }) {
+  connectNodes, disconnectNodes, isMyProfile, commitChanges, setGraphData }) {
   const dispatch = useDispatch();
   const { neighbors } = useSelector(state => state.user);
   const me = useSelector(state => state.user.user);
@@ -53,7 +53,7 @@ export default function Header({
     connectButton = <ConnectButton variant="contained" onClick={() => {
       const createEdge = async () => {
         dispatch(addNeighbor(userId));
-        await connectNodes(me, userId);
+        await connectNodes(me._id, userId);
         await connectUsers({ from: me._id, to: userId });
       }
       createEdge().catch(console.error);
@@ -62,7 +62,7 @@ export default function Header({
     connectButton = <DisconnectButton variant="contained" onClick={() => {
       const deleteEdge = async () => {
         dispatch(removeNeighbor(userId));
-        await disconnectNodes(me, userId);
+        await disconnectNodes(me._id, userId);
         await disconnectUsers({ from: me._id, to: userId });
       }
       deleteEdge().catch(console.error);
