@@ -10,6 +10,9 @@ import save from '../../img/done.png';
 import telegram from '../../img/telegram.png';
 import { connectUsers, disconnectUsers } from '../../features/graph/graphAPI';
 import { addNeighbor, removeNeighbor } from '../../features/user/userSlice';
+import { editUser } from '../../features/user/userAPI';
+import { setUser } from '../../features/user/userSlice';
+
 
 const ConnectButton = styled(Button)({
   color: "#FFFFFF",
@@ -38,13 +41,14 @@ const DisconnectButton = styled(Button)({
 
 
 export default function Header({
-  name, tgId, avatar, me, userId, isGuest,
-  connectNodes, disconnectNodes, isMyProfile,
-  setUserEditedName, saveEdit }) {
+  name, tgId, avatar, userId, isGuest,
+  connectNodes, disconnectNodes, isMyProfile }) {
   const dispatch = useDispatch();
-  const neighbors = useSelector(state => state.user.neighbors);
+  const { neighbors } = useSelector(state => state.user);
+  const me = useSelector(state => state.user.user);
 
   let connectButton;
+  // choose connect or disconnect button
   if (!neighbors.includes(userId)) {
     connectButton = <ConnectButton variant="contained" onClick={() => {
       const createEdge = async () => {
@@ -65,6 +69,10 @@ export default function Header({
     }}>Disconnect</DisconnectButton>
   }
 
+  const editUserName = (newName) => {
+    editUser({ id: me.id, name: newName });
+    dispatch(setUser({ ...me, name: newName }));
+  }
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -72,7 +80,12 @@ export default function Header({
         <Avatar src={avatar} sx={{ maxWidth: 80, maxHeight: 80, minWidth: 80, minHeight: 80 }} />
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: 0.5 }}>
           {
-            isMyProfile ? <Input sx={{ fontSize: '1rem', fontWeight: 600 }} defaultValue={name} onChange={(event) => setUserEditedName(event.target.value)} /> : <Typography sx={{ fontSize: '1rem', fontWeight: 600 }}>{name}</Typography>
+            isMyProfile ?
+              <Input
+                sx={{ fontSize: '1rem', fontWeight: 600 }}
+                defaultValue={name} inputProps={{ maxLength: 40 }}
+                onChange={(event) => editUserName(event.target.value)} />
+              : <Typography sx={{ fontSize: '1rem', fontWeight: 600 }}>{name}</Typography>
           }
           <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
             <img src={telegram} width={15} height={15} />
@@ -82,11 +95,13 @@ export default function Header({
         </Box>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-        <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text">
-          <img src={save} width={20} height={20} onClick={saveEdit} />
+        <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text"
+          onClick={() => dispatch(closeProfile())} >
+          <img src={save} width={20} height={20} />
         </Button>
-        <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text">
-          <img src={close} width={20} height={20} onClick={() => dispatch(closeProfile())} />
+        <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text"
+          onClick={() => dispatch(closeProfile())} >
+          <img src={close} width={20} height={20} />
         </Button>
       </Box>
     </Box>

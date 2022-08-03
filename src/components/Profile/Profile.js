@@ -54,7 +54,7 @@ function Profile({
           saveEdit={saveEdit}
         />
         <ProfileTags updateTags={updateTags} isMyProfile={isMyProfile} graphData={graphData} setGraphData={setGraphData} />
-        <About about={about} isMyProfile={isMyProfile} setUserEditedAbout={setUserEditedAbout} />
+        <About about={about} isMyProfile={isMyProfile} />
         {!isMyProfile && <MyNotes />}
       </Box>
     </Box >

@@ -1,27 +1,29 @@
 import { Box, Chip, } from '@mui/material';
 import { useRef, useState, useLayoutEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { editUser } from '../../features/user/userAPI';
+import { setUser } from '../../features/user/userSlice';
 
-export default function ProfileTags({ tags, isMyProfile, graphData, setGraphData, updateTags }) {
+export default function ProfileTags({ isMyProfile, }) {
   const me = useSelector(state => state.user.user);
+  const dispatch = useDispatch();
   const chipInputRef = useRef(null);
-  let [tag, setTag] = useState("yourtag");
+  let [tag, setTag] = useState("");
   let [chipActive, setChipActive] = useState(false);
 
   const addTag = (tagElement) => {
-    console.log("adding tag = ", tagElement.textContent)
-    const tag = tagElement.textContent;
+    const newTags = me.tags + "#" + tagElement.textContent;
     const editedUser = {
-      id: me.id, tags: me.tags + "#" + tag
+      id: me.id, tags: newTags
     };
     editUser(editedUser);
+    dispatch(setUser({ ...me, tags: newTags }));
   }
 
   let deleteTag = (tag) => {
-    console.log("deleting tag ", tag)
-    const newTagsArray = me.tags.split('#').filter(currentTag => currentTag !== tag);
-    editUser({ id: me.id, tags: newTagsArray.join("#") })
+    const newTags = me.tags.split('#').filter(value => value !== tag).join('#');
+    editUser({ id: me.id, tags: newTags })
+    dispatch(setUser({ ...me, tags: newTags }));
   }
   useLayoutEffect(() => {
     if (chipInputRef && chipInputRef.current) {

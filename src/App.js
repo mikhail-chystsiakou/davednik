@@ -6,7 +6,6 @@ import LoginForm from './components/Login/LoginForm.js';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import { editUser } from './features/user/userAPI';
-import { setUser } from './features/user/userSlice';
 import { graphSlice, setCurrentUser } from './features/graph/graphSlice';
 
 const theme = createTheme({
@@ -44,9 +43,9 @@ export default function App() {
   }
 
   const updateTags = (userId, tags) => {
-    const otherNodes = graphData.nodes.filter(n=>n.id!=userId);
-    const node = graphData.nodes.filter(n=>n.id==userId)[0];
-    const updatedNode = {...node, tags: tags}
+    const otherNodes = graphData.nodes.filter(n => n.id != userId);
+    const node = graphData.nodes.filter(n => n.id == userId)[0];
+    const updatedNode = { ...node, tags: tags }
     const oldLinks = graphData.links.filter(l => l.source.id != userId && l.target.id != userId);
     const updatedLinks = graphData.links.filter(l => l.source.id == userId || l.target.id == userId);
     editUser({
@@ -56,7 +55,7 @@ export default function App() {
       about: updatedNode.about,
       tags: updatedNode.tags,
     })
-    dispatch(setCurrentUser({...updatedNode}))
+    dispatch(setCurrentUser({ ...updatedNode }))
 
     setGraphData(() => {
       return {
