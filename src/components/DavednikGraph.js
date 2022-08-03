@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef, useCallback, useLayoutEffect } from 'react'
-import ForceGraph2D from "react-force-graph-2d"
-import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentUser } from "../features/graph/graphSlice"
-import { openProfile, closeProfile } from '../features/window/windowSlice';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+
+import ForceGraph2D from "react-force-graph-2d";
+import { useDispatch, useSelector } from 'react-redux';
 import * as graphAPI from '../features/graph/graphAPI';
+import { setCurrentUser } from "../features/graph/graphSlice";
+import { closeProfile, openProfile } from '../features/window/windowSlice';
 
 
 function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
@@ -51,7 +52,19 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
         setGraphData(graph)
       }
     }
-    loadGrpah().catch(console.error)
+    loadGrpah().catch(console.error);
+
+    function handleClickOutsideProfile(event) {
+      if (event.target.tagName === "CANVAS" || event.target.id === "search") {
+        dispatch(closeProfile());
+      }
+    };
+    // Bind the event listener
+    document.addEventListener('click', handleClickOutsideProfile);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener('click', handleClickOutsideProfile);
+    };
   }, []);
 
   const paintSelected = useCallback((node, ctx, color = '#c13050') => {
