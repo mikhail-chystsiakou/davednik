@@ -44,7 +44,6 @@ export default function Header({
   const dispatch = useDispatch();
   const neighbors = useSelector(state => state.user.neighbors);
 
-  console.log(neighbors)
   let connectButton;
   if (!neighbors.includes(userId)) {
     connectButton = <ConnectButton variant="contained" onClick={() => {
@@ -73,8 +72,7 @@ export default function Header({
         <Avatar src={avatar} sx={{ maxWidth: 80, maxHeight: 80, minWidth: 80, minHeight: 80 }} />
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', gap: 0.5 }}>
           {
-            isMyProfile ? <Input sx={{ fontSize: '1rem', fontWeight: 600 }} defaultValue={name} onChange={(event) => setUserEditedName(event.target.value)} /> :
-              <Typography sx={{ fontSize: '1rem', fontWeight: 600 }}>{name}</Typography>
+            isMyProfile ? <Input sx={{ fontSize: '1rem', fontWeight: 600 }} defaultValue={name} onChange={(event) => setUserEditedName(event.target.value)} /> : <Typography sx={{ fontSize: '1rem', fontWeight: 600 }}>{name}</Typography>
           }
           <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
             <img src={telegram} width={15} height={15} />

@@ -2,11 +2,9 @@ import { Box, Chip } from '@mui/material';
 
 import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { connectUsers } from '../../features/graph/graphAPI';
 import avatar from '../../img/avatar.png';
 import './Profile.css';
 import { editUser } from '../../features/user/userAPI';
-import { Fade } from "react-awesome-reveal";
 import ProfileTags from './ProfileTags';
 
 import About from './About';
@@ -39,9 +37,10 @@ function Profile({
   const isGuest = (me._id == "guest");
 
   const saveEdit = () => {
-    var editedUser = { ...user, name: userEditedName, about: userEditedAbout };
+    var editedUser = {
+      id: me.id, name: userEditedName, about: userEditedAbout
+    };
     editUser(editedUser);
-    console.log(editedUser)
   }
 
   return (
