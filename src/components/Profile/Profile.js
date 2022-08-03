@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import avatar from '../../img/avatar.png';
 import './Profile.css';
 import { editUser } from '../../features/user/userAPI';
-import { setCurrentUser } from '../../features/graph/graphSlice';
+import { setSelectedNode } from '../../features/graph/graphSlice';
 import ProfileTags from './ProfileTags';
 
 import About from './About';
@@ -20,7 +20,7 @@ function Profile({
   tgId = "@zoxal", about = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing."
 }) {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.graph.user);
+  const user = useSelector(state => state.graph.selectedNode);
   const me = useSelector(state => state.user.user);
   const [userEditedName, setUserEditedName] = useState(user.name);
   const [userEditedAbout, setUserEditedAbout] = useState(user.about);
@@ -44,7 +44,7 @@ function Profile({
     editUser(editedUser);
   }
   const commitChanges = () => {
-    dispatch(setCurrentUser(
+    dispatch(setSelectedNode(
       { ...user, tags: me.tags, name: me.name, about: me.about }
     ));
   }

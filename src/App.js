@@ -6,7 +6,7 @@ import LoginForm from './components/Login/LoginForm.js';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 import { editUser } from './features/user/userAPI';
-import { graphSlice, setCurrentUser } from './features/graph/graphSlice';
+import { graphSlice, setSelectedNode } from './features/graph/graphSlice';
 
 const theme = createTheme({
   typography: {
@@ -55,7 +55,7 @@ export default function App() {
       about: updatedNode.about,
       tags: updatedNode.tags,
     })
-    dispatch(setCurrentUser({ ...updatedNode }))
+    dispatch(setSelectedNode({ ...updatedNode }))
 
     setGraphData(() => {
       return {

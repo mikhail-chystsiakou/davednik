@@ -34,7 +34,7 @@ export default function ProfileTags({ isMyProfile, }) {
   return (
     <Box>
       {
-        me.tags.split('#').slice(1).map(tag => {
+        me.tags && me.tags.split('#').slice(1).map(tag => {
           return <Chip
             label={"#" + tag}
             variant="outlined"

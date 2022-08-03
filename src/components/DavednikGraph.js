@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import ForceGraph2D from "react-force-graph-2d";
 import { useDispatch, useSelector } from 'react-redux';
 import * as graphAPI from '../features/graph/graphAPI';
-import { setCurrentUser } from "../features/graph/graphSlice";
+import { setSel, setSelectedNode } from "../features/graph/graphSlice";
 import { closeProfile, openProfile } from '../features/window/windowSlice';
 
 
@@ -30,8 +30,8 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
   const handleNodeClick = (node) => {
     setHoverNode(node)
     //fgRef.current.centerAt(node.x, windowDimensions.height / 7, 300);
+    dispatch(setSelectedNode({ ...node, _id: node.id }))
     dispatch(openProfile());
-    dispatch(setCurrentUser({ ...node, _id: node.id }))
   };
 
   useEffect(() => {
