@@ -19,7 +19,9 @@ export default function ProfileTags({ tags, isMyProfile, graphData, setGraphData
   }
 
   let deleteTag = (tag) => {
-    console.log("deleting tag " + tag)
+    console.log("deleting tag ", tag)
+    const newTagsArray = me.tags.split('#').filter(currentTag => currentTag !== tag);
+    editUser({ id: me.id, tags: newTagsArray.join("#") })
   }
   useLayoutEffect(() => {
     if (chipInputRef && chipInputRef.current) {
