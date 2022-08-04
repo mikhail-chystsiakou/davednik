@@ -9,6 +9,7 @@ import close from '../../img/close.png';
 import save from '../../img/done.png';
 import telegram from '../../img/telegram.png';
 import { connectUsers, disconnectUsers } from '../../features/graph/graphAPI';
+import { connectNodes, disconnectNodes } from '../../features/graph/graphSlice';
 import { addNeighbor, removeNeighbor } from '../../features/user/userSlice';
 import { editUser } from '../../features/user/userAPI';
 import { setUser } from '../../features/user/userSlice';
@@ -41,8 +42,7 @@ const DisconnectButton = styled(Button)({
 
 
 export default function Header({
-  name, tgId, avatar, userId, isGuest,
-  connectNodes, disconnectNodes, isMyProfile, commitChanges, setGraphData }) {
+  name, tgId, avatar, userId, isGuest, isMyProfile, commitChanges }) {
   const dispatch = useDispatch();
   const { neighbors } = useSelector(state => state.user);
   const me = useSelector(state => state.user.user);
@@ -53,7 +53,7 @@ export default function Header({
     connectButton = <ConnectButton variant="contained" onClick={() => {
       const createEdge = async () => {
         dispatch(addNeighbor(userId));
-        await connectNodes(me._id, userId);
+        dispatch(connectNodes(me._id, userId));
         await connectUsers({ from: me._id, to: userId });
       }
       createEdge().catch(console.error);
@@ -62,7 +62,7 @@ export default function Header({
     connectButton = <DisconnectButton variant="contained" onClick={() => {
       const deleteEdge = async () => {
         dispatch(removeNeighbor(userId));
-        await disconnectNodes(me._id, userId);
+        dispatch(disconnectNodes(me._id, userId));
         await disconnectUsers({ from: me._id, to: userId });
       }
       deleteEdge().catch(console.error);

@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 
 import ForceGraph2D from "react-force-graph-2d";
 import { useDispatch, useSelector } from 'react-redux';
-import * as graphAPI from '../features/graph/graphAPI';
 import { setCurrentUser, setGraphData } from "../features/graph/graphSlice";
 import { closeProfile, openProfile } from '../features/window/windowSlice';
+import { useApp } from '../AppContext';
 
 
 function DavednikGraph() {
@@ -13,7 +13,7 @@ function DavednikGraph() {
   const highlightedNodes = useSelector(state => state.user.searchResult);
   const profileIsOpen = useSelector(state => state.window.profileIsOpen);
   const [hoverNode, setHoverNode] = useState(null);
-  const { nodes, links } = useSelector(state => state.graph);
+  const graphData = useApp().state.graphData;
 
   // change graph canvas size
   const [windowDimensions, setSize] = useState({ width: window.innerWidth, height: window.innerHeight });
@@ -31,28 +31,6 @@ function DavednikGraph() {
     dispatch(openProfile());
     dispatch(setCurrentUser({ ...node, _id: node.id }))
   };
-
-  useEffect(() => {
-    const loadGrpah = async () => {
-
-      const users = await graphAPI.loadAllUsers();
-      const edges = await graphAPI.loadAllEdges();
-      let graph = { nodes: [], links: [] }
-      for (const u of users) {
-        graph.nodes.push({
-          ...u, id: u._id,
-          color: "#434343"
-        })
-      }
-      for (const e of edges) {
-        graph.links.push({ source: e._from, target: e._to, value: 0 }) // TODO: value
-      }
-      if (graph != null) {
-        dispatch(setGraphData(graph));
-      }
-    }
-    loadGrpah().catch(console.error);
-  }, [])
   useEffect(() => {
     function handleClickOutsideProfile(event) {
       if (event.target.tagName === "CANVAS" || event.target.id === "search") {
@@ -103,7 +81,14 @@ function DavednikGraph() {
     }}
 
     linkWidth={2}
-    graphData={{ nodes: nodes.map(node => Object.assign({}, node)), links: links }}
+    graphData={{
+      nodes: graphData.nodes.map(node => Object.assign({}, node)),
+      links: graphData.links.map(link => Object.assign({}, link))
+    }}
+  /*graphData={{
+    nodes: nodes.map(node => Object.assign({}, node)),
+    links: links.map(link => Object.assign({}, link))
+  }}*/
   />
 }
 
