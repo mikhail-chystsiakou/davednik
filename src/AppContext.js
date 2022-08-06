@@ -10,7 +10,6 @@ export const ACTION_TYPES = {
 }
 
 function AppReducer(state, action) {
-  console.log("action = ", action)
   switch (action.type) {
     case ACTION_TYPES.SET_GRAPH:
       return { graphData: action.payload };

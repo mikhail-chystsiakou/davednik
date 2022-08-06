@@ -12,6 +12,7 @@ import { connectUsers, disconnectUsers } from '../../features/graph/graphAPI';
 import { addNeighbor, removeNeighbor } from '../../features/user/userSlice';
 import { editUser } from '../../features/user/userAPI';
 import { setUser } from '../../features/user/userSlice';
+import { useApp } from '../../AppContext';
 
 
 const ConnectButton = styled(Button)({
@@ -42,10 +43,11 @@ const DisconnectButton = styled(Button)({
 
 export default function Header({
   name, tgId, avatar, userId, isGuest,
-  connectNodes, disconnectNodes, isMyProfile, commitChanges, setGraphData }) {
+  isMyProfile, commitChanges }) {
   const dispatch = useDispatch();
   const { neighbors } = useSelector(state => state.user);
   const me = useSelector(state => state.user.user);
+  const { connectNodes, disconnectNodes } = useApp();
 
   let connectButton;
   // choose connect or disconnect button

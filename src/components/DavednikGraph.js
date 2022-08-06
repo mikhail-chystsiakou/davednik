@@ -3,19 +3,20 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import ForceGraph2D from "react-force-graph-2d";
 import { useDispatch, useSelector } from 'react-redux';
 import * as graphAPI from '../features/graph/graphAPI';
-import { setSel, setSelectedNode } from "../features/graph/graphSlice";
+import { setSelectedNode } from "../features/graph/graphSlice";
 import { closeProfile, openProfile } from '../features/window/windowSlice';
+import { useApp } from '../AppContext';
 
 
-function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
+function DavednikGraph({ nodeSize = 5 }) {
   const fgRef = useRef();
   const dispatch = useDispatch();
   const loginedUser = useSelector(state => state.user.user);
   const highlightedNodes = useSelector(state => state.user.searchResult);
   const profileIsOpen = useSelector(state => state.window.profileIsOpen);
   const [hoverNode, setHoverNode] = useState(null);
-
-  // console.log("Graph rendered")
+  const { state, setGraphData } = useApp();
+  const graphData = state.graphData;
 
   const [windowDimensions, setSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   useLayoutEffect(() => {
@@ -29,7 +30,7 @@ function DavednikGraph({ graphData, setGraphData, nodeSize = 5 }) {
 
   const handleNodeClick = (node) => {
     setHoverNode(node)
-    //fgRef.current.centerAt(node.x, windowDimensions.height / 7, 300);
+    fgRef.current.centerAt(node.x, node.y + 40);
     dispatch(setSelectedNode({ ...node, _id: node.id }))
     dispatch(openProfile());
   };

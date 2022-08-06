@@ -24,3 +24,15 @@
     margin: 0 auto;
     padding: 0;
 }
+
+.Profile {
+    background-color: #FFFFFF;
+    border-radius: 5;
+    overflow-y: auto;
+    position: absolute !important; 
+    left: 32;
+    right: 32; 
+    bottom: 32;
+    z-index: -10;
+    height: 50%;
+}
