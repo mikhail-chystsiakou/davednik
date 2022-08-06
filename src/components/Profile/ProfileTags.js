@@ -13,8 +13,6 @@ export default function ProfileTags({ isMyProfile, }) {
   let [tag, setTag] = useState("");
   let [chipActive, setChipActive] = useState(false);
 
-  console.log('user = ', user)
-
   const addTag = (tagElement) => {
     const newTags = me.tags + "#" + tagElement.textContent;
     const editedUser = {

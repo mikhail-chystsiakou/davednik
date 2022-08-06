@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 
 import ForceGraph2D from "react-force-graph-2d";
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentUser, setGraphData } from "../features/graph/graphSlice";
+import { setCurrentUser } from "../features/graph/graphSlice";
 import { closeProfile, openProfile } from '../features/window/windowSlice';
 import { useApp } from '../AppContext';
 
 
 function DavednikGraph() {
+  const fgRef = useRef();
   const dispatch = useDispatch();
   const loginedUser = useSelector(state => state.user.user);
   const highlightedNodes = useSelector(state => state.user.searchResult);
@@ -25,6 +26,8 @@ function DavednikGraph() {
     updateSize();
     return () => window.removeEventListener('resize', updateSize);
   }, []);
+
+  console.log("render graph")
 
   const handleNodeClick = (node) => {
     setHoverNode(node)
@@ -56,6 +59,7 @@ function DavednikGraph() {
   //const data = { nodes: graphData.nodes.map(o => Object.assign({}, o)), links: graphData.links }
 
   return <ForceGraph2D
+    ref={fgRef}
     autoPauseRedraw={false}
     width={windowDimensions.width}
     height={windowDimensions.height}

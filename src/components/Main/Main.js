@@ -21,6 +21,7 @@ export default function Main() {
   const dispatch = useDispatch();
 
   const setGraphData = useApp().setData;
+  console.log("render MAIN")
 
   React.useEffect(() => {
     const loadGrpah = async () => {

@@ -9,10 +9,10 @@ import close from '../../img/close.png';
 import save from '../../img/done.png';
 import telegram from '../../img/telegram.png';
 import { connectUsers, disconnectUsers } from '../../features/graph/graphAPI';
-import { connectNodes, disconnectNodes } from '../../features/graph/graphSlice';
 import { addNeighbor, removeNeighbor } from '../../features/user/userSlice';
 import { editUser } from '../../features/user/userAPI';
 import { setUser } from '../../features/user/userSlice';
+import { useApp, ACTION_TYPES } from '../../AppContext';
 
 
 const ConnectButton = styled(Button)({
@@ -43,17 +43,18 @@ const DisconnectButton = styled(Button)({
 
 export default function Header({
   name, tgId, avatar, userId, isGuest, isMyProfile, commitChanges }) {
-  const dispatch = useDispatch();
+  const reduxDispatch = useDispatch();
   const { neighbors } = useSelector(state => state.user);
   const me = useSelector(state => state.user.user);
+  const { dispatch } = useApp();
 
   let connectButton;
   // choose connect or disconnect button
   if (!neighbors.includes(userId)) {
     connectButton = <ConnectButton variant="contained" onClick={() => {
       const createEdge = async () => {
-        dispatch(addNeighbor(userId));
-        dispatch(connectNodes(me._id, userId));
+        reduxDispatch(addNeighbor(userId));
+        dispatch({ type: ACTION_TYPES.CONNECT_NODES, payload: { _from: me._id, _to: userId } });
         await connectUsers({ from: me._id, to: userId });
       }
       createEdge().catch(console.error);
@@ -61,8 +62,8 @@ export default function Header({
   } else {
     connectButton = <DisconnectButton variant="contained" onClick={() => {
       const deleteEdge = async () => {
-        dispatch(removeNeighbor(userId));
-        dispatch(disconnectNodes(me._id, userId));
+        reduxDispatch(removeNeighbor(userId));
+        dispatch({ type: ACTION_TYPES.DISCONNECT_NODES, payload: { _from: me._id, _to: userId } });
         await disconnectUsers({ from: me._id, to: userId });
       }
       deleteEdge().catch(console.error);
@@ -71,7 +72,7 @@ export default function Header({
 
   const editUserName = (newName) => {
     editUser({ id: me.id, name: newName });
-    dispatch(setUser({ ...me, name: newName }));
+    reduxDispatch(setUser({ ...me, name: newName }));
   }
 
   return (
@@ -98,12 +99,12 @@ export default function Header({
         <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text"
           onClick={() => {
             commitChanges();
-            dispatch(closeProfile());
+            reduxDispatch(closeProfile());
           }} >
           <img src={save} width={20} height={20} />
         </Button>
         <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text"
-          onClick={() => dispatch(closeProfile())} >
+          onClick={() => reduxDispatch(closeProfile())} >
           <img src={close} width={20} height={20} />
         </Button>
       </Box>

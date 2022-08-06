@@ -10,6 +10,7 @@ import ProfileTags from './ProfileTags';
 import About from './About';
 import MyNotes from './MyNotes';
 import ProfileHeader from './ProfileHeader';
+import { useApp } from "../../AppContext";
 
 
 function Profile() {
