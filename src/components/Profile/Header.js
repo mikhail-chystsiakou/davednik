@@ -1,44 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Avatar, Box, Button, Typography, Input
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeProfile } from '../../features/window/windowSlice';
 import close from '../../img/close.png';
 import save from '../../img/done.png';
 import telegram from '../../img/telegram.png';
-import { connectUsers, disconnectUsers } from '../../features/graph/graphAPI';
-import { addNeighbor, removeNeighbor } from '../../features/user/userSlice';
 import { editUser } from '../../features/user/userAPI';
 import { setUser } from '../../features/user/userSlice';
-import { useApp } from '../../AppContext';
-
-
-const ConnectButton = styled(Button)({
-  color: "#FFFFFF",
-  backgroundColor: "#3050C1",
-  '&:hover': {
-    backgroundColor: "#3050C1",
-  },
-  borderRadius: 20,
-  fontSize: 10,
-  fontWeight: 200,
-  width: 80
-});
-
-const DisconnectButton = styled(Button)({
-  color: "#FFFFFF",
-  backgroundColor: "#c13050",
-  '&:hover': {
-    backgroundColor: "#c13050",
-  },
-  borderRadius: 20,
-  fontSize: 10,
-  fontWeight: 200,
-  width: 80
-});
-
+import { Connect } from './Connect.js';
 
 
 export default function Header({
@@ -47,30 +18,6 @@ export default function Header({
   const dispatch = useDispatch();
   const { neighbors } = useSelector(state => state.user);
   const me = useSelector(state => state.user.user);
-  const { connectNodes, disconnectNodes } = useApp();
-
-  let connectButton;
-  // choose connect or disconnect button
-  if (!neighbors.includes(userId)) {
-    connectButton = <ConnectButton variant="contained" onClick={() => {
-      const createEdge = async () => {
-        dispatch(addNeighbor(userId));
-        console.log(me, userId)
-        await connectNodes({ from: me._id, to: userId });
-        await connectUsers({ from: me._id, to: userId });
-      }
-      createEdge().catch(console.error);
-    }}>Connect</ConnectButton>
-  } else {
-    connectButton = <DisconnectButton variant="contained" onClick={() => {
-      const deleteEdge = async () => {
-        dispatch(removeNeighbor(userId));
-        await disconnectNodes({ from: me._id, to: userId });
-        await disconnectUsers({ from: me._id, to: userId });
-      }
-      deleteEdge().catch(console.error);
-    }}>Disconnect</DisconnectButton>
-  }
 
   const editUserName = (newName) => {
     editUser({ id: me.id, name: newName });
@@ -94,7 +41,7 @@ export default function Header({
             <img src={telegram} width={15} height={15} />
             <Typography variant='body2'>{tgId}</Typography>
           </Box>
-          {(me !== userId) && !isGuest && connectButton}
+          {(me !== userId) && !isGuest && <Connect isConnected={!neighbors.includes(userId)} from={me._id} to={userId} />}
         </Box>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
