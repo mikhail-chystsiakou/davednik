@@ -4,8 +4,29 @@ import { useSelector, useDispatch } from 'react-redux';
 import { editUser } from '../../features/user/userAPI';
 import { setUser } from '../../features/user/userSlice';
 
+
+const Tag = ({ isDeletable = false, text = "", deleteTag }) => {
+  if (isDeletable) {
+    return (
+      <Chip
+        label={"#" + text}
+        variant="outlined"
+        onDelete={() => deleteTag(text)}
+        sx={{ margin: 1 }}
+      />
+    )
+  }
+  return <Chip
+    label={"#" + text}
+    variant="outlined"
+    sx={{ margin: 1 }}
+  />
+
+}
+
 export default function ProfileTags({ isMyProfile, }) {
   const me = useSelector(state => state.user.user);
+  const user = useSelector(state => state.graph.selectedNode);
   const dispatch = useDispatch();
   const chipInputRef = useRef(null);
   let [tag, setTag] = useState("");
@@ -31,17 +52,14 @@ export default function ProfileTags({ isMyProfile, }) {
     }
   }, [chipInputRef, chipActive]);
 
+  const currentUser = (isMyProfile) ? me : user;
+
   return (
     <Box>
       {
-        me.tags && me.tags.split('#').slice(1).map(tag => {
-          return <Chip
-            label={"#" + tag}
-            variant="outlined"
-            onDelete={(isMyProfile) ? () => deleteTag(tag) : () => { }}
-            sx={{ margin: 1 }}
-          />
-        })
+        currentUser.tags && currentUser.tags.split('#').slice(1).map(
+          tag => <Tag isDeletable={isMyProfile} deleteTag={deleteTag} text={tag} />
+        )
       }
       {chipActive &&
         <div style={editChipContainer}>
