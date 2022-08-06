@@ -19,7 +19,7 @@ function AppReducer(state, action) {
         graphData: {
           nodes: state.graphData.nodes,
           links: [...state.graphData.links, {
-            source: action.payload._from, target: action.payload._to
+            source: action.payload.from, target: action.payload.to
           }]
         }
       }
