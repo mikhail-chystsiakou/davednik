@@ -39,7 +39,8 @@ function AppReducer(state, action) {
       return {
         graphData: {
           nodes: state.graphData.nodes.map(node => {
-            return (node.id !== action.payload.id) ? node : { ...node, name: action.payload.node }
+            console.log({ ...node, name: action.payload.node })
+            return (node.id !== action.payload.id) ? node : Object.assign(node, { name: action.payload.node })
           }), links: state.graphData.links
         }
       }
