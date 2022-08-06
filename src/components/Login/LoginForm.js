@@ -7,7 +7,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TelegramLoginButton from 'react-telegram-login';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../features/user/userAPI';
-import { getNeighbors } from '../../features/graph/graphAPI.js';
+import { getNeighbors } from '../../features/graph/graphAPI';
+import { setSelectedNode } from '../../features/graph/graphSlice';
 import { setUser, setNeighbors } from '../../features/user/userSlice';
 
 
@@ -41,8 +42,9 @@ export default function LoginForm({ isOpen, handleClose }) {
     }
 
     loginUser({ user: addUserRequest }).then(res => {
-      console.log(res.user)
-      dispatch(setUser(Object.assign({}, res.user)));
+      const userObject = Object.assign({}, res.user)
+      dispatch(setUser(userObject));
+      dispatch(setSelectedNode({ ...userObject, id: userObject._id }));
       try {
         loadUserNeighbors().catch(console.error);
       } catch (err) {
