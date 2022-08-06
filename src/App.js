@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Main from './components/Main/Main';
 import LoginForm from './components/Login/LoginForm.js';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,42 +20,28 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const me = useSelector(state => state.user.user);
+  const [sessionUser, setSessionUser] = useState(null);
 
-  const connectNodes = (from, to) => {
-    setGraphData(() => {
-      return {
-        nodes: graphData.nodes,
-        links: [...graphData.links, { source: from, target: to }]
-      };
-    });
-  }
+  useEffect(() => {
+    const _sessionUser = JSON.parse(sessionStorage.getItem('user'));
+    if (_sessionUser) {
+      setSessionUser(_sessionUser);
+    }
+  }, [])
 
-  const disconnectNodes = (from, to) => {
-    setGraphData(() => {
-      return {
-        nodes: graphData.nodes,
-        links: graphData.links.filter(link => (link.source.id !== from || link.target.id !== to)),
-      };
-    });
-  };
   return (
     <ThemeProvider theme={theme}>
       <AppProvider>
-        <LoginForm
-          isOpen={isDialogOpen}
+        {(isDialogOpen) && <LoginForm
+          isOpen={isDialogOpen} sessionUser={sessionUser}
           handleClose={() => setIsDialogOpen(!isDialogOpen)}
-        />
+        />}
         {
           (me && me._id) ?
             <>
-              <Main
-                graphData={graphData} setGraphData={setGraphData}
-                connectNodes={connectNodes}
-                disconnectNodes={disconnectNodes}
-              />
+              <Main />
             </>
             : (!isDialogOpen &&
               <CircularProgress sx={{ position: 'absolute', top: '50%', left: '50%' }} />

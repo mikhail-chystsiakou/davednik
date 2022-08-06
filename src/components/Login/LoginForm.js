@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,7 +22,7 @@ const fakeUser = {
 };
 
 
-export default function LoginForm({ isOpen, handleClose }) {
+export default function LoginForm({ isOpen, handleClose, sessionUser }) {
   const dispatch = useDispatch();
 
   const handleTelegramResponse = response => {
@@ -43,6 +43,7 @@ export default function LoginForm({ isOpen, handleClose }) {
 
     loginUser({ user: addUserRequest }).then(res => {
       const userObject = Object.assign({}, res.user)
+      sessionStorage.setItem('user', JSON.stringify(userObject));
       dispatch(setUser(userObject));
       dispatch(setSelectedNode({ ...userObject, id: userObject._id }));
       try {
@@ -53,6 +54,11 @@ export default function LoginForm({ isOpen, handleClose }) {
     });
     handleClose();
   };
+  useEffect(() => {
+    if (sessionUser !== null) {
+      handleTelegramResponse(sessionUser)
+    }
+  })
 
   const handleGuestLogin = () => {
     dispatch(setUser({ id: "guest", _id: "guest" }));
