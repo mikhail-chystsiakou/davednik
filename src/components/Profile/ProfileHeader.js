@@ -53,7 +53,8 @@ export default function Header({
     connectButton = <ConnectButton variant="contained" onClick={() => {
       const createEdge = async () => {
         dispatch(addNeighbor(userId));
-        await connectNodes(me._id, userId);
+        console.log(me, userId)
+        await connectNodes({ from: me._id, to: userId });
         await connectUsers({ from: me._id, to: userId });
       }
       createEdge().catch(console.error);
@@ -62,7 +63,7 @@ export default function Header({
     connectButton = <DisconnectButton variant="contained" onClick={() => {
       const deleteEdge = async () => {
         dispatch(removeNeighbor(userId));
-        await disconnectNodes(me._id, userId);
+        await disconnectNodes({ from: me._id, to: userId });
         await disconnectUsers({ from: me._id, to: userId });
       }
       deleteEdge().catch(console.error);
