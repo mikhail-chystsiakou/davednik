@@ -7,6 +7,7 @@ export const ACTION_TYPES = {
   CONNECT_NODES: 1,
   DISCONNECT_NODES: 2,
   ADD_NODE: 3,
+  EDIT_NODE: 4
 }
 
 function AppReducer(state, action) {
@@ -31,7 +32,16 @@ function AppReducer(state, action) {
       }
     case ACTION_TYPES.ADD_NODE:
       return {
-        graphData: { node: [...state.graphData.nodes, action.payload], links: state.graphData.links }
+        graphData: { nodes: [...state.graphData.nodes, action.payload], links: state.graphData.links }
+      }
+    case ACTION_TYPES.EDIT_NODE:
+      console.log(state.graphData.nodes)
+      return {
+        graphData: {
+          nodes: state.graphData.nodes.map(node => {
+            return (node.id !== action.payload.id) ? node : { ...node, name: action.payload.node }
+          }), links: state.graphData.links
+        }
       }
     default:
       throw new Error("Invalid type");
@@ -54,8 +64,9 @@ function useApp() {
   const connectNodes = data => dispatch({ type: ACTION_TYPES.CONNECT_NODES, payload: data });
   const disconnectNodes = data => dispatch({ type: ACTION_TYPES.DISCONNECT_NODES, payload: data });
   const addNode = node => dispatch({ type: ACTION_TYPES.ADD_NODE, payload: node });
+  const editNode = payload => dispatch({ type: ACTION_TYPES.EDIT_NODE, payload: payload });
   return {
-    state, dispatch, setGraphData, connectNodes, disconnectNodes, addNode
+    state, dispatch, setGraphData, connectNodes, disconnectNodes, addNode, editNode
   }
 }
 

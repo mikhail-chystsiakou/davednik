@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import avatar from '../../img/avatar.png';
@@ -8,13 +8,14 @@ import Tags from './Tags';
 import About from './About';
 import MyNotes from './MyNotes';
 import Header from './Header';
+import { useApp } from '../../AppContext';
 
 
 function Profile() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.graph.selectedNode);
   const me = useSelector(state => state.user.user);
-
+  const { editNode } = useApp();
 
   const profileBoxStyle = {
     // TODO: переписать на CSS
@@ -33,6 +34,8 @@ function Profile() {
     dispatch(setSelectedNode(
       { ...user, tags: me.tags, name: me.name, about: me.about }
     ));
+    console.log(user)
+    editNode({ node: me.name, id: user.id })
   }
 
   return (
