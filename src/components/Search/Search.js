@@ -9,20 +9,12 @@ import search from '../../img/search.png';
 export default function Search() {
   const [value, setValue] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
-  const [showResult, setShowResult] = React.useState(false);
   const dispatch = useDispatch()
 
   console.log(searchResults.length);
 
-  const handleInput = (value) => {
-    setValue(value);
-    if (showResult === true){
-      fetchRequest(value);
-    }
-  }
-
   const fetchRequest = async (value) => {
-    setShowResult(true);
+    setValue(value);
     if (!value) {
       dispatch(setSearchResult([]))
       return;
@@ -58,16 +50,13 @@ export default function Search() {
           placeholder="Поиск"
           inputProps={{ 'aria-label': 'search google maps' }}
           value={value}
-          onChange={event => handleInput(event.target.value)}
+          onChange={event => fetchRequest(event.target.value)}
           id="search"
           fullWidth
         />
-        <Button onClick={event => fetchRequest(value)} sx={{minWidth: 30, p:0}}>
-          <img src={search} height={30} />
-        </Button>
-        
+        <img src={search} height={30} />        
       </Box>
-      {(showResult && value != "") && <Results users={searchResults} />}
+      {(value != "") && <Results users={searchResults} />}
     </Box>
   )
 }

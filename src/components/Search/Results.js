@@ -12,7 +12,7 @@ import { closeProfile, openProfile } from '../../features/window/windowSlice';
 export default function Results({ users }) {
   const dispatch = useDispatch();
   return (
-    <Box sx={{ borderRadius: 5, marginTop: 1, paddingTop: 2, paddingBottom: 4, backgroundColor: "#ffffff", maxHeight: '80%'}}>
+    <Box sx={{ borderRadius: 5, marginTop: 1, backgroundColor: "#ffffff", maxHeight: '80%'}}>
       <List sx={{ width: '100%', overflow: 'auto', height: '100%'}}>
         {users.length != 0 ? users.map((user, i) => <>
           <Row key={i} name={user.name} about={user.about} handleClick={() => {
@@ -20,7 +20,7 @@ export default function Results({ users }) {
             dispatch(setSelectedNode(user))
             console.log(user)
           }} />
-          {(users.length - i > 1) && <Divider variant="inset" component="li" />}
+          {/* {(users.length - i > 1) && <Divider variant="inset" component="li" />} */}
         </>)
         : <Typography sx={{paddingLeft: 3}}>No results found</Typography>}
       </List>
