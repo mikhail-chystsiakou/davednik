@@ -49,7 +49,7 @@ export default function Search() {
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'column',
-        height: '100%',
+        maxHeight: '100%',
         justifyContent: 'flex-start'
       }}
     >
