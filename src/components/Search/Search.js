@@ -1,11 +1,13 @@
 import React from 'react';
-import { Box, TextField, InputBase } from "@mui/material";
+import { Box, InputBase } from "@mui/material";
 import { useDispatch, useSelector } from 'react-redux';
 import * as userAPI from '../../features/user/userAPI';
 import { setSearchResult } from '../../features/user/userSlice';
+import Results from './Results';
 
 export default function Search() {
   const [value, setValue] = React.useState("");
+  const [searchResults, setSearchResults] = React.useState([]);
   const dispatch = useDispatch()
 
   const fetchRequest = async (value) => {
@@ -22,6 +24,7 @@ export default function Search() {
     } else {
       searchResult = await userAPI.searchUser(value)
     }
+    setSearchResults(searchResult)
     dispatch(setSearchResult(searchResult.map(u => u._id)))
   }
 
@@ -29,25 +32,28 @@ export default function Search() {
     <Box
       sx={{
         position: 'absolute', zIndex: 10,
-        top: 32, left: 32, right: 32,
+        top: 16, left: 5, right: 5,
         height: 40,
         display: 'flex',
         justifyContent: 'center',
       }}
     >
-      <Box sx={{
-        backgroundColor: "#FFFFFF", borderRadius: 10,
-        width: '100%', display: 'flex', flexDirection: 'column',
-        justifyContent: 'center',
-      }}>
-        <InputBase
-          placeholder="Поиск"
-          inputProps={{ 'aria-label': 'search google maps' }}
-          value={value}
-          onChange={event => fetchRequest(event.target.value)}
-          sx={{ width: '80%', maxWidth: 1000, backgroundColor: "#FFFFFF", marginLeft: 3 }}
-          id="search"
-        />
+      <Box>
+        <Box sx={{
+          backgroundColor: "#FFFFFF", borderRadius: 10,
+          width: '100%', display: 'flex', flexDirection: 'column',
+          justifyContent: 'center',
+        }}>
+          <InputBase
+            placeholder="Поиск"
+            inputProps={{ 'aria-label': 'search google maps' }}
+            value={value}
+            onChange={event => fetchRequest(event.target.value)}
+            sx={{ width: '80%', maxWidth: 1000, backgroundColor: "#FFFFFF", marginLeft: 3 }}
+            id="search"
+          />
+        </Box>
+        {(value) && <Results users={searchResults} />}
       </Box>
     </Box>
   )
