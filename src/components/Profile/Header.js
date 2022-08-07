@@ -41,17 +41,19 @@ export default function Header({
             <img src={telegram} width={15} height={15} />
             <Typography variant='body2'>{tgId}</Typography>
           </Box>
-          {(me !== userId) && !isGuest && <Connect isConnected={!neighbors.includes(userId)} from={me._id} to={userId} />}
+          {(!isMyProfile) && !isGuest && <Connect isConnected={!neighbors.includes(userId)} from={me._id} to={userId} />}
         </Box>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-        <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text"
-          onClick={() => {
-            commitChanges();
-            dispatch(closeProfile());
-          }} >
-          <img src={save} width={20} height={20} />
-        </Button>
+        {(isMyProfile) &&
+          <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text"
+            onClick={() => {
+              commitChanges();
+              dispatch(closeProfile());
+            }} >
+            <img src={save} width={20} height={20} />
+          </Button>
+        }
         <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text"
           onClick={() => dispatch(closeProfile())} >
           <img src={close} width={20} height={20} />

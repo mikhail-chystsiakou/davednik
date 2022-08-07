@@ -76,7 +76,7 @@ export default function ProfileTags({ isMyProfile, }) {
           >{tag}</span>
         </div>
       }
-      <span onClick={() => setChipActive(true)}>+</span>
+      {(isMyProfile) && <span onClick={() => setChipActive(true)}>+</span>}
     </Box>
   )
 }
