@@ -21,9 +21,11 @@ function Profile() {
     // TODO: переписать на CSS
     backgroundColor: "#FFFFFF",
     borderRadius: 5,
-    overflowY: 'auto',
-    position: 'absolute', left: 32, right: 32, bottom: 32, zIndex: 9,
-    height: window.innerHeight / 2
+    position: 'absolute', left: '2%', right: "2%", bottom: "2%", zIndex: 9,
+    height: window.innerHeight / 2,
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingLeft: 2,
   };
 
   const isMyProfile = (user._id === me._id);
@@ -40,7 +42,7 @@ function Profile() {
 
   return (
     <Box sx={profileBoxStyle}>
-      <Box sx={{ padding: 3, display: 'flex', flexDirection: "column", gap: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: "column", gap: 2, overflow: 'auto', maxHeight: window.innerHeight / 2, paddingRight: 3 }}>
         <Header
           name={user.name} tgId={user.user} avatar={avatar}
           userId={user._id} me={me._id} isGuest={isGuest}
