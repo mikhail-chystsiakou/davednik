@@ -9,12 +9,13 @@ import { ProfileButton } from './ProfileButton'
 
 export default function Main() { //{ graphData, setGraphData, connectNodes, disconnectNodes, updateTags }) {
   const profileIsOpen = useSelector(state => state.window.profileIsOpen);
+  const searchIsOpen = useSelector(state => state.window.searchIsOpen);
   const dispatch = useDispatch();
   return (
     <>
       <DavednikGraph />
       <Search />
-      {(profileIsOpen) ? <Profile /> : <ProfileButton onClick={
+      {(profileIsOpen) ? <Profile /> : (!searchIsOpen) && <ProfileButton onClick={
         () => dispatch((profileIsOpen) ? closeProfile() : openProfile())
       } />}
     </>
