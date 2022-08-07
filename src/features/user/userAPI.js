@@ -36,14 +36,14 @@ export async function loginUser(user) {
 
 
 export async function searchByTag(tag) {
-  return fetch(`${API_ADDRESS}/ search / tag / ${tag} `, {
+  return fetch(`${API_ADDRESS}/search/tag/${tag}`, {
     method: "GET",
     headers: { 'Content-Type': 'application/json' }
   }).then(res => res.json()).then((responseData) => responseData.users)
 }
 
 export async function searchUser(user) {
-  return fetch(`${API_ADDRESS}/ search / name / ${user} `, {
+  return fetch(`${API_ADDRESS}/search/name/${user}`, {
     method: "GET",
     headers: { 'Content-Type': 'application/json' }
   }).then(res => res.json()).then((responseData) => responseData.users)

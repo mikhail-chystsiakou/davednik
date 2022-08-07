@@ -2,6 +2,7 @@ export const API_ADDRESS = process.env.REACT_APP_API_ADDRESS;
 export const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
 export const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
+console.log(process.env)
 
 export const EXAMPLE_GRAPH = {
   nodes: [
