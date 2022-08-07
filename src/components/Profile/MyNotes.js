@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Avatar, Box, Typography, Chip, TextField
-} from '@mui/material';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
-import { useSelector, useDispatch } from 'react-redux';
-import { getNote, updateNote } from '../../supabaseClient/api';
+import { Box, Input, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
+import React, { useEffect, useState } from 'react';
+import { getNote, updateNote } from '../../supabaseClient/api';
 
-export default function MyNotes({ userId = "", me = "", isMyProfile }) {
+export default function MyNotes({ userId = "", me = "" }) {
   const [noteText, setNoteText] = useState(null);
   console.log(me, userId)
 
@@ -27,13 +23,15 @@ export default function MyNotes({ userId = "", me = "", isMyProfile }) {
     <Box>
       <Typography sx={{ fontSize: '1rem', fontWeight: 600 }}>Мои заметки</Typography>
       {(noteText !== null) ?
-        <TextareaAutosize
-          aria-label="empty textarea"
+        <Input
+          sx={{ fontSize: '0.9rem', fontWeight: 400, minWidth: "100%" }}
+          multiline
+          defaultValue={noteText}
+          inputProps={{ maxLength: 400 }}
+          onChange={(event) => handleUpdate(event.target.value)}
           placeholder="Здесь вы можете оставить заметки об этом пользователе. Никто кроме вас их не увидит"
-          value={noteText}
-          onChange={event => handleUpdate(event.target.value)}
-          style={{ minWidth: '99%' }}
-        /> : <CircularProgress />
+        />
+        : <CircularProgress />
       }
     </Box>
   )
