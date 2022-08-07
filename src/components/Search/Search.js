@@ -1,17 +1,28 @@
 import React from 'react';
-import { Box, InputBase } from "@mui/material";
+import { Box, Button, InputBase } from "@mui/material";
 import { useDispatch, useSelector } from 'react-redux';
 import * as userAPI from '../../features/user/userAPI';
 import { setSearchResult } from '../../features/user/userSlice';
 import Results from './Results';
+import search from '../../img/search.png';
 
 export default function Search() {
   const [value, setValue] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
+  const [showResult, setShowResult] = React.useState(false);
   const dispatch = useDispatch()
 
+  console.log(searchResults.length);
+
+  const handleInput = (value) => {
+    setValue(value);
+    if (showResult === true){
+      fetchRequest(value);
+    }
+  }
+
   const fetchRequest = async (value) => {
-    setValue(value)
+    setShowResult(true);
     if (!value) {
       dispatch(setSearchResult([]))
       return;
@@ -31,30 +42,32 @@ export default function Search() {
   return (
     <Box
       sx={{
-        position: 'absolute', zIndex: 10,
-        top: 16, left: 5, right: 5,
-        height: 40,
+        position: 'absolute',
+        left: '2%',
+        right: '2%',
+        top: '2%',
         display: 'flex',
         justifyContent: 'center',
+        flexDirection: 'column',
+        height: '100%',
+        justifyContent: 'flex-start'
       }}
     >
-      <Box>
-        <Box sx={{
-          backgroundColor: "#FFFFFF", borderRadius: 10,
-          width: '100%', display: 'flex', flexDirection: 'column',
-          justifyContent: 'center',
-        }}>
-          <InputBase
-            placeholder="Поиск"
-            inputProps={{ 'aria-label': 'search google maps' }}
-            value={value}
-            onChange={event => fetchRequest(event.target.value)}
-            sx={{ width: '80%', maxWidth: 1000, backgroundColor: "#FFFFFF", marginLeft: 3 }}
-            id="search"
-          />
-        </Box>
-        {(value) && <Results users={searchResults} />}
+      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: 5, paddingLeft: 3, paddingRight: 2, height: '3rem' }}>
+        <InputBase
+          placeholder="Поиск"
+          inputProps={{ 'aria-label': 'search google maps' }}
+          value={value}
+          onChange={event => handleInput(event.target.value)}
+          id="search"
+          fullWidth
+        />
+        <Button onClick={event => fetchRequest(value)} sx={{minWidth: 30, p:0}}>
+          <img src={search} height={30} />
+        </Button>
+        
       </Box>
+      {(showResult && value != "") && <Results users={searchResults} />}
     </Box>
   )
 }
