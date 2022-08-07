@@ -1,4 +1,6 @@
-export const API_ADDRESS = "http://127.0.0.1:5000/"
+export const API_ADDRESS = process.env.REACT_APP_API_ADDRESS;
+export const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
+export const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
 
 export const EXAMPLE_GRAPH = {
