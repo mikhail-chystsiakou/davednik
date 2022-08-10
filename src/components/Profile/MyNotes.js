@@ -5,7 +5,6 @@ import { getNote, updateNote } from '../../supabaseClient/api';
 
 export default function MyNotes({ userId = "", me = "" }) {
   const [noteText, setNoteText] = useState(null);
-  console.log(me, userId)
 
   const handleUpdate = async (value) => {
     setNoteText(value)

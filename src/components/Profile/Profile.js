@@ -51,7 +51,7 @@ function Profile() {
         />
         <Tags isMyProfile={isMyProfile} />
         <About about={user.about} isMyProfile={isMyProfile} />
-        {!isMyProfile && <MyNotes />}
+        {!isMyProfile && <MyNotes me={me._id} userId={user.id} />}
       </Box>
     </Box >
   );
