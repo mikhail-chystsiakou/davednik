@@ -4,7 +4,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export const Row = ({ name, about, handleClick }) => {
   return (
-    <ListItem alignItems="flex-start">
+    <ListItem alignItems="flex-start" onClick={handleClick}>
       <ListItemAvatar>
         <Avatar alt={name} src="/static/images/avatar/1.jpg" />
       </ListItemAvatar>
@@ -16,7 +16,7 @@ export const Row = ({ name, about, handleClick }) => {
           </React.Fragment>
         }
       />
-      <IconButton sx={{ marginTop: 1 }} onClick={handleClick} >
+      <IconButton sx={{ marginTop: 1 }} >
         <ArrowForwardIosIcon />
       </IconButton>
     </ListItem>

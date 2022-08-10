@@ -11,16 +11,13 @@ import { getNeighbors } from '../../features/graph/graphAPI';
 import { setSelectedNode } from '../../features/graph/graphSlice';
 import { setUser, setNeighbors } from '../../features/user/userSlice';
 
-
-
 const fakeUser = {
-  id: 100,
+  id: 101,
   first_name: "mich" + Math.floor(Math.random() * 10),
   username: "mich_life",
   auth_date: 1658663402,
   hash: "d819754366d50443471464184ca64571552bc3b1f022b5641c84b363e8060135"
 };
-
 
 export default function LoginForm({ isOpen, handleClose, sessionUser }) {
   const dispatch = useDispatch();
@@ -29,7 +26,7 @@ export default function LoginForm({ isOpen, handleClose, sessionUser }) {
     const name = response.first_name + (response.last_name ? " " + response.last_name : "");
 
     const addUserRequest = {
-      id: response.id,
+      tgId: response.id,
       user: response.username,
       name: name,
       about: "",
@@ -40,6 +37,8 @@ export default function LoginForm({ isOpen, handleClose, sessionUser }) {
       const userNeighbors = await getNeighbors(response.id);
       dispatch(setNeighbors(userNeighbors))
     }
+    console.log("dispatching user")
+    console.log(addUserRequest)
 
     loginUser({ user: addUserRequest }).then(res => {
       const userObject = Object.assign({}, res.user)

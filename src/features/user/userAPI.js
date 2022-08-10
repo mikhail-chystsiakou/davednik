@@ -1,10 +1,25 @@
 import { API_ADDRESS } from '../../const';
 
 export async function getUser(userId) {
+  console.log("getting user " + userId)
   return fetch(`${API_ADDRESS}/users/${userId}`, {
     method: "GET",
     headers: { 'Content-Type': 'application/json' },
-  }).then(res => res.json()).then((responseData) => responseData.user);
+  }).then(res => res.json()).then((responseData) => {
+    console.log(responseData);
+    return responseData.user
+  });
+}
+
+export async function getUserByTgId(userTgId) {
+  console.log("getting user " + userTgId)
+  return fetch(`${API_ADDRESS}/users/tg/${userTgId}`, {
+    method: "GET",
+    headers: { 'Content-Type': 'application/json' },
+  }).then(res => res.json()).then((responseData) => {
+    console.log(responseData);
+    return responseData.user
+  });
 }
 
 export async function editUser(user) {
@@ -17,9 +32,13 @@ export async function editUser(user) {
 }
 
 export async function loginUser(user) {
-  const possibleUser = await getUser(user.user.id);
+  console.log("user id:")
+  console.log(user.user.id)
+  const possibleUser = await getUserByTgId(user.user.tgId);
+  console.log("possible user: ")
+  console.log(possibleUser);
   if (possibleUser === {} || !possibleUser) {  // If user doesnt exists - create new user
-    const result = await fetch(`${API_ADDRESS}/users/${user.user.tgId} `, {
+    const result = await fetch(`${API_ADDRESS}/users/${user.user.tgId}`, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user) // body data type must match "Content-Type"

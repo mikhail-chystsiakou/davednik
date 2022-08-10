@@ -44,7 +44,7 @@ export default function Header({
           {(!isMyProfile) && !isGuest && <Connect isConnected={!neighbors.includes(userId)} from={me._id} to={userId} />}
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
         {(isMyProfile) &&
           <Button sx={{ p: 0, display: "flex", minWidth: 20 }} variant="text"
             onClick={() => {

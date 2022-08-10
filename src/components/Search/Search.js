@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, InputBase } from "@mui/material";
+import { Box, Button, InputBase } from "@mui/material";
 import { useDispatch, useSelector } from 'react-redux';
 import * as userAPI from '../../features/user/userAPI';
 import { setSearchResult } from '../../features/user/userSlice';
 import { openSearch, closeSearch } from '../../features/window/windowSlice';
 import Results from './Results';
+import search from '../../img/search.png';
 
 export default function Search() {
   const [value, setValue] = React.useState("");
@@ -12,8 +13,10 @@ export default function Search() {
   const profileIsOpen = useSelector(state => state.window.profileIsOpen);
   const dispatch = useDispatch()
 
+  console.log(searchResults.length);
+
   const fetchRequest = async (value) => {
-    setValue(value)
+    setValue(value);
     if (!value) {
       dispatch(setSearchResult([]));
       dispatch(closeSearch());
