@@ -43,13 +43,14 @@ export default function LoginForm({ isOpen, handleClose, sessionUser }) {
     loginUser({ user: addUserRequest }).then(res => {
       const userObject = Object.assign({}, res.user)
       sessionStorage.setItem('user', JSON.stringify(userObject));
-      dispatch(setUser(userObject));
-      dispatch(setSelectedNode({ ...userObject, id: userObject._id }));
+
       try {
         loadUserNeighbors().catch(console.error);
       } catch (err) {
         console.error(err)
       }
+      dispatch(setUser(userObject));
+      dispatch(setSelectedNode({ ...userObject, id: userObject._id }));
     });
     handleClose();
   };
