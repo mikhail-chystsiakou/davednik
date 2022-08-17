@@ -22,7 +22,7 @@ function Profile() {
     backgroundColor: "#FFFFFF",
     borderRadius: 5,
     position: 'absolute', left: '2%', right: "2%", bottom: "2%", zIndex: 9,
-    height: window.innerHeight / 2,
+    height: "65vh",
     paddingTop: 2,
     paddingBottom: 2,
     paddingLeft: 2,

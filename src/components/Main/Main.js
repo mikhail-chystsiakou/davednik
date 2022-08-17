@@ -14,7 +14,7 @@ export default function Main() { //{ graphData, setGraphData, connectNodes, disc
   return (
     <>
       <DavednikGraph />
-      <Search />
+      {(!profileIsOpen) && <Search />}
       {(profileIsOpen) ? <Profile /> : (!searchIsOpen) && <ProfileButton onClick={
         () => dispatch((profileIsOpen) ? closeProfile() : openProfile())
       } />}
