@@ -1,7 +1,7 @@
 import { Box, Input, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useEffect, useState } from 'react';
-import { getNote, updateNote } from '../../supabaseClient/api';
+import { getNote, updateNote } from '../../notesClient/api';
 
 export default function MyNotes({ userId = "", me = "" }) {
   const [noteText, setNoteText] = useState(null);
@@ -13,7 +13,8 @@ export default function MyNotes({ userId = "", me = "" }) {
 
   useEffect(() => {
     const getNoteOnServer = async (author, user) => {
-      setNoteText(await getNote(author, user));
+      const note = await getNote(author, user)
+      setNoteText(note.text)
     }
     getNoteOnServer(me, userId).then(res => res).catch(console.error);
   }, [userId, me])
