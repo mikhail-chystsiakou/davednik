@@ -83,7 +83,6 @@ function DavednikGraph({ nodeSize = 6 }) {
         <ForceGraph2D
           ref={fgRef}
           nodeRelSize={nodeSize} // nodes size
-          autoPauseRedraw={false}
 
           width={windowDimensions.width}
           height={windowDimensions.height}
@@ -92,6 +91,8 @@ function DavednikGraph({ nodeSize = 6 }) {
           backgroundColor="#E7E7E7"
           linkCurvature="curvature"
           enablePointerInteraction={true}
+
+          d3VelocityDecay={0.8} // Разлетаются ноды ТУТ. 1 - стоят. 0 - улетают постоянно
 
           onNodeClick={handleNodeClick}
 
