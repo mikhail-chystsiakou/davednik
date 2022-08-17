@@ -42,7 +42,7 @@ export default function LoginForm({ isOpen, handleClose, sessionUser }) {
 
     loginUser({ user: addUserRequest }).then(res => {
       const userObject = Object.assign({}, res.user)
-      sessionStorage.setItem('user', JSON.stringify(userObject));
+      localStorage.setItem('user', JSON.stringify(userObject));
 
       try {
         loadUserNeighbors().catch(console.error);

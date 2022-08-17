@@ -25,7 +25,7 @@ export default function App() {
   const [sessionUser, setSessionUser] = useState(null);
 
   useEffect(() => {
-    const _sessionUser = JSON.parse(sessionStorage.getItem('user'));
+    const _sessionUser = JSON.parse(localStorage.getItem('user'));
     if (_sessionUser) {
       setSessionUser(_sessionUser);
     }
