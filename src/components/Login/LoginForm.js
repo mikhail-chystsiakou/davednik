@@ -24,6 +24,7 @@ export default function LoginForm({ isOpen, handleClose, sessionUser }) {
 
   const handleTelegramResponse = response => {
     const name = response.first_name + (response.last_name ? " " + response.last_name : "");
+    console.log(response)
 
     const addUserRequest = {
       tgId: response.id,
@@ -37,8 +38,6 @@ export default function LoginForm({ isOpen, handleClose, sessionUser }) {
       const userNeighbors = await getNeighbors(response.id);
       dispatch(setNeighbors(userNeighbors))
     }
-    console.log("dispatching user")
-    console.log(addUserRequest)
 
     loginUser({ user: addUserRequest }).then(res => {
       const userObject = Object.assign({}, res.user)
