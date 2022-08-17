@@ -41,8 +41,8 @@ function Profile() {
   }
 
   return (
-    <Box sx={profileBoxStyle}>
-      <Box sx={{ display: 'flex', flexDirection: "column", gap: 2, overflow: 'auto', maxHeight: window.innerHeight / 2, paddingRight: 3 }}>
+    <Box sx={profileBoxStyle} onBlur={() => console.log('blur')}>
+      <Box sx={{ display: 'flex', flexDirection: "column", gap: 2, overflow: 'auto', maxHeight: "60vh", paddingRight: 3 }}>
         <Header
           name={user.name} tgId={user.user} avatar={avatar}
           userId={user._id} me={me._id} isGuest={isGuest}
