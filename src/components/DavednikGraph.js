@@ -3,12 +3,12 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import ForceGraph2D from "react-force-graph-2d";
 import { useDispatch, useSelector } from 'react-redux';
 import * as graphAPI from '../features/graph/graphAPI';
-import { setSelectedNode } from "../features/graph/graphSlice";
+import { setSel, setSelectedNode } from "../features/graph/graphSlice";
 import { closeProfile, openProfile } from '../features/window/windowSlice';
 import { useApp } from '../AppContext';
 
 
-function DavednikGraph({ nodeSize = 5 }) {
+function DavednikGraph({ nodeSize = 6 }) {
   const fgRef = useRef();
   const dispatch = useDispatch();
   const loginedUser = useSelector(state => state.user.user);
@@ -30,7 +30,8 @@ function DavednikGraph({ nodeSize = 5 }) {
 
   const handleNodeClick = (node) => {
     setHoverNode(node)
-    fgRef.current.centerAt(node.x, windowDimensions.height / 7, 300);
+    fgRef.current.centerAt(node.x, node.y + window.innerHeight * 0.20, 300);
+    // 20% так как Profile закрывает 60% экрана
     dispatch(setSelectedNode({ ...node, _id: node.id }))
     dispatch(openProfile());
   };
