@@ -37,10 +37,12 @@ export default function Header({
                 onChange={(event) => editUserName(event.target.value)} />
               : <Typography sx={{ fontSize: '1rem', fontWeight: 600 }}>{name}</Typography>
           }
-          <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
-            <img src={telegram} width={15} height={15} />
-            <Typography variant='body2'>{tgId}</Typography>
-          </Box>
+          {(tgId) &&
+            <Box sx={{ display: "flex", gap: 0.5, alignItems: 'center' }}>
+              <img src={telegram} width={15} height={15} />
+              <Typography variant='body2'> <a href={`https://t.me/${tgId}`}>{tgId}</a></Typography>
+            </Box>
+          }
           {(!isMyProfile) && !isGuest && <Connect isConnected={!neighbors.includes(userId)} from={me._id} to={userId} />}
         </Box>
       </Box>

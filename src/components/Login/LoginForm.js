@@ -14,7 +14,7 @@ import { setUser, setNeighbors } from '../../features/user/userSlice';
 const fakeUser = {
   id: 101,
   first_name: "mich" + Math.floor(Math.random() * 10),
-  username: "mich_life",
+  user: "mich_life",
   auth_date: 1658663402,
   hash: "d819754366d50443471464184ca64571552bc3b1f022b5641c84b363e8060135"
 };

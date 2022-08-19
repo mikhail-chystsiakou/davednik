@@ -14,6 +14,7 @@ import { useApp } from '../../AppContext';
 function Profile() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.graph.selectedNode);
+  console.log(user)
   const me = useSelector(state => state.user.user);
   const { editNode } = useApp();
 
@@ -36,7 +37,6 @@ function Profile() {
     dispatch(setSelectedNode(
       { ...user, tags: me.tags, name: me.name, about: me.about }
     ));
-    console.log(user)
     editNode({ node: me.name, id: user.id })
   }
 

@@ -43,7 +43,7 @@ function DavednikGraph({ nodeSize = 6 }) {
       const graph = { nodes: [], links: [] }
       for (const u of users) {
         graph.nodes.push({
-          id: u._id, name: u.name, about: u.about, tags: u.tags, tgId: u.id,
+          id: u._id, name: u.name, about: u.about, tags: u.tags, tgId: u.id, user: u.user,
           color: "#AdA8A8"
         })
       }
